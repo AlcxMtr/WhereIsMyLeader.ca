@@ -1,0 +1,3 @@
+whereismyleader.ca, www.whereismyleader.ca {
+    reverse_proxy web:3000
+}

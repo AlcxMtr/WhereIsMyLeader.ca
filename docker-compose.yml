@@ -4,11 +4,11 @@ services:
       # Updated to point to your existing Next.js folder
       context: ./where-is-my-leader 
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
     volumes:
       # Maps the host folder to the container's /app/data folder
       - ./shared-data:/app/data
+    environment:
+      - TZ=America/Toronto
     restart: always
     depends_on:
       - scraper
@@ -23,3 +23,19 @@ services:
     environment:
       - TZ=America/Toronto      # <--- Forces Scraper logs to Toronto time
     restart: always
+
+  # The new Reverse Proxy
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    ports:
+      - "80:80"     # Standard HTTP
+      - "443:443"   # Standard HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
