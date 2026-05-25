@@ -71,7 +71,163 @@ const countryNameToCode: Record<string, string> = {
   Japan: 'jp',
   Norway: 'no',
   'United Kingdom': 'gb',
+  UK: 'gb',
+  Britain: 'gb',
+  England: 'gb',
+  Scotland: 'gb',
+  Wales: 'gb',
+  'United States': 'us',
+  USA: 'us',
+  'United States of America': 'us',
+  America: 'us',
+  France: 'fr',
+  Germany: 'de',
+  Italy: 'it',
+  Spain: 'es',
+  Portugal: 'pt',
+  Netherlands: 'nl',
+  Belgium: 'be',
+  Luxembourg: 'lu',
+  Austria: 'at',
+  Ireland: 'ie',
+  Denmark: 'dk',
+  Sweden: 'se',
+  Finland: 'fi',
+  Iceland: 'is',
+  Poland: 'pl',
+  Ukraine: 'ua',
+  Armenia: 'am',
+  Հայաստան: 'am',
+  Turkey: 'tr',
+  Türkiye: 'tr',
+  Greece: 'gr',
+  Cyprus: 'cy',
+  Israel: 'il',
+  Palestine: 'ps',
+  Jordan: 'jo',
+  Egypt: 'eg',
+  'Saudi Arabia': 'sa',
+  'United Arab Emirates': 'ae',
+  UAE: 'ae',
+  Kuwait: 'kw',
+  Bahrain: 'bh',
+  Oman: 'om',
+  Lebanon: 'lb',
+  Iraq: 'iq',
+  Iran: 'ir',
+  Pakistan: 'pk',
+  Bangladesh: 'bd',
+  Nepal: 'np',
+  Bhutan: 'bt',
+  'Sri Lanka': 'lk',
+  Thailand: 'th',
+  Vietnam: 'vn',
+  Singapore: 'sg',
+  Malaysia: 'my',
+  Indonesia: 'id',
+  Philippines: 'ph',
+  'South Korea': 'kr',
+  Korea: 'kr',
+  'North Korea': 'kp',
+  Taiwan: 'tw',
+  'Hong Kong': 'hk',
+  Mongolia: 'mn',
+  Kazakhstan: 'kz',
+  Uzbekistan: 'uz',
+  Kyrgyzstan: 'kg',
+  Tajikistan: 'tj',
+  Turkmenistan: 'tm',
+  Georgia: 'ge',
+  Azerbaijan: 'az',
+  Kosovo: 'xk',
+  Albania: 'al',
+  Serbia: 'rs',
+  Croatia: 'hr',
+  Slovenia: 'si',
+  'Bosnia and Herzegovina': 'ba',
+  Montenegro: 'me',
+  Macedonia: 'mk',
+  'North Macedonia': 'mk',
+  Romania: 'ro',
+  Bulgaria: 'bg',
+  Hungary: 'hu',
+  Czechia: 'cz',
+  'Czech Republic': 'cz',
+  Slovakia: 'sk',
+  Estonia: 'ee',
+  Latvia: 'lv',
+  Lithuania: 'lt',
+  Moldova: 'md',
+  Belarus: 'by',
+  Russia: 'ru',
+  Morocco: 'ma',
+  Algeria: 'dz',
+  Tunisia: 'tn',
+  Libya: 'ly',
+  Sudan: 'sd',
+  Ethiopia: 'et',
+  Kenya: 'ke',
+  Tanzania: 'tz',
+  Uganda: 'ug',
+  Rwanda: 'rw',
+  Nigeria: 'ng',
+  Ghana: 'gh',
+  Senegal: 'sn',
+  'South Africa': 'za',
+  Mexico: 'mx',
+  Brazil: 'br',
+  Argentina: 'ar',
+  Chile: 'cl',
+  Peru: 'pe',
+  Colombia: 'co',
+  Ecuador: 'ec',
+  Uruguay: 'uy',
+  Paraguay: 'py',
+  Bolivia: 'bo',
+  Venezuela: 've',
+  'New Zealand': 'nz',
+  Fiji: 'fj',
+  'Vatican City': 'va',
+  'Holy See': 'va',
 };
+
+const cityNameToCode: Record<string, string> = {
+  Ottawa: 'ca',
+  Toronto: 'ca',
+  Vancouver: 'ca',
+  Calgary: 'ca',
+  Montreal: 'ca',
+  Quebec: 'ca',
+  Edmonton: 'ca',
+  Winnipeg: 'ca',
+  Halifax: 'ca',
+  Yerevan: 'am',
+  Geneva: 'ch',
+  Zurich: 'ch',
+  Bern: 'ch',
+  Doha: 'qa',
+  Beijing: 'cn',
+  Shanghai: 'cn',
+  Tokyo: 'jp',
+  Oslo: 'no',
+  London: 'gb',
+  Delhi: 'in',
+  Mumbai: 'in',
+  Sydney: 'au',
+  Melbourne: 'au',
+  Rome: 'it',
+  'Vatican City': 'va',
+};
+
+function normalizePlaceName(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[().]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 function formatDateLabel(dateStr: string): string {
   if (!dateStr) return '';
@@ -81,10 +237,36 @@ function formatDateLabel(dateStr: string): string {
 }
 
 function getCountryInfo(city: string): { name: string | null; code: string | null } {
-  const parts = city.split(',');
-  const rawCountry = parts[parts.length - 1]?.trim() ?? '';
-  const code = countryNameToCode[rawCountry] ?? null;
-  return { name: rawCountry || null, code };
+  const parts = city.split(',').map(part => part.trim()).filter(Boolean);
+  const cityPart = parts[0] ?? '';
+  const rawCountry = parts[parts.length - 1] ?? '';
+
+  const normalizedCountry = normalizePlaceName(rawCountry);
+  const normalizedCity = normalizePlaceName(cityPart);
+
+  let code =
+    countryNameToCode[rawCountry] ??
+    cityNameToCode[cityPart] ??
+    null;
+
+  if (!code && normalizedCountry) {
+    const matchedCountry = Object.entries(countryNameToCode).find(
+      ([name]) => normalizePlaceName(name) === normalizedCountry
+    );
+    if (matchedCountry) code = matchedCountry[1];
+  }
+
+  if (!code && normalizedCity) {
+    const matchedCity = Object.entries(cityNameToCode).find(
+      ([name]) => normalizePlaceName(name) === normalizedCity
+    );
+    if (matchedCity) code = matchedCity[1];
+  }
+
+  return {
+    name: rawCountry || cityPart || null,
+    code,
+  };
 }
 
 function parseDateSafe(value: string): Date | null {
@@ -413,6 +595,8 @@ function Sidebar({
   setFilterTo,
   onSelect,
   activeId,
+  isCollapsed,
+  onToggleCollapsed,
 }: {
   travelData: TravelPoint[];
   theme: ThemeMode;
@@ -425,6 +609,8 @@ function Sidebar({
   setFilterTo: (value: string) => void;
   onSelect: (loc: TravelPoint) => void;
   activeId: number | null;
+  isCollapsed: boolean;
+  onToggleCollapsed: () => void;
 }) {
   const colors = getThemeColors(theme);
   const sorted = [...travelData].reverse();
@@ -444,8 +630,33 @@ function Sidebar({
         zIndex: 20,
       }}
     >
-      <div style={{ padding: '16px', borderBottom: `1px solid ${colors.panelBorder}` }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+      <div style={{ padding: '16px', borderBottom: `1px solid ${colors.panelBorder}`, position: 'relative' }}>
+        <button
+          onClick={onToggleCollapsed}
+          aria-label="Hide sidebar"
+          title="Hide sidebar"
+          style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            width: '34px',
+            height: '34px',
+            borderRadius: '10px',
+            border: `1px solid ${colors.inputBorder}`,
+            background: colors.buttonBg,
+            color: colors.buttonText,
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 800,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          ←
+        </button>
+
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', paddingRight: '48px' }}>
           <div>
             <div style={{ fontWeight: 800, fontSize: '15px', color: colors.text }}>Mark Carney</div>
             <div style={{ fontSize: '12px', color: colors.textSoft, marginTop: '2px' }}>Travel Log</div>
@@ -607,25 +818,37 @@ function Sidebar({
                   <img
                     src={flagUrl}
                     alt=""
+                    loading="lazy"
+                    width={28}
+                    height={19}
                     style={{
                       width: '28px',
                       height: '19px',
+                      objectFit: 'cover',
                       borderRadius: '3px',
                       boxShadow: '0 0 3px rgba(0,0,0,0.2)',
                       flexShrink: 0,
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      width: '28px',
-                      height: '19px',
                       background: theme === 'dark' ? '#334155' : '#e2e8f0',
-                      borderRadius: '3px',
-                      flexShrink: 0,
+                    }}
+                    onError={e => {
+                      const img = e.currentTarget;
+                      img.style.display = 'none';
+                      const fallback = img.nextElementSibling as HTMLDivElement | null;
+                      if (fallback) fallback.style.display = 'block';
                     }}
                   />
-                )}
+                ) : null}
+
+                <div
+                  style={{
+                    width: '28px',
+                    height: '19px',
+                    background: theme === 'dark' ? '#334155' : '#e2e8f0',
+                    borderRadius: '3px',
+                    flexShrink: 0,
+                    display: flagUrl ? 'none' : 'block',
+                  }}
+                />
 
                 <div style={{ minWidth: 0 }}>
                   <div
@@ -673,6 +896,7 @@ function GlobeMap({
   onSelect,
   activeDetail,
   setActiveDetail,
+  sidebarVisible,
 }: {
   travelData: TravelPoint[];
   theme: ThemeMode;
@@ -680,6 +904,7 @@ function GlobeMap({
   onSelect: (trip: TravelPoint) => void;
   activeDetail: TravelPoint | null;
   setActiveDetail: (trip: TravelPoint | null) => void;
+  sidebarVisible: boolean;
 }) {
   const colors = getThemeColors(theme);
   const globeRef = useRef<GlobeHandle | null>(null);
@@ -688,7 +913,7 @@ function GlobeMap({
 
   useEffect(() => {
     const updateSize = () => {
-      const sidebarWidth = 300;
+      const sidebarWidth = sidebarVisible ? 300 : 0;
       setDimensions({
         width: Math.max(window.innerWidth - sidebarWidth, 320),
         height: window.innerHeight,
@@ -698,7 +923,7 @@ function GlobeMap({
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  }, [sidebarVisible]);
 
   const pointsData = useMemo<PointDatum[]>(() => {
     return travelData.map((loc, index) => ({
@@ -816,6 +1041,7 @@ function GlobeMap({
         flag.style.width = '30px';
         flag.style.height = '20px';
         flag.style.borderRadius = '4px';
+        flag.style.objectFit = 'cover';
         flag.style.boxShadow = '0 0 4px rgba(0,0,0,0.2)';
         header.appendChild(flag);
       }
@@ -1046,6 +1272,35 @@ function GlobeMap({
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', background: colors.globeBg }}>
+      {!sidebarVisible ? (
+        <button
+          onClick={() => {
+            const event = new CustomEvent('toggle-sidebar');
+            window.dispatchEvent(event);
+          }}
+          style={{
+            position: 'absolute',
+            top: '18px',
+            left: '18px',
+            zIndex: 30,
+            width: '40px',
+            height: '40px',
+            borderRadius: '12px',
+            border: `1px solid ${colors.detailBorder}`,
+            background: colors.detailBg,
+            color: colors.detailText,
+            cursor: 'pointer',
+            fontSize: '18px',
+            fontWeight: 800,
+            backdropFilter: 'blur(10px)',
+          }}
+          aria-label="Show sidebar"
+          title="Show sidebar"
+        >
+          ☰
+        </button>
+      ) : null}
+
       <Globe
         ref={globeRef as never}
         width={dimensions.width}
@@ -1123,6 +1378,7 @@ export default function Map() {
   const [filterFrom, setFilterFrom] = useState('');
   const [filterTo, setFilterTo] = useState('');
   const [theme, setTheme] = useState<ThemeMode>('dark');
+  const [sidebarVisible, setSidebarVisible] = useState(true);
 
   useEffect(() => {
     const prefersDark =
@@ -1130,6 +1386,12 @@ export default function Map() {
       window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches;
     setTheme(prefersDark ? 'dark' : 'light');
+  }, []);
+
+  useEffect(() => {
+    const handleToggleSidebar = () => setSidebarVisible(prev => !prev);
+    window.addEventListener('toggle-sidebar', handleToggleSidebar as EventListener);
+    return () => window.removeEventListener('toggle-sidebar', handleToggleSidebar as EventListener);
   }, []);
 
   useEffect(() => {
@@ -1192,30 +1454,35 @@ export default function Map() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100%', background: colors.pageBg }}>
-      <Sidebar
-        travelData={filteredTravelData}
-        theme={theme}
-        setTheme={setTheme}
-        filterEnabled={filterEnabled}
-        setFilterEnabled={setFilterEnabled}
-        filterFrom={filterFrom}
-        setFilterFrom={setFilterFrom}
-        filterTo={filterTo}
-        setFilterTo={setFilterTo}
-        activeId={selection?.trip.id ?? activeDetail?.id ?? null}
-        onSelect={trip => {
-          setSelection({
-            trip,
-            key: Date.now() + Math.random(),
-          });
-        }}
-      />
+      {sidebarVisible ? (
+        <Sidebar
+          travelData={filteredTravelData}
+          theme={theme}
+          setTheme={setTheme}
+          filterEnabled={filterEnabled}
+          setFilterEnabled={setFilterEnabled}
+          filterFrom={filterFrom}
+          setFilterFrom={setFilterFrom}
+          filterTo={filterTo}
+          setFilterTo={setFilterTo}
+          activeId={selection?.trip.id ?? activeDetail?.id ?? null}
+          isCollapsed={!sidebarVisible}
+          onToggleCollapsed={() => setSidebarVisible(false)}
+          onSelect={trip => {
+            setSelection({
+              trip,
+              key: Date.now() + Math.random(),
+            });
+          }}
+        />
+      ) : null}
 
       <div style={{ flex: 1, position: 'relative' }}>
         <GlobeMap
           travelData={filteredTravelData}
           theme={theme}
           selection={selection}
+          sidebarVisible={sidebarVisible}
           onSelect={trip => {
             setSelection({
               trip,
