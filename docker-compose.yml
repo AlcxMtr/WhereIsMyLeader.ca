@@ -1,0 +1,25 @@
+services:
+  web:
+    build: 
+      # Updated to point to your existing Next.js folder
+      context: ./where-is-my-leader 
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # Maps the host folder to the container's /app/data folder
+      - ./shared-data:/app/data
+    restart: always
+    depends_on:
+      - scraper
+
+  scraper:
+    build: 
+      context: ./scraper
+      dockerfile: Dockerfile
+    volumes:
+      # Maps the EXACT SAME host folder to the scraper
+      - ./shared-data:/app/data
+    environment:
+      - TZ=America/Toronto      # <--- Forces Scraper logs to Toronto time
+    restart: always
