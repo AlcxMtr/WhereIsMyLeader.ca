@@ -4,6 +4,8 @@ services:
       # Updated to point to your existing Next.js folder
       context: ./where-is-my-leader 
       dockerfile: Dockerfile
+    ports:
+    - "3000:3000"
     volumes:
       # Maps the host folder to the container's /app/data folder
       - ./shared-data:/app/data

@@ -13,11 +13,11 @@ if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 const dbPath = path.join(dbDir, 'trips.db');
 const db = new Database(dbPath);
 
+// Updated SQL statement to target the composite key constraint matching the scraper
 const insertTrip = db.prepare(`
   INSERT INTO trips (date, location, activities, lat, lng) 
   VALUES (?, ?, ?, ?, ?)
-  ON CONFLICT(date) DO UPDATE SET 
-    location = excluded.location,
+  ON CONFLICT(date, location) DO UPDATE SET 
     activities = excluded.activities,
     lat = excluded.lat,
     lng = excluded.lng
@@ -29,13 +29,13 @@ async function getCoordinates(locationString) {
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
       params: { q: primaryCity, format: 'json', limit: 1 },
-      headers: { 'User-Agent': 'WhereIsMyLeader.ca - Scraper Bot' }
+      headers: { 'User-Agent': 'WhereIsMyLeader.ca - Scraper Bot (contact@alexmtr.com)' }
     });
     if (response.data && response.data.length > 0) {
       return { lat: parseFloat(response.data[0].lat), lng: parseFloat(response.data[0].lon) };
     }
   } catch (error) {
-    console.error(`Geocoding failed for "${primaryCity}"`);
+    console.error(`Geocoding failed for "${primaryCity}":`, error.message);
   }
   return { lat: null, lng: null };
 }
@@ -49,8 +49,8 @@ async function scrapeSingleDay(url, dateString) {
     const container = $('article .field--name-body').first();
     if (!container.length) return;
 
-    let location = "Unknown Location";
-    let activities = [];
+    let stops = [];
+    let currentStop = null;
 
     container.children().each((i, el) => {
         const tagName = el.name ? el.name.toLowerCase() : '';
@@ -58,26 +58,53 @@ async function scrapeSingleDay(url, dateString) {
         if (!text) return; 
         
         const lowerText = text.toLowerCase();
-        if (lowerText.includes('note: all times local') || lowerText.includes('note for media') || lowerText.includes('closed to media')) return;
+        if (
+            lowerText.includes('note: all times local') || 
+            lowerText.includes('note for media') || 
+            lowerText.includes('notes for media') || 
+            lowerText.includes('open coverage') ||
+            lowerText.includes('pooled photo opportunity') ||
+            lowerText.includes('closed to media') ||
+            lowerText.includes('media are asked to arrive') ||
+            lowerText.includes('media@pmo-cpm.gc.ca')
+        ) {
+            return;
+        }
 
         if (tagName === 'h2') {
-            if (location === "Unknown Location") location = text;
-            else if (!location.includes(text)) location += ` / ${text}`;
+            if (currentStop) {
+                stops.push(currentStop);
+            }
+            let cleanLocation = text.replace(/National Capital Region/gi, 'Ottawa');
+            currentStop = { location: cleanLocation, activities: [] };
         } else if (tagName === 'p') {
-            activities.push(text);
+            if (!currentStop) {
+                currentStop = { location: "Unknown Location", activities: [] };
+            }
+            currentStop.activities.push(text);
         }
     });
 
-    // HARDCODE FIX: Stop Ottawa from being teleported to the Philippines
-    location = location.replace(/National Capital Region/gi, 'Ottawa');
-    let lat = null, lng = null;
-    if (location !== "Unknown Location") {
-        const coords = await getCoordinates(location);
-        lat = coords.lat; lng = coords.lng;
+    if (currentStop) {
+        stops.push(currentStop);
     }
 
-    insertTrip.run(dateString, location, JSON.stringify(activities), lat, lng);
-    console.log(` -> Saved: ${location}`);
+    // Process and insert each parsed stop sequentially
+    for (const stop of stops) {
+        let lat = null;
+        let lng = null;
+        
+        if (stop.location !== "Unknown Location") {
+            const coords = await getCoordinates(stop.location);
+            lat = coords.lat; 
+            lng = coords.lng;
+            // Throttling delay strictly for Nominatim rate limits on multi-stop days
+            await new Promise(resolve => setTimeout(resolve, 1500));
+        }
+
+        insertTrip.run(dateString, stop.location, JSON.stringify(stop.activities), lat, lng);
+        console.log(` -> Saved: ${stop.location} [${lat}, ${lng}]`);
+    }
 
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -91,6 +118,7 @@ async function scrapeSingleDay(url, dateString) {
 // 4. The Time-Traveling Loop
 async function runBackfill() {
   // Start at Jan 1, 2026
+  // TODO: Should be March 14, 2025
   let currentDay = DateTime.fromISO('2026-01-01').setZone('America/Toronto');
   const today = DateTime.now().setZone('America/Toronto');
 
@@ -113,7 +141,7 @@ async function runBackfill() {
 
     await scrapeSingleDay(url, dateString);
 
-    // CRITICAL: Sleep for 2.5 seconds to avoid IP bans from the Gov or Nominatim
+    // Sleep for 2.5 seconds to avoid IP bans from the Government firewall
     await new Promise(resolve => setTimeout(resolve, 2500));
 
     // Move to the next day

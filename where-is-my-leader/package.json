@@ -10,12 +10,14 @@
   },
   "dependencies": {
     "@turf/turf": "^7.3.4",
-    "globe.gl": "^2.46.1",
+    "autoprefixer": "^10.5.1",
     "better-sqlite3": "^12.8.0",
+    "globe.gl": "^2.46.1",
     "leaflet": "^1.9.4",
     "leaflet-arrowheads": "^1.4.0",
     "leaflet.pattern": "^0.1.0",
     "next": "16.1.6",
+    "postcss": "^8.5.15",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-globe.gl": "^2.38.0",
@@ -32,7 +34,7 @@
     "@types/react-leaflet": "^2.8.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.3.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
