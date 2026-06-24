@@ -5,26 +5,17 @@ import { useEffect, useMemo, useState } from 'react';
 import GlobeMap from './map/GlobeMap';
 import Sidebar from './map/Sidebar';
 import { getThemeColors } from './map/theme';
-import { tripOverlapsRange } from './map/tripUtils';
+import { parseDate, tripOverlapsRange } from './map/tripUtils';
 import type { SelectionState, ThemeMode, TravelPoint } from './map/types';
 
 export default function Map() {
   const [allTravelData, setAllTravelData] = useState<TravelPoint[]>([]);
   const [selection, setSelection] = useState<SelectionState>(null);
   const [activeDetail, setActiveDetail] = useState<TravelPoint | null>(null);
-  const [filterEnabled, setFilterEnabled] = useState(false);
-  const [filterFrom, setFilterFrom] = useState('');
-  const [filterTo, setFilterTo] = useState('');
+  const [timelineFromDate, setTimelineFromDate] = useState('');
+  const [timelineToDate, setTimelineToDate] = useState('');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [sidebarVisible, setSidebarVisible] = useState(true);
-
-  useEffect(() => {
-    const prefersDark =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setTheme(prefersDark ? 'dark' : 'light');
-  }, []);
 
   useEffect(() => {
     const handleToggleSidebar = () => setSidebarVisible(prev => !prev);
@@ -56,10 +47,47 @@ export default function Map() {
     loadMapData();
   }, []);
 
+  const timelineBounds = useMemo(() => {
+    if (!allTravelData.length) return null;
+
+    let min: Date | null = null;
+    let max: Date | null = null;
+
+    allTravelData.forEach(trip => {
+      const arrival = parseDate(trip.arrival);
+      const departure = parseDate(trip.departure);
+      const start = arrival ?? departure;
+      const end = departure ?? arrival;
+
+      if (start && (!min || start < min)) min = start;
+      if (end && (!max || end > max)) max = end;
+    });
+
+    if (!min || !max) return null;
+
+    const format = (d: Date) => {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    };
+
+    return {
+      minDate: format(min),
+      maxDate: format(max),
+    };
+  }, [allTravelData]);
+
+  useEffect(() => {
+    if (!timelineBounds) return;
+    if (!timelineFromDate) setTimelineFromDate(timelineBounds.minDate);
+    if (!timelineToDate) setTimelineToDate(timelineBounds.maxDate);
+  }, [timelineBounds, timelineFromDate, timelineToDate]);
+
   const filteredTravelData = useMemo(() => {
-    if (!filterEnabled) return allTravelData;
-    return allTravelData.filter(trip => tripOverlapsRange(trip, filterFrom, filterTo));
-  }, [allTravelData, filterEnabled, filterFrom, filterTo]);
+    if (!timelineFromDate && !timelineToDate) return allTravelData;
+    return allTravelData.filter(trip => tripOverlapsRange(trip, timelineFromDate, timelineToDate));
+  }, [allTravelData, timelineFromDate, timelineToDate]);
 
   useEffect(() => {
     if (!selection?.trip) return;
@@ -97,13 +125,7 @@ export default function Map() {
           travelData={filteredTravelData}
           theme={theme}
           setTheme={setTheme}
-          filterEnabled={filterEnabled}
-          setFilterEnabled={setFilterEnabled}
-          filterFrom={filterFrom}
-          setFilterFrom={setFilterFrom}
-          filterTo={filterTo}
-          setFilterTo={setFilterTo}
-          activeId={selection?.trip.id ?? activeDetail?.id ?? null}
+          activeId={activeDetail?.id ?? selection?.trip.id ?? null}
           onToggleCollapsed={() => setSidebarVisible(false)}
           onSelect={trip => {
             setSelection({
@@ -122,6 +144,12 @@ export default function Map() {
           sidebarVisible={sidebarVisible}
           activeDetail={activeDetail}
           setActiveDetail={setActiveDetail}
+          timelineFromDate={timelineFromDate || timelineBounds?.minDate || ''}
+          timelineToDate={timelineToDate || timelineBounds?.maxDate || ''}
+          timelineMinDate={timelineBounds?.minDate || ''}
+          timelineMaxDate={timelineBounds?.maxDate || ''}
+          onTimelineFromDateChange={setTimelineFromDate}
+          onTimelineToDateChange={setTimelineToDate}
         />
       </div>
     </div>

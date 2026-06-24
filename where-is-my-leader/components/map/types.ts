@@ -41,12 +41,16 @@ export type SelectionState = {
 } | null;
 
 export type GlobeHandle = {
-  pointOfView: (coords: { lat?: number; lng?: number; altitude?: number }, ms?: number) => void;
+  pointOfView: {
+    (coords: { lat?: number; lng?: number; altitude?: number }, ms?: number): void;
+    (): { lat?: number; lng?: number; altitude?: number };
+  };
   controls: () => {
     autoRotate?: boolean;
     autoRotateSpeed?: number;
     enablePan?: boolean;
     enableZoom?: boolean;
+    zoomSpeed?: number;
     minDistance?: number;
     maxDistance?: number;
   };

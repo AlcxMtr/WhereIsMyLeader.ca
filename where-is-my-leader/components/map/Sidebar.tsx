@@ -1,4 +1,6 @@
-import { FilterToggle, ThemeToggle } from './MapControls';
+import { useEffect, useRef } from 'react';
+
+import { ThemeToggle } from './MapControls';
 import { getThemeColors } from './theme';
 import { formatDateLabel, getCountryInfo } from './tripUtils';
 import type { ThemeMode, TravelPoint } from './types';
@@ -7,12 +9,6 @@ export default function Sidebar({
   travelData,
   theme,
   setTheme,
-  filterEnabled,
-  setFilterEnabled,
-  filterFrom,
-  setFilterFrom,
-  filterTo,
-  setFilterTo,
   onSelect,
   activeId,
   onToggleCollapsed,
@@ -20,18 +16,30 @@ export default function Sidebar({
   travelData: TravelPoint[];
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
-  filterEnabled: boolean;
-  setFilterEnabled: (value: boolean) => void;
-  filterFrom: string;
-  setFilterFrom: (value: string) => void;
-  filterTo: string;
-  setFilterTo: (value: string) => void;
   onSelect: (loc: TravelPoint) => void;
   activeId: number | null;
   onToggleCollapsed: () => void;
 }) {
   const colors = getThemeColors(theme);
   const sorted = [...travelData].reverse();
+  const rowRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const glassBorder = theme === 'dark' ? 'rgba(148,163,184,0.14)' : 'rgba(148,163,184,0.22)';
+  const glassBg = theme === 'dark' ? 'rgba(2, 6, 23, 0.14)' : 'rgba(255, 255, 255, 0.24)';
+  const cardBg = theme === 'dark' ? 'rgba(2, 6, 23, 0.14)' : 'rgba(255, 255, 255, 0.24)';
+  const rowHoverBg = theme === 'dark' ? 'rgba(30, 64, 175, 0.16)' : 'rgba(59, 130, 246, 0.1)';
+  const rowSelectedBg = theme === 'dark' ? 'rgba(30, 64, 175, 0.22)' : 'rgba(37, 99, 235, 0.16)';
+  const rowNowBg = theme === 'dark' ? 'rgba(22, 101, 52, 0.32)' : 'rgba(34, 197, 94, 0.18)';
+
+  useEffect(() => {
+    if (activeId == null) return;
+    const targetRow = rowRefs.current[activeId];
+    if (!targetRow) return;
+
+    targetRow.scrollIntoView({
+      block: 'nearest',
+      behavior: 'smooth',
+    });
+  }, [activeId]);
 
   return (
     <div
@@ -40,15 +48,15 @@ export default function Sidebar({
         minWidth: '300px',
         height: '100vh',
         overflowY: 'auto',
-        background: colors.panelBg,
-        borderRight: `1px solid ${colors.panelBorder}`,
-        backdropFilter: 'blur(8px)',
+        background: glassBg,
+        borderRight: `1px solid ${glassBorder}`,
+        backdropFilter: 'blur(4px)',
         display: 'flex',
         flexDirection: 'column',
         zIndex: 20,
       }}
     >
-      <div style={{ padding: '16px', borderBottom: `1px solid ${colors.panelBorder}`, position: 'relative' }}>
+      <div style={{ padding: '16px', borderBottom: `1px solid ${glassBorder}`, position: 'relative' }}>
         <button
           onClick={onToggleCollapsed}
           aria-label="Hide sidebar"
@@ -60,8 +68,8 @@ export default function Sidebar({
             width: '34px',
             height: '34px',
             borderRadius: '10px',
-            border: `1px solid ${colors.inputBorder}`,
-            background: colors.buttonBg,
+            border: `1px solid ${theme === 'dark' ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.42)'}`,
+            background: 'transparent',
             color: colors.buttonText,
             cursor: 'pointer',
             fontSize: '16px',
@@ -91,105 +99,14 @@ export default function Sidebar({
             marginTop: '14px',
             padding: '12px',
             borderRadius: '14px',
-            background: colors.panelSoft,
-            border: `1px solid ${colors.panelBorder}`,
+            background: cardBg,
+            border: `1px solid ${glassBorder}`,
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
-            <div>
-              <div style={{ fontSize: '13px', fontWeight: 700, color: colors.text }}>Date filter</div>
-              <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '2px' }}>
-                Show only trips in a selected range
-              </div>
-            </div>
-            <FilterToggle
-              enabled={filterEnabled}
-              onToggle={() => setFilterEnabled(!filterEnabled)}
-              colors={colors}
-            />
+          <div style={{ fontSize: '13px', fontWeight: 700, color: colors.text }}>Timeline</div>
+          <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '2px' }}>
+            Use the top range controls on the globe to drag both From and To dates
           </div>
-
-          {filterEnabled ? (
-            <div style={{ marginTop: '12px', display: 'grid', gap: '10px' }}>
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    color: colors.textSoft,
-                    marginBottom: '4px',
-                  }}
-                >
-                  From
-                </label>
-                <input
-                  type="date"
-                  value={filterFrom}
-                  onChange={e => setFilterFrom(e.target.value)}
-                  style={{
-                    width: '100%',
-                    borderRadius: '10px',
-                    border: `1px solid ${colors.inputBorder}`,
-                    background: colors.inputBg,
-                    color: colors.text,
-                    padding: '9px 10px',
-                    fontSize: '12px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '11px',
-                    fontWeight: 700,
-                    color: colors.textSoft,
-                    marginBottom: '4px',
-                  }}
-                >
-                  To
-                </label>
-                <input
-                  type="date"
-                  value={filterTo}
-                  onChange={e => setFilterTo(e.target.value)}
-                  style={{
-                    width: '100%',
-                    borderRadius: '10px',
-                    border: `1px solid ${colors.inputBorder}`,
-                    background: colors.inputBg,
-                    color: colors.text,
-                    padding: '9px 10px',
-                    fontSize: '12px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-
-              <button
-                onClick={() => {
-                  setFilterFrom('');
-                  setFilterTo('');
-                }}
-                style={{
-                  marginTop: '2px',
-                  border: `1px solid ${colors.inputBorder}`,
-                  background: colors.buttonBg,
-                  color: colors.buttonText,
-                  borderRadius: '10px',
-                  padding: '8px 10px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
-              >
-                Clear dates
-              </button>
-            </div>
-          ) : null}
         </div>
       </div>
 
@@ -210,25 +127,28 @@ export default function Sidebar({
             return (
               <div
                 key={loc.id}
+                ref={el => {
+                  rowRefs.current[loc.id] = el;
+                }}
                 onClick={() => onSelect(loc)}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
                   padding: '10px 16px',
-                  borderBottom: `1px solid ${colors.panelBorder}`,
-                  background: isActive ? colors.panelSelected : isLatest ? colors.panelNow : 'transparent',
+                  borderBottom: `1px solid ${glassBorder}`,
+                  background: isActive ? rowSelectedBg : isLatest ? rowNowBg : 'transparent',
                   cursor: 'pointer',
                   transition: 'background 0.15s',
                 }}
                 onMouseEnter={e => {
-                  if (!isActive) (e.currentTarget as HTMLDivElement).style.background = colors.panelHover;
+                  if (!isActive) (e.currentTarget as HTMLDivElement).style.background = rowHoverBg;
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLDivElement).style.background = isActive
-                    ? colors.panelSelected
+                    ? rowSelectedBg
                     : isLatest
-                      ? colors.panelNow
+                      ? rowNowBg
                       : 'transparent';
                 }}
               >

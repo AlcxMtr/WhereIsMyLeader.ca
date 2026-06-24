@@ -1,19 +1,18 @@
-/* eslint-disable react-hooks/immutability */
-/* eslint-disable react-hooks/set-state-in-effect */
-
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { WheelEvent } from 'react';
 
+import TimelineRange from './TimelineRange';
 import {
-  buildGreatCirclePath,
-  getDistanceBasedMidAltitude,
-  getPastGradientColor,
-  sleep,
-} from './globeUtils';
+  buildDetailHtmlData,
+  buildPointMap,
+  buildPointsData,
+  buildArcsData,
+} from './globeData';
+import { buildGreatCirclePath, getDistanceBasedMidAltitude, sleep } from './globeUtils';
 import { getThemeColors } from './theme';
-import { formatDateLabel, getCountryInfo } from './tripUtils';
+import { createTripDetailHtmlElement } from './tripDetailHtml';
 import type {
-  ArcDatum,
   GlobeHandle,
   HtmlDetailDatum,
   PointDatum,
@@ -31,6 +30,12 @@ export default function GlobeMap({
   activeDetail,
   setActiveDetail,
   sidebarVisible,
+  timelineFromDate,
+  timelineToDate,
+  timelineMinDate,
+  timelineMaxDate,
+  onTimelineFromDateChange,
+  onTimelineToDateChange,
 }: {
   travelData: TravelPoint[];
   theme: ThemeMode;
@@ -38,11 +43,32 @@ export default function GlobeMap({
   activeDetail: TravelPoint | null;
   setActiveDetail: (trip: TravelPoint | null) => void;
   sidebarVisible: boolean;
+  timelineFromDate: string;
+  timelineToDate: string;
+  timelineMinDate: string;
+  timelineMaxDate: string;
+  onTimelineFromDateChange: (value: string) => void;
+  onTimelineToDateChange: (value: string) => void;
 }) {
   const colors = getThemeColors(theme);
   const globeRef = useRef<GlobeHandle | null>(null);
   const animationTokenRef = useRef(0);
   const [dimensions, setDimensions] = useState({ width: 1000, height: 800 });
+
+  const startupTarget = useMemo(() => {
+    if (!travelData.length) return null;
+
+    const now = new Date();
+    const currentTrip = travelData.find(trip => {
+      const arrival = new Date(trip.arrival);
+      const departure = new Date(trip.departure || trip.arrival);
+      if (Number.isNaN(arrival.getTime()) || Number.isNaN(departure.getTime())) return false;
+      departure.setHours(23, 59, 59, 999);
+      return arrival <= now && now <= departure;
+    });
+
+    return currentTrip ?? travelData[travelData.length - 1];
+  }, [travelData]);
 
   useEffect(() => {
     const updateSize = () => {
@@ -58,205 +84,67 @@ export default function GlobeMap({
     return () => window.removeEventListener('resize', updateSize);
   }, [sidebarVisible]);
 
-  const pointsData = useMemo<PointDatum[]>(() => {
-    return travelData.map((loc, index) => ({
-      id: loc.id,
-      lat: loc.coords[0],
-      lng: loc.coords[1],
-      city: loc.city,
-      desc: loc.desc,
-      arrival: loc.arrival,
-      departure: loc.departure,
-      isLatest: index === travelData.length - 1,
-      color: index === travelData.length - 1 ? colors.latestPoint : colors.point,
-    }));
-  }, [travelData, colors.latestPoint, colors.point]);
-
-  const pointMap = useMemo(() => {
-    const map: globalThis.Map<number, TravelPoint> = new globalThis.Map<number, TravelPoint>();
-    travelData.forEach(trip => map.set(trip.id, trip));
-    return map;
-  }, [travelData]);
-
-  const arcsData = useMemo<ArcDatum[]>(() => {
-    const now = new Date();
-    const pastSegments = travelData.slice(1).filter(tp => new Date(tp.arrival) <= now).length;
-    let seenPast = 0;
-
-    return travelData
-      .map((loc, i) => {
-        if (i === 0) return null;
-
-        const prev = travelData[i - 1];
-        const isFuture = new Date(loc.arrival) > now;
-
-        let color = colors.futureArc;
-        if (!isFuture) {
-          color = getPastGradientColor(seenPast, Math.max(pastSegments, 1), theme);
-          seenPast += 1;
-        }
-
-        return {
-          startLat: prev.coords[0],
-          startLng: prev.coords[1],
-          endLat: loc.coords[0],
-          endLng: loc.coords[1],
-          color,
-        };
-      })
-      .filter((arc): arc is ArcDatum => arc !== null);
-  }, [travelData, colors.futureArc, theme]);
-
-  const detailHtmlData = useMemo<HtmlDetailDatum[]>(() => {
-    if (!activeDetail) return [];
-    return [
-      {
-        lat: activeDetail.coords[0],
-        lng: activeDetail.coords[1],
-        trip: activeDetail,
-      },
-    ];
-  }, [activeDetail]);
-
-  const renderDetailHtml = useCallback(
-    (datum: object) => {
-      const item = datum as HtmlDetailDatum;
-      const trip = item.trip;
-      const { name: countryName, code: countryCode } = getCountryInfo(trip.city);
-      const flagUrl = countryCode ? `https://flagcdn.com/w80/${countryCode}.png` : null;
-      const arrivalLabel = formatDateLabel(trip.arrival);
-      const departureLabel = formatDateLabel(trip.departure);
-      const rangeLabel =
-        arrivalLabel && departureLabel ? `${arrivalLabel} → ${departureLabel}` : arrivalLabel || departureLabel;
-
-      const wrapper = document.createElement('div');
-      wrapper.style.width = '280px';
-      wrapper.style.pointerEvents = 'auto';
-      wrapper.style.transform = 'translate(18px, -82%)';
-
-      const card = document.createElement('div');
-      card.style.background = colors.detailBg;
-      card.style.color = colors.detailText;
-      card.style.border = `1px solid ${colors.detailBorder}`;
-      card.style.borderRadius = '14px';
-      card.style.padding = '14px';
-      card.style.boxShadow =
-        theme === 'dark' ? '0 14px 32px rgba(0,0,0,0.42)' : '0 14px 32px rgba(15,23,42,0.14)';
-      card.style.backdropFilter = 'blur(12px)';
-      card.style.position = 'relative';
-
-      const closeButton = document.createElement('button');
-      closeButton.innerText = '×';
-      closeButton.style.position = 'absolute';
-      closeButton.style.top = '8px';
-      closeButton.style.right = '10px';
-      closeButton.style.border = 'none';
-      closeButton.style.background = 'transparent';
-      closeButton.style.color = colors.detailSub;
-      closeButton.style.fontSize = '18px';
-      closeButton.style.cursor = 'pointer';
-      closeButton.style.lineHeight = '1';
-      closeButton.onclick = e => {
-        e.stopPropagation();
-        setActiveDetail(null);
-      };
-
-      const header = document.createElement('div');
-      header.style.display = 'flex';
-      header.style.alignItems = 'center';
-      header.style.gap = '10px';
-      header.style.paddingRight = '22px';
-
-      if (flagUrl) {
-        const flag = document.createElement('img');
-        flag.src = flagUrl;
-        flag.alt = countryName ?? '';
-        flag.style.width = '30px';
-        flag.style.height = '20px';
-        flag.style.borderRadius = '4px';
-        flag.style.objectFit = 'cover';
-        flag.style.boxShadow = '0 0 4px rgba(0,0,0,0.2)';
-        header.appendChild(flag);
-      }
-
-      const titleWrap = document.createElement('div');
-      titleWrap.style.minWidth = '0';
-
-      const title = document.createElement('div');
-      title.innerText = trip.city;
-      title.style.fontWeight = '800';
-      title.style.fontSize = '14px';
-      title.style.lineHeight = '1.35';
-      title.style.color = colors.detailText;
-
-      titleWrap.appendChild(title);
-
-      if (rangeLabel) {
-        const subtitle = document.createElement('div');
-        subtitle.innerText = rangeLabel;
-        subtitle.style.fontSize = '12px';
-        subtitle.style.marginTop = '2px';
-        subtitle.style.color = colors.detailSub;
-        titleWrap.appendChild(subtitle);
-      }
-
-      header.appendChild(titleWrap);
-
-      const body = document.createElement('div');
-      body.innerText = trip.desc;
-      body.style.marginTop = '12px';
-      body.style.fontSize = '13px';
-      body.style.lineHeight = '1.6';
-      body.style.color = colors.detailText;
-
-      const stem = document.createElement('div');
-      stem.style.position = 'absolute';
-      stem.style.left = '18px';
-      stem.style.bottom = '-10px';
-      stem.style.width = '18px';
-      stem.style.height = '18px';
-      stem.style.background = colors.detailBg;
-      stem.style.borderRight = `1px solid ${colors.detailBorder}`;
-      stem.style.borderBottom = `1px solid ${colors.detailBorder}`;
-      stem.style.transform = 'rotate(45deg)';
-
-      card.appendChild(closeButton);
-      card.appendChild(header);
-      card.appendChild(body);
-      card.appendChild(stem);
-      wrapper.appendChild(card);
-
-      return wrapper;
-    },
-    [colors.detailBg, colors.detailBorder, colors.detailSub, colors.detailText, setActiveDetail, theme]
+  const pointsData = useMemo(
+    () => buildPointsData(travelData, colors.latestPoint, colors.point),
+    [travelData, colors.latestPoint, colors.point]
   );
 
+  const pointMap = useMemo(() => buildPointMap(travelData), [travelData]);
+
+  const arcsData = useMemo(
+    () => buildArcsData(travelData, colors.futureArc, theme),
+    [travelData, colors.futureArc, theme]
+  );
+
+  const detailHtmlData = useMemo(() => buildDetailHtmlData(activeDetail), [activeDetail]);
+
   useEffect(() => {
-    const globe = globeRef.current;
-    if (!globe || !travelData.length) return;
+    if (!startupTarget) return;
 
-    const controls = globe.controls();
-    if (controls) {
-      controls.autoRotate = false;
-      controls.enablePan = false;
-      controls.enableZoom = true;
-      controls.minDistance = 90;
-      controls.maxDistance = 520;
-    }
+    const startupAltitude = 1.35; // 25% closer than the previous 1.8 default
 
-    const latest = travelData[travelData.length - 1];
-    globe.pointOfView(
-      {
-        lat: latest.coords[0],
-        lng: latest.coords[1],
-        altitude: 1.8,
-      },
-      0
-    );
-  }, [travelData]);
+    const applyStartupView = () => {
+      const globe = globeRef.current;
+      if (!globe) return false;
+
+      const controls = globe.controls();
+      if (controls) {
+        controls.autoRotate = false;
+        controls.enablePan = false;
+        controls.enableZoom = false;
+        controls.minDistance = 90;
+        controls.maxDistance = 520;
+      }
+
+      globe.pointOfView(
+        {
+          lat: startupTarget.coords[0],
+          lng: startupTarget.coords[1],
+          altitude: startupAltitude,
+        },
+        0
+      );
+
+      return true;
+    };
+
+    if (applyStartupView()) return;
+
+    // Globe ref can be late on first mount; retry briefly so startup POV is always applied.
+    let retries = 0;
+    const maxRetries = 40;
+    const timer = window.setInterval(() => {
+      retries += 1;
+      if (applyStartupView() || retries >= maxRetries) {
+        window.clearInterval(timer);
+      }
+    }, 50);
+
+    return () => window.clearInterval(timer);
+  }, [startupTarget]);
 
   const runFocusSequence = useCallback(
-    async (target: TravelPoint) => {
+    async (target: TravelPoint, originOverride?: TravelPoint | null) => {
       const globe = globeRef.current;
       if (!globe) return;
 
@@ -267,10 +155,13 @@ export default function GlobeMap({
 
       setActiveDetail(null);
 
-      const targetIndex = travelData.findIndex(t => t.id === target.id);
-      const previous = targetIndex > 0 ? travelData[targetIndex - 1] : null;
+      let departureTrip = originOverride ?? null;
+      if (!departureTrip) {
+        const targetIndex = travelData.findIndex(t => t.id === target.id);
+        departureTrip = targetIndex > 0 ? travelData[targetIndex - 1] : null;
+      }
 
-      if (!previous) {
+      if (!departureTrip) {
         globe.pointOfView(
           {
             lat: target.coords[0],
@@ -285,7 +176,7 @@ export default function GlobeMap({
         return;
       }
 
-      const departure = previous.coords;
+      const departure = departureTrip.coords;
       const arrival = target.coords;
       const midAltitude = getDistanceBasedMidAltitude(departure, arrival);
 
@@ -375,14 +266,69 @@ export default function GlobeMap({
     [setActiveDetail]
   );
 
+  const renderDetailHtml = useCallback(
+    (datum: object) => {
+      const item = datum as HtmlDetailDatum;
+      const currentIndex = travelData.findIndex(trip => trip.id === item.trip.id);
+      const previousTrip = currentIndex > 0 ? travelData[currentIndex - 1] : null;
+      const nextTrip =
+        currentIndex >= 0 && currentIndex < travelData.length - 1 ? travelData[currentIndex + 1] : null;
+
+      return createTripDetailHtmlElement({
+        trip: item.trip,
+        theme,
+        colors,
+        previousTrip,
+        nextTrip,
+        onPrevious: () => {
+          if (!previousTrip) return;
+          runFocusSequence(previousTrip, item.trip);
+        },
+        onNext: () => {
+          if (!nextTrip) return;
+          runFocusSequence(nextTrip, item.trip);
+        },
+        onClose: () => setActiveDetail(null),
+      });
+    },
+    [colors, runFocusSequence, setActiveDetail, theme, travelData]
+  );
+
   useEffect(() => {
     if (!selection?.trip) return;
-    runFocusSequence(selection.trip);
-  }, [selection, runFocusSequence]);
+    runPinFocus(selection.trip);
+  }, [selection, runPinFocus]);
 
   useEffect(() => {
     if (!travelData.length) setActiveDetail(null);
   }, [travelData, setActiveDetail]);
+
+  const handleManualWheelZoom = useCallback((event: WheelEvent<HTMLDivElement>) => {
+    const globe = globeRef.current;
+    if (!globe) return;
+
+    const target = event.target as Element | null;
+    if (target?.closest('[data-timeline-ui="true"]')) return;
+    if (target?.closest('[data-detail-scroll="true"]')) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const pov = globe.pointOfView() || {};
+    const currentAltitude = typeof pov.altitude === 'number' ? pov.altitude : 1.8;
+
+    const zoomFactor = Math.exp(event.deltaY * 0.0045);
+    const nextAltitude = Math.max(0.35, Math.min(5.5, currentAltitude * zoomFactor));
+
+    globe.pointOfView(
+      {
+        lat: pov.lat,
+        lng: pov.lng,
+        altitude: nextAltitude,
+      },
+      0
+    );
+  }, []);
 
   if (!travelData.length) {
     return (
@@ -404,7 +350,10 @@ export default function GlobeMap({
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', background: colors.globeBg }}>
+    <div
+      style={{ position: 'relative', width: '100%', height: '100%', background: colors.globeBg }}
+      onWheel={handleManualWheelZoom}
+    >
       {!sidebarVisible ? (
         <button
           onClick={() => {
@@ -460,9 +409,9 @@ export default function GlobeMap({
         pointLat="lat"
         pointLng="lng"
         pointColor="color"
-        pointAltitude={(d: object) => ((d as PointDatum).isLatest ? 0.18 : 0.13)}
-        pointRadius={(d: object) => ((d as PointDatum).isLatest ? 0.28 : 0.2)}
-        pointResolution={20}
+        pointAltitude={(d: object) => ((d as PointDatum).isLatest ? 0.2 : 0.15)}
+        pointRadius={(d: object) => ((d as PointDatum).isLatest ? 0.38 : 0.3)}
+        pointResolution={24}
         pointsMerge={false}
         pointsTransitionDuration={300}
         onPointClick={(datum: object) => {
@@ -476,29 +425,16 @@ export default function GlobeMap({
         htmlElement={renderDetailHtml}
       />
 
-      <div
-        style={{
-          position: 'absolute',
-          right: '18px',
-          top: '18px',
-          padding: '10px 12px',
-          borderRadius: '12px',
-          background: colors.detailBg,
-          color: colors.detailText,
-          fontSize: '12px',
-          lineHeight: 1.5,
-          border: `1px solid ${colors.detailBorder}`,
-          backdropFilter: 'blur(10px)',
-          pointerEvents: 'none',
-          zIndex: 20,
-        }}
-      >
-        <div style={{ fontWeight: 800, marginBottom: '4px' }}>Globe View</div>
-        <div>Drag to rotate</div>
-        <div>Scroll to zoom</div>
-        <div>Sidebar: flight path animation</div>
-        <div>Pin: direct zoom + details</div>
-      </div>
+      <TimelineRange
+        theme={theme}
+        colors={colors}
+        timelineFromDate={timelineFromDate}
+        timelineToDate={timelineToDate}
+        timelineMinDate={timelineMinDate}
+        timelineMaxDate={timelineMaxDate}
+        onTimelineFromDateChange={onTimelineFromDateChange}
+        onTimelineToDateChange={onTimelineToDateChange}
+      />
     </div>
   );
 }

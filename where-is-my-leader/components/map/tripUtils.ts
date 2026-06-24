@@ -6,7 +6,7 @@ export function normalizePlaceName(value: string) {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[().]/g, '')
+    .replace(/[().,'’]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -16,6 +16,14 @@ export function formatDateLabel(dateStr: string): string {
   const d = new Date(dateStr);
   if (Number.isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+export function formatTimelineLabel(dateStr: string): string {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+  return `${months[d.getMonth()]} ${d.getDate()}`;
 }
 
 export function getCountryInfo(city: string): { name: string | null; code: string | null } {
@@ -52,6 +60,10 @@ function parseDateSafe(value: string): Date | null {
   if (!value) return null;
   const d = new Date(value);
   return Number.isNaN(d.getTime()) ? null : d;
+}
+
+export function parseDate(value: string): Date | null {
+  return parseDateSafe(value);
 }
 
 function startOfDay(value: string): Date | null {
