@@ -29,6 +29,7 @@ export default function GlobeMap({
   selection,
   activeDetail,
   setActiveDetail,
+  onFlightNavigationStart,
   sidebarVisible,
   timelineFromDate,
   timelineToDate,
@@ -42,6 +43,7 @@ export default function GlobeMap({
   selection: SelectionState;
   activeDetail: TravelPoint | null;
   setActiveDetail: (trip: TravelPoint | null) => void;
+  onFlightNavigationStart: (trip: TravelPoint) => void;
   sidebarVisible: boolean;
   timelineFromDate: string;
   timelineToDate: string;
@@ -282,16 +284,18 @@ export default function GlobeMap({
         nextTrip,
         onPrevious: () => {
           if (!previousTrip) return;
+          onFlightNavigationStart(previousTrip);
           runFocusSequence(previousTrip, item.trip);
         },
         onNext: () => {
           if (!nextTrip) return;
+          onFlightNavigationStart(nextTrip);
           runFocusSequence(nextTrip, item.trip);
         },
         onClose: () => setActiveDetail(null),
       });
     },
-    [colors, runFocusSequence, setActiveDetail, theme, travelData]
+    [colors, onFlightNavigationStart, runFocusSequence, setActiveDetail, theme, travelData]
   );
 
   useEffect(() => {

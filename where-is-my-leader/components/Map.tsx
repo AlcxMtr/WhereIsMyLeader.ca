@@ -12,6 +12,7 @@ export default function Map() {
   const [allTravelData, setAllTravelData] = useState<TravelPoint[]>([]);
   const [selection, setSelection] = useState<SelectionState>(null);
   const [activeDetail, setActiveDetail] = useState<TravelPoint | null>(null);
+  const [activeSidebarId, setActiveSidebarId] = useState<number | null>(null);
   const [timelineFromDate, setTimelineFromDate] = useState('');
   const [timelineToDate, setTimelineToDate] = useState('');
   const [theme, setTheme] = useState<ThemeMode>('dark');
@@ -95,8 +96,14 @@ export default function Map() {
     if (!stillVisible) {
       setSelection(null);
       setActiveDetail(null);
+      setActiveSidebarId(null);
     }
   }, [filteredTravelData, selection]);
+
+  useEffect(() => {
+    if (!activeDetail) return;
+    setActiveSidebarId(activeDetail.id);
+  }, [activeDetail]);
 
   const colors = getThemeColors(theme);
 
@@ -125,9 +132,10 @@ export default function Map() {
           travelData={filteredTravelData}
           theme={theme}
           setTheme={setTheme}
-          activeId={activeDetail?.id ?? selection?.trip.id ?? null}
+          activeId={activeSidebarId}
           onToggleCollapsed={() => setSidebarVisible(false)}
           onSelect={trip => {
+            setActiveSidebarId(trip.id);
             setSelection({
               trip,
               key: Date.now() + Math.random(),
@@ -144,6 +152,7 @@ export default function Map() {
           sidebarVisible={sidebarVisible}
           activeDetail={activeDetail}
           setActiveDetail={setActiveDetail}
+          onFlightNavigationStart={trip => setActiveSidebarId(trip.id)}
           timelineFromDate={timelineFromDate || timelineBounds?.minDate || ''}
           timelineToDate={timelineToDate || timelineBounds?.maxDate || ''}
           timelineMinDate={timelineBounds?.minDate || ''}
