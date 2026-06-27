@@ -49,7 +49,10 @@ export async function scrapeSingleDay(url, dateString, insertTripStatement) {
 
         if (tagName === 'h2') {
             if (currentStop) stops.push(currentStop);
-            let cleanLocation = text.replace(/National Capital Region/gi, 'Ottawa');
+            // Standardize Ottawa/National Capital Region entries into a single canonical string
+            let cleanLocation = text
+                .replace(/National Capital Region(?:,\s*Canada)?/gi, 'Ottawa, Ontario')
+                .replace(/Ottawa,\s*Canada/gi, 'Ottawa, Ontario');
             currentStop = { location: cleanLocation, activities: [] };
         } else if (tagName === 'p') {
             if (!currentStop) currentStop = { location: "Unknown Location", activities: [] };
