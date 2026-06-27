@@ -23,7 +23,7 @@ export function buildPointMap(travelData: TravelPoint[]): globalThis.Map<number,
 
 export function buildArcsData(travelData: TravelPoint[], futureArcColor: string, theme: ThemeMode): ArcDatum[] {
   const now = new Date();
-  const pastSegments = travelData.slice(1).filter(tp => new Date(tp.arrival) <= now).length;
+  const pastSegments = travelData.slice(1).filter(tp => new Date(`${tp.arrival}T00:00:00`) <= now).length;
   let seenPast = 0;
 
   return travelData
@@ -31,7 +31,7 @@ export function buildArcsData(travelData: TravelPoint[], futureArcColor: string,
       if (i === 0) return null;
 
       const prev = travelData[i - 1];
-      const isFuture = new Date(loc.arrival) > now;
+      const isFuture = new Date(`${loc.arrival}T00:00:00`) > now;
 
       let color = futureArcColor;
       if (!isFuture) {

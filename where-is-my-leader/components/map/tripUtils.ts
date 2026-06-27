@@ -13,14 +13,16 @@ export function normalizePlaceName(value: string) {
 
 export function formatDateLabel(dateStr: string): string {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
+  const safeStr = dateStr.includes('T') ? dateStr : `${dateStr}T00:00:00`;
+  const d = new Date(safeStr);
   if (Number.isNaN(d.getTime())) return dateStr;
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 export function formatTimelineLabel(dateStr: string): string {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
+  const safeStr = dateStr.includes('T') ? dateStr : `${dateStr}T00:00:00`;
+  const d = new Date(safeStr);
   if (Number.isNaN(d.getTime())) return dateStr;
   const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
   return `${months[d.getMonth()]} ${d.getDate()}`;
@@ -58,7 +60,9 @@ export function getCountryInfo(city: string): { name: string | null; code: strin
 
 function parseDateSafe(value: string): Date | null {
   if (!value) return null;
-  const d = new Date(value);
+  // FIX: Ensure range calculations don't drop a day
+  const safeStr = value.includes('T') ? value : `${value}T00:00:00`;
+  const d = new Date(safeStr);
   return Number.isNaN(d.getTime()) ? null : d;
 }
 

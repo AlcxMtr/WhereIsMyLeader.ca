@@ -62,8 +62,8 @@ export default function GlobeMap({
 
     const now = new Date();
     const currentTrip = travelData.find(trip => {
-      const arrival = new Date(trip.arrival);
-      const departure = new Date(trip.departure || trip.arrival);
+      const arrival = new Date(`${trip.arrival}T00:00:00`);
+      const departure = new Date(`${trip.departure || trip.arrival}T00:00:00`);
       if (Number.isNaN(arrival.getTime()) || Number.isNaN(departure.getTime())) return false;
       departure.setHours(23, 59, 59, 999);
       return arrival <= now && now <= departure;
