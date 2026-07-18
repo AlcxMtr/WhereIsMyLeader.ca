@@ -278,9 +278,7 @@ export default function Sidebar({
             const latestTrip = group.trips[group.trips.length - 1];
             const arrivalCity = cityLabel(firstTrip.city);
             const departureCity = cityLabel(lastTrip.city);
-            const routeSummary =
-              arrivalCity === departureCity ? departureCity : `${arrivalCity} -> ${departureCity}`;
-            const endpointSummary = `Arrive ${arrivalCity} - Depart ${departureCity}`;
+            const endpointSummary = `Arrive ${arrivalCity} • Depart ${departureCity}`;
             const rangeLabel = formatTripDateRange(firstTrip.arrival, lastTrip.departure, ' - ');
             const totalDays = group.trips.reduce((sum, trip) => sum + getTripDurationDays(trip), 0);
             const flagUrl = group.code ? `https://flagcdn.com/w40/${group.code}.png` : null;
@@ -305,11 +303,9 @@ export default function Sidebar({
                 >
                   <div
                     style={{
-                      padding: '10px 12px',
+                      padding: isExpanded ? '12px 12px 12px 16px' : '11px 12px 2px 16px',
                       borderBottom: isExpanded ? `1px solid ${glassBorder}` : 'none',
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '10px',
+                      position: 'relative',
                     }}
                   >
                     <button
@@ -326,7 +322,7 @@ export default function Sidebar({
                       aria-label={`Go to arrival location for ${group.countryName}`}
                       title={`Go to arrival location for ${group.countryName}`}
                       style={{
-                        flex: 1,
+                        width: '100%',
                         display: 'flex',
                         alignItems: 'flex-start',
                         gap: '10px',
@@ -338,56 +334,93 @@ export default function Sidebar({
                         minWidth: 0,
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
-                      {flagUrl ? (
-                        <img
-                          src={flagUrl}
-                          alt=""
-                          loading="lazy"
-                          width={34}
-                          height={24}
-                          style={{
-                            width: '34px',
-                            height: '24px',
-                            objectFit: 'cover',
-                            borderRadius: '6px',
-                            boxShadow: '0 0 5px rgba(0,0,0,0.24)',
-                            flexShrink: 0,
-                            background: theme === 'dark' ? '#334155' : '#e2e8f0',
-                          }}
-                        />
-                      ) : (
+                      <div
+                        style={{
+                          minWidth: 0,
+                          flex: 1,
+                          paddingTop: isExpanded ? '2px' : '1px',
+                          paddingBottom: isExpanded ? '2px' : '0px',
+                        }}
+                      >
                         <div
                           style={{
-                            width: '34px',
-                            height: '24px',
-                            background: theme === 'dark' ? '#334155' : '#e2e8f0',
-                            borderRadius: '6px',
-                            flexShrink: 0,
-                          }}
-                        />
-                      )}
-
-                        <div style={{ minWidth: 0, flex: 1 }}>
-                        <div
-                          style={{
-                            fontSize: '14px',
-                            fontWeight: 800,
-                            color: colors.text,
+                            display: 'flex',
+                            alignItems: 'center',
+                            minWidth: 0,
                           }}
                         >
-                          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{group.countryName}</span>
+                          <div
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              minWidth: 0,
+                              maxWidth: 'calc(100% - 86px)',
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: '14px',
+                                fontWeight: 800,
+                                color: colors.text,
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                              }}
+                            >
+                              {group.countryName}
+                            </span>
+                          </div>
+                          {flagUrl ? (
+                            <img
+                              src={flagUrl}
+                              alt=""
+                              loading="lazy"
+                              width={16}
+                              height={12}
+                              style={{
+                                width: '16px',
+                                height: '12px',
+                                marginLeft: '8px',
+                                objectFit: 'cover',
+                                borderRadius: '2px',
+                                boxShadow: '0 0 4px rgba(0,0,0,0.22)',
+                                flexShrink: 0,
+                                background: theme === 'dark' ? '#334155' : '#e2e8f0',
+                              }}
+                            />
+                          ) : null}
                         </div>
-                        <div style={{ fontSize: '12px', color: colors.textSoft, marginTop: '2px', fontWeight: 600 }}>{routeSummary}</div>
-                        <div style={{ fontSize: '10px', color: colors.textSoft, marginTop: '2px', opacity: 0.88 }}>{endpointSummary}</div>
+                        <div
+                          style={{
+                            fontSize: '11px',
+                            color: colors.textSoft,
+                            marginTop: '3px',
+                            opacity: 0.9,
+                            whiteSpace: 'normal',
+                            overflowWrap: 'break-word',
+                            lineHeight: 1.25,
+                          }}
+                        >
+                          {endpointSummary}
+                        </div>
                         <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '3px' }}>
                           {rangeLabel} - {totalDays} {totalDays === 1 ? 'day' : 'days'}
-                        </div>
                         </div>
                       </div>
                     </button>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '2px', flexShrink: 0 }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '10px',
+                        right: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        flexShrink: 0,
+                      }}
+                    >
                       <span
                         style={{
                           fontSize: '10px',
@@ -437,7 +470,7 @@ export default function Sidebar({
                       margin: 0,
                       border: 'none',
                       borderRadius: 0,
-                      background: theme === 'dark' ? 'rgba(3,10,24,0.34)' : 'rgba(224,234,250,0.5)',
+                      background: 'transparent',
                       overflow: 'hidden',
                       display: 'grid',
                       gridTemplateRows: isExpanded ? '1fr' : '0fr',
@@ -448,7 +481,7 @@ export default function Sidebar({
                     }}
                     aria-hidden={!isExpanded}
                   >
-                    <div style={{ minHeight: 0 }}>
+                    <div style={{ minHeight: 0, padding: '8px 8px 10px 8px' }}>
                       {[...group.trips].reverse().map((loc, i) => {
                         const isActive = loc.id === activeId;
                         const isLatest = groupIndex === 0 && i === 0;
@@ -465,11 +498,19 @@ export default function Sidebar({
                               display: 'flex',
                               alignItems: 'center',
                               gap: '10px',
-                              padding: '11px 14px 11px 56px',
-                              borderTop: i === 0 ? 'none' : `1px solid ${glassBorder}`,
-                              background: isActive ? rowSelectedBg : hoveredTripId === loc.id ? rowHoverBg : 'transparent',
+                              padding: '10px 12px 10px 18px',
+                              marginTop: i === 0 ? 0 : '8px',
+                              border: `1px solid ${glassBorder}`,
+                              borderRadius: '10px',
+                              background: isActive
+                                ? `linear-gradient(135deg, ${rowSelectedBg}, ${colors.panelSoft})`
+                                : hoveredTripId === loc.id
+                                  ? `linear-gradient(135deg, ${rowHoverBg}, ${colors.panelSoft})`
+                                  : theme === 'dark'
+                                    ? 'rgba(7,14,33,0.5)'
+                                    : 'rgba(241,245,249,0.62)',
                               cursor: 'pointer',
-                              transition: 'background 0.15s',
+                              transition: 'background 0.15s, transform 0.15s ease',
                             }}
                               onMouseEnter={() => {
                                 if (!isActive) setHoveredTripId(loc.id);
