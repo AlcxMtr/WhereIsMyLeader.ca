@@ -45,6 +45,9 @@ function addDays(dateStr: string, days: number): string {
 
 export async function GET() {
   try {
+    // Only bridge short schedule gaps (weekends/holidays), never long inactive periods.
+    const MAX_BRIDGED_GAP_DAYS = 4;
+
     const isDocker = process.env.NODE_ENV === 'production';
     const dbPath = isDocker 
       ? path.join('/app/data', 'trips.db') 
@@ -103,7 +106,7 @@ export async function GET() {
           // Location changed! First check if there is an unlogged weekend gap to bridge
           const gapDays = getDaysBetween(currentTrip.departure, row.date);
           
-          if (gapDays > 1) {
+          if (gapDays > 1 && gapDays <= MAX_BRIDGED_GAP_DAYS) {
             // CRITICAL FIX 3: Forward-fill the previous trip up to the day before the new stop
             currentTrip.departure = addDays(row.date, -1);
           }

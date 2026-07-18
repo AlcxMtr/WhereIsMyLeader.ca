@@ -20,13 +20,23 @@ export default function Sidebar({
   activeId: number | null;
   onToggleCollapsed: () => void;
 }) {
-  const EXPANDED_COUNTRIES_STORAGE_KEY = 'wiml-sidebar-expanded-countries';
+  const EXPANDED_STAYS_STORAGE_KEY = 'wiml-sidebar-expanded-stays';
   const colors = getThemeColors(theme);
   const rowRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const scrollIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isScrolling, setIsScrolling] = useState(false);
   const [hoveredTripId, setHoveredTripId] = useState<number | null>(null);
-  const [expandedCountries, setExpandedCountries] = useState<Record<string, boolean>>({});
+  const [expandedStays, setExpandedStays] = useState<Record<string, boolean>>(() => {
+    if (typeof window === 'undefined') return {};
+    try {
+      const storedExpanded = window.localStorage.getItem(EXPANDED_STAYS_STORAGE_KEY);
+      if (!storedExpanded) return {};
+      const parsed = JSON.parse(storedExpanded) as Record<string, boolean>;
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch {
+      return {};
+    }
+  });
   const glassBorder = colors.detailBorder;
   const glassBg = colors.panelBg;
   const rowHoverBg = colors.panelHover;
@@ -41,18 +51,15 @@ export default function Sidebar({
     }
   }, []);
 
-  const countryGroups = useMemo(() => {
-    const groups = new Map<
-      string,
-      {
-        key: string;
-        countryName: string;
-        code: string | null;
-        firstIndex: number;
-        lastIndex: number;
-        trips: TravelPoint[];
-      }
-    >();
+  const stayGroups = useMemo(() => {
+    const groups: Array<{
+      key: string;
+      countryName: string;
+      code: string | null;
+      firstIndex: number;
+      lastIndex: number;
+      trips: TravelPoint[];
+    }> = [];
 
     travelData.forEach((trip, index) => {
       const info = getCountryInfo(trip.city);
@@ -60,38 +67,39 @@ export default function Sidebar({
       const countryName = info.code
         ? regionDisplayNames?.of(info.code.toUpperCase()) || fallbackName
         : fallbackName;
-      const key = info.code ? `code:${info.code}` : `name:${countryName.toLowerCase()}`;
-      const existing = groups.get(key);
+      const countryIdentity = info.code ? `code:${info.code}` : `name:${countryName.toLowerCase()}`;
+      const previousGroup = groups[groups.length - 1];
 
-      if (existing) {
-        existing.trips.push(trip);
-        existing.lastIndex = index;
-      } else {
-        groups.set(key, {
-          key,
-          countryName,
-          code: info.code,
-          firstIndex: index,
-          lastIndex: index,
-          trips: [trip],
-        });
+      if (previousGroup && previousGroup.key.startsWith(`${countryIdentity}:stay:`)) {
+        previousGroup.trips.push(trip);
+        previousGroup.lastIndex = index;
+        return;
       }
+
+      const stayCountForCountry = groups.filter(g => g.key.startsWith(`${countryIdentity}:stay:`)).length;
+      const stayNumber = stayCountForCountry + 1;
+      groups.push({
+        key: `${countryIdentity}:stay:${stayNumber}`,
+        countryName,
+        code: info.code,
+        firstIndex: index,
+        lastIndex: index,
+        trips: [trip],
+      });
     });
 
-    return [...groups.values()].sort((a, b) => b.lastIndex - a.lastIndex);
+    return groups
+      .sort((a, b) => b.lastIndex - a.lastIndex)
+      .map(group => ({
+        ...group,
+        tripCount: groups.filter(g => g.countryName === group.countryName).length,
+      }));
   }, [regionDisplayNames, travelData]);
 
-  const activeCountryKey = useMemo(() => {
+  const activeStayKey = useMemo(() => {
     if (activeId == null) return null;
-    const activeTrip = travelData.find(t => t.id === activeId);
-    if (!activeTrip) return null;
-    const info = getCountryInfo(activeTrip.city);
-    const fallbackName = info.name || activeTrip.city.split(',')[0] || 'Unknown';
-    const countryName = info.code
-      ? regionDisplayNames?.of(info.code.toUpperCase()) || fallbackName
-      : fallbackName;
-    return info.code ? `code:${info.code}` : `name:${countryName.toLowerCase()}`;
-  }, [activeId, regionDisplayNames, travelData]);
+    return stayGroups.find(group => group.trips.some(t => t.id === activeId))?.key ?? null;
+  }, [activeId, stayGroups]);
 
   useEffect(() => {
     if (activeId == null) return;
@@ -112,11 +120,6 @@ export default function Sidebar({
     };
   }, []);
 
-  useEffect(() => {
-    if (!activeCountryKey) return;
-    setExpandedCountries(prev => (prev[activeCountryKey] ? prev : { ...prev, [activeCountryKey]: true }));
-  }, [activeCountryKey]);
-
   const handleScrollActivity = () => {
     if (!isScrolling) setIsScrolling(true);
     if (scrollIdleTimerRef.current) {
@@ -130,19 +133,24 @@ export default function Sidebar({
 
   const cityLabel = (city: string) => city.split(',')[0]?.trim() || city;
 
-  const toggleCountry = (countryKey: string) => {
-    setExpandedCountries(prev => ({ ...prev, [countryKey]: !prev[countryKey] }));
+  const toggleStay = (stayKey: string) => {
+    setExpandedStays(prev => ({ ...prev, [stayKey]: !prev[stayKey] }));
   };
 
-  const allCountriesExpanded =
-    countryGroups.length > 0 && countryGroups.every(group => !!expandedCountries[group.key]);
+  const isStayExpanded = (stayKey: string) => {
+    if (expandedStays[stayKey] != null) return expandedStays[stayKey];
+    return activeStayKey === stayKey;
+  };
 
-  const setAllCountriesExpanded = (expanded: boolean) => {
+  const allStaysExpanded =
+    stayGroups.length > 0 && stayGroups.every(group => isStayExpanded(group.key));
+
+  const setAllStaysExpanded = (expanded: boolean) => {
     const nextState: Record<string, boolean> = {};
-    countryGroups.forEach(group => {
+    stayGroups.forEach(group => {
       nextState[group.key] = expanded;
     });
-    setExpandedCountries(nextState);
+    setExpandedStays(nextState);
   };
 
   const parseDateSafe = (value: string): Date | null => {
@@ -152,9 +160,9 @@ export default function Sidebar({
     return Number.isNaN(d.getTime()) ? null : d;
   };
 
-  const getTripDurationDays = (trip: TravelPoint): number => {
-    const start = parseDateSafe(trip.arrival || trip.departure);
-    const end = parseDateSafe(trip.departure || trip.arrival);
+  const getDurationDays = (startValue: string, endValue: string): number => {
+    const start = parseDateSafe(startValue);
+    const end = parseDateSafe(endValue);
     if (!start || !end) return 1;
     const dayMs = 24 * 60 * 60 * 1000;
     const startUtc = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
@@ -163,27 +171,38 @@ export default function Sidebar({
     return Math.max(1, days);
   };
 
-  useEffect(() => {
-    try {
-      const storedExpanded = window.localStorage.getItem(EXPANDED_COUNTRIES_STORAGE_KEY);
-      if (storedExpanded) {
-        const parsed = JSON.parse(storedExpanded) as Record<string, boolean>;
-        if (parsed && typeof parsed === 'object') {
-          setExpandedCountries(parsed);
-        }
-      }
-    } catch {
-      // Ignore storage parse failures and continue with defaults.
-    }
-  }, []);
+  const getStayDurationDays = (trips: TravelPoint[]): number => {
+    if (!trips.length) return 1;
+
+    let minStart: Date | null = null;
+    let maxEnd: Date | null = null;
+
+    trips.forEach(trip => {
+      const start = parseDateSafe(trip.arrival || trip.departure);
+      const end = parseDateSafe(trip.departure || trip.arrival);
+      if (start && (!minStart || start < minStart)) minStart = start;
+      if (end && (!maxEnd || end > maxEnd)) maxEnd = end;
+    });
+
+    if (!minStart || !maxEnd) return 1;
+
+    const yyyyMmDd = (d: Date) => {
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    };
+
+    return getDurationDays(yyyyMmDd(minStart), yyyyMmDd(maxEnd));
+  };
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(EXPANDED_COUNTRIES_STORAGE_KEY, JSON.stringify(expandedCountries));
+      window.localStorage.setItem(EXPANDED_STAYS_STORAGE_KEY, JSON.stringify(expandedStays));
     } catch {
       // Ignore storage write failures.
     }
-  }, [expandedCountries]);
+  }, [expandedStays]);
 
   return (
     <div
@@ -248,15 +267,15 @@ export default function Sidebar({
           <button
             className="cyber-expand-toggle"
             data-theme={theme}
-            onClick={() => setAllCountriesExpanded(!allCountriesExpanded)}
-            disabled={countryGroups.length === 0}
-            title={allCountriesExpanded ? 'Collapse all country groups' : 'Expand all country groups'}
+            onClick={() => setAllStaysExpanded(!allStaysExpanded)}
+            disabled={stayGroups.length === 0}
+            title={allStaysExpanded ? 'Collapse all stays' : 'Expand all stays'}
             style={{
-              cursor: countryGroups.length === 0 ? 'not-allowed' : 'pointer',
-              opacity: countryGroups.length === 0 ? 0.45 : 0.95,
+              cursor: stayGroups.length === 0 ? 'not-allowed' : 'pointer',
+              opacity: stayGroups.length === 0 ? 0.45 : 0.95,
             }}
           >
-            {allCountriesExpanded ? 'Collapse all countries' : 'Expand all countries'}
+            {allStaysExpanded ? 'Collapse all stays' : 'Expand all stays'}
           </button>
         </div>
       </div>
@@ -268,25 +287,24 @@ export default function Sidebar({
         onScroll={handleScrollActivity}
         style={{ flex: 1, overflowY: 'auto' }}
       >
-        {countryGroups.length === 0 ? (
+        {stayGroups.length === 0 ? (
           <div style={{ padding: '16px', color: colors.textSoft, fontSize: '13px' }}>No trips in this date range.</div>
         ) : (
-          countryGroups.map((group, groupIndex) => {
-            const isExpanded = !!expandedCountries[group.key];
+          stayGroups.map((group, groupIndex) => {
+            const isExpanded = isStayExpanded(group.key);
             const firstTrip = group.trips[0];
             const lastTrip = group.trips[group.trips.length - 1];
-            const latestTrip = group.trips[group.trips.length - 1];
             const arrivalCity = cityLabel(firstTrip.city);
             const departureCity = cityLabel(lastTrip.city);
             const endpointSummary = `Arrive ${arrivalCity} • Depart ${departureCity}`;
             const rangeLabel = formatTripDateRange(firstTrip.arrival, lastTrip.departure, ' - ');
-            const totalDays = group.trips.reduce((sum, trip) => sum + getTripDurationDays(trip), 0);
+            const totalDays = getStayDurationDays(group.trips);
             const flagUrl = group.code ? `https://flagcdn.com/w40/${group.code}.png` : null;
-            const isCountryActive = activeCountryKey === group.key;
-            const isLatestCountry = groupIndex === 0;
-            const countryCardBg = isCountryActive
+            const isStayActive = activeStayKey === group.key;
+            const isLatestStay = groupIndex === 0;
+            const stayCardBg = isStayActive
               ? `linear-gradient(135deg, ${rowSelectedBg}, ${colors.panelSoft})`
-              : isLatestCountry
+              : isLatestStay
                 ? `linear-gradient(135deg, ${rowNowBg}, ${colors.panelSoft})`
                 : `linear-gradient(135deg, ${colors.panelBg}, ${colors.panelSoft})`;
 
@@ -296,7 +314,7 @@ export default function Sidebar({
                   style={{
                     borderRadius: '14px',
                     border: `1px solid ${glassBorder}`,
-                    background: countryCardBg,
+                    background: stayCardBg,
                     boxShadow: theme === 'dark' ? '0 8px 20px rgba(2,6,23,0.26)' : '0 8px 18px rgba(15,23,42,0.08)',
                     overflow: 'hidden',
                   }}
@@ -313,10 +331,10 @@ export default function Sidebar({
                       data-theme={theme}
                       onClick={() => {
                         if (isExpanded) {
-                          toggleCountry(group.key);
+                          toggleStay(group.key);
                           return;
                         }
-                        toggleCountry(group.key);
+                        toggleStay(group.key);
                         onSelect(firstTrip);
                       }}
                       aria-label={`Go to arrival location for ${group.countryName}`}
@@ -370,6 +388,21 @@ export default function Sidebar({
                             >
                               {group.countryName}
                             </span>
+                            {group.tripCount > 1 ? (
+                              <span
+                                style={{
+                                  fontSize: '10px',
+                                  color: colors.textSoft,
+                                  border: `1px solid ${glassBorder}`,
+                                  borderRadius: '999px',
+                                  padding: '2px 6px',
+                                  lineHeight: 1.1,
+                                  flexShrink: 0,
+                                }}
+                              >
+                                Stay {group.key.split(':stay:')[1]}
+                              </span>
+                            ) : null}
                           </div>
                           {flagUrl ? (
                             <img
@@ -440,10 +473,10 @@ export default function Sidebar({
                         data-theme={theme}
                         onClick={event => {
                           event.stopPropagation();
-                          toggleCountry(group.key);
+                          toggleStay(group.key);
                         }}
                         aria-expanded={isExpanded}
-                        aria-label={isExpanded ? `Collapse ${group.countryName}` : `Expand ${group.countryName}`}
+                        aria-label={isExpanded ? `Collapse ${group.countryName} stay` : `Expand ${group.countryName} stay`}
                         title={isExpanded ? 'Collapse' : 'Expand'}
                         style={{
                           width: '28px',
