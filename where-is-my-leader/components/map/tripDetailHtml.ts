@@ -1,5 +1,5 @@
 import type { ThemeColors } from './theme';
-import { formatDateLabel, getCountryInfo } from './tripUtils';
+import { formatTripDateRange, getCountryInfo } from './tripUtils';
 import type { TravelPoint, ThemeMode } from './types';
 
 export function createTripDetailHtmlElement({
@@ -23,10 +23,7 @@ export function createTripDetailHtmlElement({
 }) {
   const { name: countryName, code: countryCode } = getCountryInfo(trip.city);
   const flagUrl = countryCode ? `https://flagcdn.com/w80/${countryCode}.png` : null;
-  const arrivalLabel = formatDateLabel(trip.arrival);
-  const departureLabel = formatDateLabel(trip.departure);
-  const rangeLabel =
-    arrivalLabel && departureLabel ? `${arrivalLabel} -> ${departureLabel}` : arrivalLabel || departureLabel;
+  const rangeLabel = formatTripDateRange(trip.arrival, trip.departure, ' -> ');
 
   const wrapper = document.createElement('div');
   wrapper.style.width = 'min(360px, calc(100vw - 28px))';
@@ -108,6 +105,9 @@ export function createTripDetailHtmlElement({
 
   const body = document.createElement('div');
   body.setAttribute('data-detail-scroll', 'true');
+  body.className = 'cyber-scrollbar';
+  body.dataset.theme = theme;
+  body.dataset.scrolling = 'false';
   body.innerText = trip.desc;
   body.style.marginTop = '12px';
   body.style.fontSize = '13px';
@@ -218,26 +218,35 @@ export function createTripDetailHtmlElement({
   wrapper.appendChild(card);
 
   const clampToViewport = () => {
-    const safeTop = 12;
+    const detailTimelineGap = 16;
+    const timeline = document.querySelector('[data-timeline-ui="true"]') as HTMLElement | null;
+    const timelineRect = timeline?.getBoundingClientRect();
+    const timelineSafeTop =
+      timelineRect && timelineRect.width > 0 && timelineRect.height > 0
+        ? Math.ceil(timelineRect.bottom + detailTimelineGap)
+        : 12;
+    const safeTop = Math.max(12, timelineSafeTop);
     const safeBottom = 12;
 
     wrapper.style.setProperty('--detail-shift-y', '0px');
 
     const rect = wrapper.getBoundingClientRect();
-    let shiftY = 0;
+    const minShift = safeTop - rect.top;
+    const maxShift = window.innerHeight - safeBottom - rect.bottom;
 
-    if (rect.top < safeTop) {
-      shiftY += safeTop - rect.top;
-    }
-
-    if (rect.bottom > window.innerHeight - safeBottom) {
-      shiftY -= rect.bottom - (window.innerHeight - safeBottom);
-    }
+    // If the card can't satisfy both bounds, prioritize staying below the timeline.
+    const shiftY = minShift > maxShift ? minShift : Math.min(Math.max(0, minShift), maxShift);
 
     wrapper.style.setProperty('--detail-shift-y', `${Math.round(shiftY)}px`);
   };
 
-  window.requestAnimationFrame(clampToViewport);
+  // Re-clamp after initial paint and shortly after to catch late layout/overlay updates.
+  window.requestAnimationFrame(() => {
+    clampToViewport();
+    window.requestAnimationFrame(clampToViewport);
+  });
+  window.setTimeout(clampToViewport, 80);
+  window.setTimeout(clampToViewport, 180);
 
   return wrapper;
 }

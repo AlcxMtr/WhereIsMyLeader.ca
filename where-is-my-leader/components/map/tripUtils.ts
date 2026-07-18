@@ -11,12 +11,16 @@ export function normalizePlaceName(value: string) {
     .trim();
 }
 
-export function formatDateLabel(dateStr: string): string {
+export function formatDateLabel(dateStr: string, includeYear = false): string {
   if (!dateStr) return '';
   const safeStr = dateStr.includes('T') ? dateStr : `${dateStr}T00:00:00`;
   const d = new Date(safeStr);
   if (Number.isNaN(d.getTime())) return dateStr;
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    ...(includeYear ? { year: 'numeric' } : {}),
+  });
 }
 
 export function formatTimelineLabel(dateStr: string): string {
@@ -25,7 +29,24 @@ export function formatTimelineLabel(dateStr: string): string {
   const d = new Date(safeStr);
   if (Number.isNaN(d.getTime())) return dateStr;
   const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May.', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
-  return `${months[d.getMonth()]} ${d.getDate()}`;
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+function dateKey(dateStr: string): string {
+  if (!dateStr) return '';
+  return dateStr.includes('T') ? dateStr.split('T')[0] : dateStr;
+}
+
+export function formatTripDateRange(arrival: string, departure: string, separator: string): string {
+  const arrivalLabel = formatDateLabel(arrival);
+  const departureLabel = formatDateLabel(departure, true);
+
+  if (arrivalLabel && departureLabel && dateKey(arrival) === dateKey(departure)) {
+    return departureLabel;
+  }
+
+  if (arrivalLabel && departureLabel) return `${arrivalLabel}${separator}${departureLabel}`;
+  return arrivalLabel || departureLabel;
 }
 
 export function getCountryInfo(city: string): { name: string | null; code: string | null } {

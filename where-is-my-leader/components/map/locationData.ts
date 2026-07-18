@@ -146,6 +146,10 @@ export const countryNameToCode: Record<string, string> = {
 };
 
 export const cityNameToCode: Record<string, string> = {
+  'Central Ontario': 'ca',
+  'Southwestern Ontario': 'ca',
+  Outaouais: 'ca',
+  'Vancouver Island': 'ca',
   Ottawa: 'ca',
   Toronto: 'ca',
   Vancouver: 'ca',
@@ -170,5 +174,12 @@ export const cityNameToCode: Record<string, string> = {
   Sydney: 'au',
   Melbourne: 'au',
   Rome: 'it',
+  Amsterdam: 'nl',
+  'The Hague': 'nl',
+  Brussels: 'be',
+  Busan: 'kr',
+  Gyeongju: 'kr',
+  'Kuala Lumpur': 'my',
+  Singapore: 'sg',
   'Vatican City': 'va',
 };

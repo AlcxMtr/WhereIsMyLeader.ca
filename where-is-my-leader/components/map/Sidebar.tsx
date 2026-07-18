@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { ThemeToggle } from './MapControls';
 import { getThemeColors } from './theme';
-import { formatDateLabel, getCountryInfo } from './tripUtils';
+import { formatTripDateRange, getCountryInfo } from './tripUtils';
 import type { ThemeMode, TravelPoint } from './types';
 
 export default function Sidebar({
@@ -20,15 +20,78 @@ export default function Sidebar({
   activeId: number | null;
   onToggleCollapsed: () => void;
 }) {
+  const EXPANDED_COUNTRIES_STORAGE_KEY = 'wiml-sidebar-expanded-countries';
   const colors = getThemeColors(theme);
-  const sorted = [...travelData].reverse();
   const rowRefs = useRef<Record<number, HTMLDivElement | null>>({});
-  const glassBorder = theme === 'dark' ? 'rgba(148,163,184,0.14)' : 'rgba(148,163,184,0.22)';
-  const glassBg = theme === 'dark' ? 'rgba(2, 6, 23, 0.14)' : 'rgba(255, 255, 255, 0.24)';
-  const cardBg = theme === 'dark' ? 'rgba(2, 6, 23, 0.14)' : 'rgba(255, 255, 255, 0.24)';
-  const rowHoverBg = theme === 'dark' ? 'rgba(30, 64, 175, 0.16)' : 'rgba(59, 130, 246, 0.1)';
-  const rowSelectedBg = theme === 'dark' ? 'rgba(30, 64, 175, 0.22)' : 'rgba(37, 99, 235, 0.16)';
-  const rowNowBg = theme === 'dark' ? 'rgba(22, 101, 52, 0.32)' : 'rgba(34, 197, 94, 0.18)';
+  const scrollIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [hoveredTripId, setHoveredTripId] = useState<number | null>(null);
+  const [expandedCountries, setExpandedCountries] = useState<Record<string, boolean>>({});
+  const glassBorder = colors.detailBorder;
+  const glassBg = colors.panelBg;
+  const rowHoverBg = colors.panelHover;
+  const rowSelectedBg = colors.panelSelected;
+  const rowNowBg = colors.panelNow;
+
+  const regionDisplayNames = useMemo(() => {
+    try {
+      return new Intl.DisplayNames(['en'], { type: 'region' });
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const countryGroups = useMemo(() => {
+    const groups = new Map<
+      string,
+      {
+        key: string;
+        countryName: string;
+        code: string | null;
+        firstIndex: number;
+        lastIndex: number;
+        trips: TravelPoint[];
+      }
+    >();
+
+    travelData.forEach((trip, index) => {
+      const info = getCountryInfo(trip.city);
+      const fallbackName = info.name || trip.city.split(',')[0] || 'Unknown';
+      const countryName = info.code
+        ? regionDisplayNames?.of(info.code.toUpperCase()) || fallbackName
+        : fallbackName;
+      const key = info.code ? `code:${info.code}` : `name:${countryName.toLowerCase()}`;
+      const existing = groups.get(key);
+
+      if (existing) {
+        existing.trips.push(trip);
+        existing.lastIndex = index;
+      } else {
+        groups.set(key, {
+          key,
+          countryName,
+          code: info.code,
+          firstIndex: index,
+          lastIndex: index,
+          trips: [trip],
+        });
+      }
+    });
+
+    return [...groups.values()].sort((a, b) => b.lastIndex - a.lastIndex);
+  }, [regionDisplayNames, travelData]);
+
+  const activeCountryKey = useMemo(() => {
+    if (activeId == null) return null;
+    const activeTrip = travelData.find(t => t.id === activeId);
+    if (!activeTrip) return null;
+    const info = getCountryInfo(activeTrip.city);
+    const fallbackName = info.name || activeTrip.city.split(',')[0] || 'Unknown';
+    const countryName = info.code
+      ? regionDisplayNames?.of(info.code.toUpperCase()) || fallbackName
+      : fallbackName;
+    return info.code ? `code:${info.code}` : `name:${countryName.toLowerCase()}`;
+  }, [activeId, regionDisplayNames, travelData]);
 
   useEffect(() => {
     if (activeId == null) return;
@@ -41,8 +104,93 @@ export default function Sidebar({
     });
   }, [activeId]);
 
+  useEffect(() => {
+    return () => {
+      if (scrollIdleTimerRef.current) {
+        clearTimeout(scrollIdleTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!activeCountryKey) return;
+    setExpandedCountries(prev => (prev[activeCountryKey] ? prev : { ...prev, [activeCountryKey]: true }));
+  }, [activeCountryKey]);
+
+  const handleScrollActivity = () => {
+    if (!isScrolling) setIsScrolling(true);
+    if (scrollIdleTimerRef.current) {
+      clearTimeout(scrollIdleTimerRef.current);
+    }
+    scrollIdleTimerRef.current = setTimeout(() => {
+      setIsScrolling(false);
+      scrollIdleTimerRef.current = null;
+    }, 150);
+  };
+
+  const cityLabel = (city: string) => city.split(',')[0]?.trim() || city;
+
+  const toggleCountry = (countryKey: string) => {
+    setExpandedCountries(prev => ({ ...prev, [countryKey]: !prev[countryKey] }));
+  };
+
+  const allCountriesExpanded =
+    countryGroups.length > 0 && countryGroups.every(group => !!expandedCountries[group.key]);
+
+  const setAllCountriesExpanded = (expanded: boolean) => {
+    const nextState: Record<string, boolean> = {};
+    countryGroups.forEach(group => {
+      nextState[group.key] = expanded;
+    });
+    setExpandedCountries(nextState);
+  };
+
+  const parseDateSafe = (value: string): Date | null => {
+    if (!value) return null;
+    const safeValue = value.includes('T') ? value : `${value}T00:00:00`;
+    const d = new Date(safeValue);
+    return Number.isNaN(d.getTime()) ? null : d;
+  };
+
+  const getTripDurationDays = (trip: TravelPoint): number => {
+    const start = parseDateSafe(trip.arrival || trip.departure);
+    const end = parseDateSafe(trip.departure || trip.arrival);
+    if (!start || !end) return 1;
+    const dayMs = 24 * 60 * 60 * 1000;
+    const startUtc = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+    const endUtc = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+    const days = Math.floor((endUtc - startUtc) / dayMs) + 1;
+    return Math.max(1, days);
+  };
+
+  useEffect(() => {
+    try {
+      const storedExpanded = window.localStorage.getItem(EXPANDED_COUNTRIES_STORAGE_KEY);
+      if (storedExpanded) {
+        const parsed = JSON.parse(storedExpanded) as Record<string, boolean>;
+        if (parsed && typeof parsed === 'object') {
+          setExpandedCountries(parsed);
+        }
+      }
+    } catch {
+      // Ignore storage parse failures and continue with defaults.
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(EXPANDED_COUNTRIES_STORAGE_KEY, JSON.stringify(expandedCountries));
+    } catch {
+      // Ignore storage write failures.
+    }
+  }, [expandedCountries]);
+
   return (
     <div
+      className="cyber-scrollbar"
+      data-theme={theme}
+      data-scrolling={isScrolling ? 'true' : 'false'}
+      onScroll={handleScrollActivity}
       style={{
         width: '300px',
         minWidth: '300px',
@@ -58,6 +206,8 @@ export default function Sidebar({
     >
       <div style={{ padding: '16px', borderBottom: `1px solid ${glassBorder}`, position: 'relative' }}>
         <button
+          className="cyber-icon-btn"
+          data-theme={theme}
           onClick={onToggleCollapsed}
           aria-label="Hide sidebar"
           title="Hide sidebar"
@@ -68,8 +218,6 @@ export default function Sidebar({
             width: '34px',
             height: '34px',
             borderRadius: '10px',
-            border: `1px solid ${theme === 'dark' ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.42)'}`,
-            background: 'transparent',
             color: colors.buttonText,
             cursor: 'pointer',
             fontSize: '16px',
@@ -79,7 +227,9 @@ export default function Sidebar({
             justifyContent: 'center',
           }}
         >
-          ←
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M7.8 2.2L4 6l3.8 3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </button>
 
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', paddingRight: '48px' }}>
@@ -94,129 +244,275 @@ export default function Sidebar({
           />
         </div>
 
-        <div
-          style={{
-            marginTop: '14px',
-            padding: '12px',
-            borderRadius: '14px',
-            background: cardBg,
-            border: `1px solid ${glassBorder}`,
-          }}
-        >
-          <div style={{ fontSize: '13px', fontWeight: 700, color: colors.text }}>Timeline</div>
-          <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '2px' }}>
-            Use the top range controls on the globe to drag both From and To dates
-          </div>
+        <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end' }}>
+          <button
+            className="cyber-expand-toggle"
+            data-theme={theme}
+            onClick={() => setAllCountriesExpanded(!allCountriesExpanded)}
+            disabled={countryGroups.length === 0}
+            title={allCountriesExpanded ? 'Collapse all country groups' : 'Expand all country groups'}
+            style={{
+              cursor: countryGroups.length === 0 ? 'not-allowed' : 'pointer',
+              opacity: countryGroups.length === 0 ? 0.45 : 0.95,
+            }}
+          >
+            {allCountriesExpanded ? 'Collapse all countries' : 'Expand all countries'}
+          </button>
         </div>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto' }}>
-        {sorted.length === 0 ? (
+      <div
+        className="cyber-scrollbar"
+        data-theme={theme}
+        data-scrolling={isScrolling ? 'true' : 'false'}
+        onScroll={handleScrollActivity}
+        style={{ flex: 1, overflowY: 'auto' }}
+      >
+        {countryGroups.length === 0 ? (
           <div style={{ padding: '16px', color: colors.textSoft, fontSize: '13px' }}>No trips in this date range.</div>
         ) : (
-          sorted.map((loc, i) => {
-            const { code } = getCountryInfo(loc.city);
-            const flagUrl = code ? `https://flagcdn.com/w40/${code}.png` : null;
-            const isLatest = i === 0;
-            const isActive = loc.id === activeId;
-            const arrivalLabel = formatDateLabel(loc.arrival);
-            const departureLabel = formatDateLabel(loc.departure);
-            const rangeLabel =
-              arrivalLabel && departureLabel ? `${arrivalLabel} – ${departureLabel}` : arrivalLabel || departureLabel;
+          countryGroups.map((group, groupIndex) => {
+            const isExpanded = !!expandedCountries[group.key];
+            const firstTrip = group.trips[0];
+            const lastTrip = group.trips[group.trips.length - 1];
+            const latestTrip = group.trips[group.trips.length - 1];
+            const arrivalCity = cityLabel(firstTrip.city);
+            const departureCity = cityLabel(lastTrip.city);
+            const routeSummary =
+              arrivalCity === departureCity ? departureCity : `${arrivalCity} -> ${departureCity}`;
+            const endpointSummary = `Arrive ${arrivalCity} - Depart ${departureCity}`;
+            const rangeLabel = formatTripDateRange(firstTrip.arrival, lastTrip.departure, ' - ');
+            const totalDays = group.trips.reduce((sum, trip) => sum + getTripDurationDays(trip), 0);
+            const flagUrl = group.code ? `https://flagcdn.com/w40/${group.code}.png` : null;
+            const isCountryActive = activeCountryKey === group.key;
+            const isLatestCountry = groupIndex === 0;
+            const countryCardBg = isCountryActive
+              ? `linear-gradient(135deg, ${rowSelectedBg}, ${colors.panelSoft})`
+              : isLatestCountry
+                ? `linear-gradient(135deg, ${rowNowBg}, ${colors.panelSoft})`
+                : `linear-gradient(135deg, ${colors.panelBg}, ${colors.panelSoft})`;
 
             return (
-              <div
-                key={loc.id}
-                ref={el => {
-                  rowRefs.current[loc.id] = el;
-                }}
-                onClick={() => onSelect(loc)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '10px 16px',
-                  borderBottom: `1px solid ${glassBorder}`,
-                  background: isActive ? rowSelectedBg : isLatest ? rowNowBg : 'transparent',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s',
-                }}
-                onMouseEnter={e => {
-                  if (!isActive) (e.currentTarget as HTMLDivElement).style.background = rowHoverBg;
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.background = isActive
-                    ? rowSelectedBg
-                    : isLatest
-                      ? rowNowBg
-                      : 'transparent';
-                }}
-              >
-                {flagUrl ? (
-                  <img
-                    src={flagUrl}
-                    alt=""
-                    loading="lazy"
-                    width={28}
-                    height={19}
-                    style={{
-                      width: '28px',
-                      height: '19px',
-                      objectFit: 'cover',
-                      borderRadius: '3px',
-                      boxShadow: '0 0 3px rgba(0,0,0,0.2)',
-                      flexShrink: 0,
-                      background: theme === 'dark' ? '#334155' : '#e2e8f0',
-                    }}
-                    onError={e => {
-                      const img = e.currentTarget;
-                      img.style.display = 'none';
-                      const fallback = img.nextElementSibling as HTMLDivElement | null;
-                      if (fallback) fallback.style.display = 'block';
-                    }}
-                  />
-                ) : null}
-
+              <div key={group.key} style={{ padding: '8px 10px' }}>
                 <div
                   style={{
-                    width: '28px',
-                    height: '19px',
-                    background: theme === 'dark' ? '#334155' : '#e2e8f0',
-                    borderRadius: '3px',
-                    flexShrink: 0,
-                    display: flagUrl ? 'none' : 'block',
+                    borderRadius: '14px',
+                    border: `1px solid ${glassBorder}`,
+                    background: countryCardBg,
+                    boxShadow: theme === 'dark' ? '0 8px 20px rgba(2,6,23,0.26)' : '0 8px 18px rgba(15,23,42,0.08)',
+                    overflow: 'hidden',
                   }}
-                />
-
-                <div style={{ minWidth: 0 }}>
+                >
                   <div
                     style={{
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      color: colors.text,
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
+                      padding: '10px 12px',
+                      borderBottom: isExpanded ? `1px solid ${glassBorder}` : 'none',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '10px',
                     }}
                   >
-                    {loc.city.split(',')[0]}
-                    {isLatest ? (
+                    <button
+                      className="cyber-subtle-btn"
+                      data-theme={theme}
+                      onClick={() => {
+                        if (isExpanded) {
+                          toggleCountry(group.key);
+                          return;
+                        }
+                        toggleCountry(group.key);
+                        onSelect(firstTrip);
+                      }}
+                      aria-label={`Go to arrival location for ${group.countryName}`}
+                      title={`Go to arrival location for ${group.countryName}`}
+                      style={{
+                        flex: 1,
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '10px',
+                        background: 'transparent',
+                        color: colors.text,
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        padding: 0,
+                        minWidth: 0,
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
+                      {flagUrl ? (
+                        <img
+                          src={flagUrl}
+                          alt=""
+                          loading="lazy"
+                          width={34}
+                          height={24}
+                          style={{
+                            width: '34px',
+                            height: '24px',
+                            objectFit: 'cover',
+                            borderRadius: '6px',
+                            boxShadow: '0 0 5px rgba(0,0,0,0.24)',
+                            flexShrink: 0,
+                            background: theme === 'dark' ? '#334155' : '#e2e8f0',
+                          }}
+                        />
+                      ) : (
+                        <div
+                          style={{
+                            width: '34px',
+                            height: '24px',
+                            background: theme === 'dark' ? '#334155' : '#e2e8f0',
+                            borderRadius: '6px',
+                            flexShrink: 0,
+                          }}
+                        />
+                      )}
+
+                        <div style={{ minWidth: 0, flex: 1 }}>
+                        <div
+                          style={{
+                            fontSize: '14px',
+                            fontWeight: 800,
+                            color: colors.text,
+                          }}
+                        >
+                          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{group.countryName}</span>
+                        </div>
+                        <div style={{ fontSize: '12px', color: colors.textSoft, marginTop: '2px', fontWeight: 600 }}>{routeSummary}</div>
+                        <div style={{ fontSize: '10px', color: colors.textSoft, marginTop: '2px', opacity: 0.88 }}>{endpointSummary}</div>
+                        <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '3px' }}>
+                          {rangeLabel} - {totalDays} {totalDays === 1 ? 'day' : 'days'}
+                        </div>
+                        </div>
+                      </div>
+                    </button>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '2px', flexShrink: 0 }}>
                       <span
                         style={{
-                          marginLeft: '6px',
                           fontSize: '10px',
-                          background: theme === 'dark' ? '#16a34a' : '#22c55e',
-                          color: '#fff',
-                          borderRadius: '4px',
-                          padding: '1px 5px',
-                          verticalAlign: 'middle',
+                          color: colors.text,
+                          background: theme === 'dark' ? 'rgba(15,23,42,0.58)' : 'rgba(255,255,255,0.78)',
+                          border: `1px solid ${glassBorder}`,
+                          borderRadius: '999px',
+                          padding: '2px 7px',
+                          lineHeight: 1.1,
+                          flexShrink: 0,
                         }}
                       >
-                        NOW
+                        {group.trips.length}
                       </span>
-                    ) : null}
+                      <button
+                        className="cyber-icon-btn"
+                        data-theme={theme}
+                        onClick={event => {
+                          event.stopPropagation();
+                          toggleCountry(group.key);
+                        }}
+                        aria-expanded={isExpanded}
+                        aria-label={isExpanded ? `Collapse ${group.countryName}` : `Expand ${group.countryName}`}
+                        title={isExpanded ? 'Collapse' : 'Expand'}
+                        style={{
+                          width: '28px',
+                          height: '28px',
+                          borderRadius: '8px',
+                          color: colors.textSoft,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)',
+                          transition: 'transform 0.22s ease, background 0.2s ease',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                          <path d="M2.4 4.2L6 7.8l3.6-3.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                  <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '1px' }}>{rangeLabel}</div>
+
+                  <div
+                    style={{
+                      margin: 0,
+                      border: 'none',
+                      borderRadius: 0,
+                      background: theme === 'dark' ? 'rgba(3,10,24,0.34)' : 'rgba(224,234,250,0.5)',
+                      overflow: 'hidden',
+                      display: 'grid',
+                      gridTemplateRows: isExpanded ? '1fr' : '0fr',
+                      opacity: isExpanded ? 1 : 0,
+                      transform: isExpanded ? 'translateY(0)' : 'translateY(-2px)',
+                      transition: 'grid-template-rows 0.24s ease, opacity 0.2s ease, transform 0.2s ease',
+                      pointerEvents: isExpanded ? 'auto' : 'none',
+                    }}
+                    aria-hidden={!isExpanded}
+                  >
+                    <div style={{ minHeight: 0 }}>
+                      {[...group.trips].reverse().map((loc, i) => {
+                        const isActive = loc.id === activeId;
+                        const isLatest = groupIndex === 0 && i === 0;
+                        const tripRangeLabel = formatTripDateRange(loc.arrival, loc.departure, ' - ');
+
+                        return (
+                          <div
+                            key={loc.id}
+                            ref={el => {
+                              rowRefs.current[loc.id] = el;
+                            }}
+                            onClick={() => onSelect(loc)}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              padding: '11px 14px 11px 56px',
+                              borderTop: i === 0 ? 'none' : `1px solid ${glassBorder}`,
+                              background: isActive ? rowSelectedBg : hoveredTripId === loc.id ? rowHoverBg : 'transparent',
+                              cursor: 'pointer',
+                              transition: 'background 0.15s',
+                            }}
+                              onMouseEnter={() => {
+                                if (!isActive) setHoveredTripId(loc.id);
+                              }}
+                              onMouseLeave={() => {
+                                setHoveredTripId(prev => (prev === loc.id ? null : prev));
+                              }}
+                          >
+                            <div style={{ minWidth: 0 }}>
+                              <div
+                                style={{
+                                  fontSize: '12px',
+                                  fontWeight: 700,
+                                  color: colors.text,
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                }}
+                              >
+                                {cityLabel(loc.city)}
+                                {isLatest ? (
+                                  <span
+                                    style={{
+                                      marginLeft: '6px',
+                                      fontSize: '9px',
+                                      background: theme === 'dark' ? '#16a34a' : '#22c55e',
+                                      color: '#fff',
+                                      borderRadius: '4px',
+                                      padding: '1px 4px',
+                                      verticalAlign: 'middle',
+                                    }}
+                                  >
+                                    NOW
+                                  </span>
+                                ) : null}
+                              </div>
+                              <div style={{ fontSize: '11px', color: colors.textSoft, marginTop: '1px' }}>{tripRangeLabel}</div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
             );

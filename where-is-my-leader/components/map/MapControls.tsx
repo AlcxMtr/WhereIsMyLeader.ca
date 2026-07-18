@@ -12,6 +12,8 @@ export function ThemeToggle({
 }) {
   return (
     <button
+      className="cyber-action-btn"
+      data-theme={theme}
       onClick={onToggle}
       style={{
         border: `1px solid ${colors.inputBorder}`,

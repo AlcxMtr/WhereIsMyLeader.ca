@@ -79,31 +79,29 @@ export default function Map() {
     };
   }, [allTravelData]);
 
-  useEffect(() => {
-    if (!timelineBounds) return;
-    if (!timelineFromDate) setTimelineFromDate(timelineBounds.minDate);
-    if (!timelineToDate) setTimelineToDate(timelineBounds.maxDate);
-  }, [timelineBounds, timelineFromDate, timelineToDate]);
+  const effectiveTimelineFromDate = timelineFromDate || timelineBounds?.minDate || '';
+  const effectiveTimelineToDate = timelineToDate || timelineBounds?.maxDate || '';
 
   const filteredTravelData = useMemo(() => {
-    if (!timelineFromDate && !timelineToDate) return allTravelData;
-    return allTravelData.filter(trip => tripOverlapsRange(trip, timelineFromDate, timelineToDate));
-  }, [allTravelData, timelineFromDate, timelineToDate]);
+    if (!effectiveTimelineFromDate && !effectiveTimelineToDate) return allTravelData;
+    return allTravelData.filter(trip => tripOverlapsRange(trip, effectiveTimelineFromDate, effectiveTimelineToDate));
+  }, [allTravelData, effectiveTimelineFromDate, effectiveTimelineToDate]);
 
-  useEffect(() => {
-    if (!selection?.trip) return;
-    const stillVisible = filteredTravelData.some(t => t.id === selection.trip.id);
-    if (!stillVisible) {
-      setSelection(null);
-      setActiveDetail(null);
-      setActiveSidebarId(null);
-    }
+  const visibleSelection = useMemo(() => {
+    if (!selection?.trip) return null;
+    return filteredTravelData.some(t => t.id === selection.trip.id) ? selection : null;
   }, [filteredTravelData, selection]);
 
-  useEffect(() => {
-    if (!activeDetail) return;
-    setActiveSidebarId(activeDetail.id);
-  }, [activeDetail]);
+  const visibleActiveDetail = useMemo(() => {
+    if (!activeDetail) return null;
+    return filteredTravelData.some(t => t.id === activeDetail.id) ? activeDetail : null;
+  }, [activeDetail, filteredTravelData]);
+
+  const sidebarActiveId = useMemo(() => {
+    if (visibleActiveDetail) return visibleActiveDetail.id;
+    if (activeSidebarId == null) return null;
+    return filteredTravelData.some(t => t.id === activeSidebarId) ? activeSidebarId : null;
+  }, [activeSidebarId, filteredTravelData, visibleActiveDetail]);
 
   const colors = getThemeColors(theme);
 
@@ -132,7 +130,7 @@ export default function Map() {
           travelData={filteredTravelData}
           theme={theme}
           setTheme={setTheme}
-          activeId={activeSidebarId}
+          activeId={sidebarActiveId}
           onToggleCollapsed={() => setSidebarVisible(false)}
           onSelect={trip => {
             setActiveSidebarId(trip.id);
@@ -148,13 +146,13 @@ export default function Map() {
         <GlobeMap
           travelData={filteredTravelData}
           theme={theme}
-          selection={selection}
+          selection={visibleSelection}
           sidebarVisible={sidebarVisible}
-          activeDetail={activeDetail}
+          activeDetail={visibleActiveDetail}
           setActiveDetail={setActiveDetail}
           onFlightNavigationStart={trip => setActiveSidebarId(trip.id)}
-          timelineFromDate={timelineFromDate || timelineBounds?.minDate || ''}
-          timelineToDate={timelineToDate || timelineBounds?.maxDate || ''}
+          timelineFromDate={effectiveTimelineFromDate}
+          timelineToDate={effectiveTimelineToDate}
           timelineMinDate={timelineBounds?.minDate || ''}
           timelineMaxDate={timelineBounds?.maxDate || ''}
           onTimelineFromDateChange={setTimelineFromDate}
