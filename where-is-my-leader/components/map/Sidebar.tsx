@@ -88,12 +88,7 @@ export default function Sidebar({
       });
     });
 
-    return groups
-      .sort((a, b) => b.lastIndex - a.lastIndex)
-      .map(group => ({
-        ...group,
-        tripCount: groups.filter(g => g.countryName === group.countryName).length,
-      }));
+    return groups.sort((a, b) => b.lastIndex - a.lastIndex);
   }, [regionDisplayNames, travelData]);
 
   const activeStayKey = useMemo(() => {
@@ -371,9 +366,9 @@ export default function Sidebar({
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
-                              gap: '6px',
+                              gap: '8px',
                               minWidth: 0,
-                              maxWidth: 'calc(100% - 86px)',
+                              maxWidth: 'calc(100% - 42px)',
                             }}
                           >
                             <span
@@ -388,21 +383,6 @@ export default function Sidebar({
                             >
                               {group.countryName}
                             </span>
-                            {group.tripCount > 1 ? (
-                              <span
-                                style={{
-                                  fontSize: '10px',
-                                  color: colors.textSoft,
-                                  border: `1px solid ${glassBorder}`,
-                                  borderRadius: '999px',
-                                  padding: '2px 6px',
-                                  lineHeight: 1.1,
-                                  flexShrink: 0,
-                                }}
-                              >
-                                Stay {group.key.split(':stay:')[1]}
-                              </span>
-                            ) : null}
                           </div>
                           {flagUrl ? (
                             <img
@@ -450,24 +430,10 @@ export default function Sidebar({
                         right: '12px',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '8px',
+                        gap: '4px',
                         flexShrink: 0,
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: '10px',
-                          color: colors.text,
-                          background: theme === 'dark' ? 'rgba(15,23,42,0.58)' : 'rgba(255,255,255,0.78)',
-                          border: `1px solid ${glassBorder}`,
-                          borderRadius: '999px',
-                          padding: '2px 7px',
-                          lineHeight: 1.1,
-                          flexShrink: 0,
-                        }}
-                      >
-                        {group.trips.length}
-                      </span>
                       <button
                         className="cyber-icon-btn"
                         data-theme={theme}
