@@ -11,8 +11,18 @@ out
 dist
 build
 
-# Version control and local secrets
+# Version control
 .git
+
+# Ignore the default env file
+.env
+
+# Ignore all specific environment files
+.env.production
+.env.development
+.env.test
+
+# Ignore all local override files (using the wildcard)
 .env*.local
 
 # Docker files (no need to copy them into the image)
