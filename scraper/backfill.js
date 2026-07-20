@@ -1,4 +1,3 @@
-// let currentDay = DateTime.fromISO('2026-07-05').setZone('America/Toronto');
 import { DateTime } from 'luxon';
 import Database from 'better-sqlite3';
 import path from 'path';
