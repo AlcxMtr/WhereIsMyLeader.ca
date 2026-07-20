@@ -102,7 +102,7 @@ function buildDescription(summary, citations, mappedItineraries) {
             return cleanAct.endsWith('.') ? cleanAct : `${cleanAct}.`;
           }).join('\n') 
         : 'No public itinerary events listed.';
-      return t.activities.length > 1 ? `[${t.date}]\n${acts}` : acts;
+      return mappedItineraries.length > 1 ? `[${t.date}]\n${acts}` : acts;
     }).join('\n\n') + '\n\n';
   }
 
