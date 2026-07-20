@@ -13,41 +13,8 @@ interface Trip {
   desc: string;
 }
 
-function normalizeLocation(loc: string): string {
-  if (!loc) return "";
-  return loc
-    .toLowerCase()
-    .replace(/['’]/g, "") 
-    .replace(/[^\w\s]/g, "") 
-    .trim();
-}
-
-function getPrimaryCity(loc: string): string {
-  if (!loc) return "";
-  return loc.split('/')[0].trim();
-}
-
-// Helper to calculate exact calendar date gaps without timezone shift leakage
-function getDaysBetween(dateStrA: string, dateStrB: string): number {
-  // Appending T00:00:00 treats the date as absolute local time rather than implicit UTC midnight
-  const dateA = new Date(`${dateStrA}T00:00:00`);
-  const dateB = new Date(`${dateStrB}T00:00:00`);
-  const msPerDay = 1000 * 60 * 60 * 24;
-  return Math.round((dateB.getTime() - dateA.getTime()) / msPerDay);
-}
-
-// Helper to modify an absolute calendar date by offset days
-function addDays(dateStr: string, days: number): string {
-  const date = new Date(`${dateStr}T00:00:00`);
-  date.setDate(date.getDate() + days);
-  return date.toISOString().split('T')[0];
-}
-
 export async function GET() {
   try {
-    // Only bridge short schedule gaps (weekends/holidays), never long inactive periods.
-    const MAX_BRIDGED_GAP_DAYS = 4;
-
     const isDocker = process.env.NODE_ENV === 'production';
     const dbPath = isDocker 
       ? path.join('/app/data', 'trips.db') 
@@ -55,12 +22,12 @@ export async function GET() {
 
     const db = new Database(dbPath, { readonly: true });
 
-    // CRITICAL FIX 1: Sort explicitly by date AND stop_order sequentially
+    // The logic is now pre-compiled in the new aggregated_trips table
     const rows = db.prepare(`
-      SELECT date, location, activities, lat, lng 
-      FROM trips 
-      ORDER BY date ASC, stop_order ASC
-    `).all() as { date: string, location: string, activities: string, lat: number | null, lng: number | null }[];
+      SELECT id, city, lat, lng, arrival, departure, desc 
+      FROM aggregated_trips 
+      ORDER BY id ASC
+    `).all() as { id: number, city: string, lat: number | null, lng: number | null, arrival: string, departure: string, desc: string }[];
 
     db.close();
 
@@ -68,68 +35,16 @@ export async function GET() {
       return NextResponse.json([]);
     }
 
-    const aggregatedTrips: Trip[] = [];
-    let currentTrip: Trip | null = null;
-    let tripIdCounter = 1;
-
-    for (const row of rows) {
-      let parsedActivities: string[] = [];
-      try {
-        parsedActivities = JSON.parse(row.activities);
-      } catch (e) {
-        parsedActivities = [row.activities]; 
-      }
-
-      const dailyDesc = parsedActivities.join('. ') + '.';
-      const rawPrimaryCity = getPrimaryCity(row.location);
-      const normalizedRowCity = normalizeLocation(rawPrimaryCity);
-
-      if (!currentTrip) {
-        currentTrip = {
-          id: tripIdCounter++,
-          city: rawPrimaryCity,
-          coords: [row.lat || 0, row.lng || 0], 
-          arrival: row.date,
-          departure: row.date,
-          desc: dailyDesc
-        };
-      } else {
-        const normalizedCurrentCity = normalizeLocation(currentTrip.city);
-
-        if (normalizedCurrentCity === normalizedRowCity) {
-          // Same location: extend the stay duration
-          currentTrip.departure = row.date;
-          if (!currentTrip.desc.includes(dailyDesc)) {
-              currentTrip.desc += ` ${dailyDesc}`;
-          }
-        } else {
-          // Location changed! First check if there is an unlogged weekend gap to bridge
-          const gapDays = getDaysBetween(currentTrip.departure, row.date);
-          
-          if (gapDays > 1 && gapDays <= MAX_BRIDGED_GAP_DAYS) {
-            // CRITICAL FIX 3: Forward-fill the previous trip up to the day before the new stop
-            currentTrip.departure = addDays(row.date, -1);
-          }
-
-          // Commit finished trip item to stack
-          aggregatedTrips.push(currentTrip);
-
-          // Spawn new tracking point object
-          currentTrip = {
-            id: tripIdCounter++,
-            city: rawPrimaryCity,
-            coords: [row.lat || 0, row.lng || 0],
-            arrival: row.date,
-            departure: row.date,
-            desc: dailyDesc
-          };
-        }
-      }
-    }
-
-    if (currentTrip) {
-      aggregatedTrips.push(currentTrip);
-    }
+    // Map the flat SQL columns to the nested frontend JSON interface
+const aggregatedTrips: Trip[] = rows.map(row => ({
+      id: row.id,
+      city: row.city,
+      coords: [row.lat || 0, row.lng || 0],
+      arrival: row.arrival,
+      departure: row.departure,
+      // FIX: Add a safe fallback so a NULL database field won't crash the server
+      desc: row.desc ? row.desc.trim() : "No data available."
+    }));
 
     return NextResponse.json(aggregatedTrips);
 

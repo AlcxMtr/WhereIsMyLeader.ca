@@ -25,6 +25,8 @@ services:
     environment:
       - TZ=America/Toronto      # <--- Forces Scraper logs to Toronto time
     restart: always
+    env_file:
+      - .env
 
   # The new Reverse Proxy
   caddy:
