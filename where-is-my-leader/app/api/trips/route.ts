@@ -26,7 +26,7 @@ export async function GET() {
     const rows = db.prepare(`
       SELECT id, city, lat, lng, arrival, departure, desc 
       FROM aggregated_trips 
-      ORDER BY id ASC
+      ORDER BY arrival ASC
     `).all() as { id: number, city: string, lat: number | null, lng: number | null, arrival: string, departure: string, desc: string }[];
 
     db.close();

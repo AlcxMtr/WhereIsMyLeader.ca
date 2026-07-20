@@ -1,0 +1,765 @@
+
+=================================================
+[2026-07-20T02:26:50.459Z] AI CALL FOR: East Rutherford, United States of America (2026-07-19)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: East Rutherford, United States of America
+    Date Range: 2026-07-19
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-19
+- 3:00 p.m. The Prime Minister will attend the 2026 FIFA Men’s World Cup Final.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney traveled to East Rutherford, New Jersey on July 19, 2026, to attend the 2026 FIFA Men’s World Cup Final at MetLife Stadium [1][3]. During the event, he sat alongside U.S. President Donald Trump to watch Spain defeat Argentina 1–0 in extra time [1][4]. This trip was primarily a high-profile public attendance at the tournament’s culminating match rather than a diplomatic mission involving treaties or bilateral meetings [1][2]. No official press releases indicate that PM Carney delivered speeches, signed agreements, or held formal meetings with foreign leaders during this visit [1][2].
+
+--- CITATIONS ---
+[
+  "https://montreal.citynews.ca/2026/07/19/carney-attends-world-cup-final-alongside-trump/",
+  "https://www.pm.gc.ca/en/news/news-releases/2025/12/03/prime-minister-carney-attend-fifa-world-cup-26tm-final-draw",
+  "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_final",
+  "https://www.hellomagazine.com/us/913678/2026-fifa-world-cup-final-photo-updates/",
+  "https://mzn.wikipedia.org/wiki/2026_FIFA_World_Cup_final",
+  "https://www.espn.in/football/story/_/id/47224100/fifa-2026-world-cup-match-schedule-final-kickoff-usa",
+  "https://www.nfl.com/news/2026-world-cup-final-will-be-played-at-metlife-stadium-in-new-jersey",
+  "https://www.aljazeera.com/sports/2024/2/5/new-jersey-to-host-2026-fifa-world-cup-final",
+  "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:33:43.534Z] AI CALL FOR: Jeddah, Saudi Arabia (2026-07-10)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Jeddah, Saudi Arabia
+    Date Range: 2026-07-10
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-10
+- 8:00 a.m. The Prime Minister will depart for Ottawa, Canada.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney made his first visit to Saudi Arabia by a Canadian prime minister in 26 years, arriving in Jeddah on July 8, 2026, to meet with Crown Prince Mohammed bin Salman and deepen bilateral ties [1][3]. During the trip, Canada and Saudi Arabia signed **13 new commercial agreements and memorandums of understanding worth over $1 billion**, covering sectors including mining, energy, health technology, infrastructure, and defence [4][6]. The leaders issued a **joint statement** committing to expanded cooperation across trade, technology, critical minerals, energy, and defence, and announced the establishment of a **Canada-Saudi Arabia Coordination Council** at the foreign minister level [2][7]. PM Carney also met with Saudi Aramco head Amin Nasser, led a delegation of Canadian pension funds to invest in Saudi energy and AI sectors, and announced Canada’s largest defence procurement ever—selecting TKMS for up to 12 submarines [5][6].
+
+--- CITATIONS ---
+[
+  "https://www.reuters.com/world/middle-east/carney-pitches-tighter-canada-saudi-mining-energy-ties-2026-07-09/",
+  "https://www.pm.gc.ca/en/news/statements/2026/07/09/prime-minister-canada-mark-carney-and-crown-prince-and-prime-minister",
+  "https://saudigazette.com.sa/article/662844/saudi-arabia/canadian-prime-minister-mark-carney-arrives-in-saudi-arabia-for-official-visit",
+  "https://www.winnipegfreepress.com/canada/2026/07/09/pm-carney-gifted-pistol-by-turkeys-president-at-nato",
+  "https://www.aljazeera.com/economy/2026/7/9/canadian-pm-visits-saudi-arabia-to-strengthen-energy-mining-partnerships",
+  "https://www.pm.gc.ca/en/news/news-releases/2026/07/09/prime-minister-carney-deepens-partnership-saudi-arabia-across-trade",
+  "https://x.com/Gulf_Research/status/2075583820967928193",
+  "https://www.youtube.com/watch?v=EyYrXTMjlyg",
+  "https://apnews.com/article/canada-saudi-arabia-carney-244d88ec564a3c17b6cf4bee41f24548",
+  "https://www.youtube.com/watch?v=Azb3D2xND2I",
+  "https://www.facebook.com/CanadianPM/posts/today-in-jeddah-prime-minister-carney-met-with-the-crown-prince-and-prime-minist/122187577784875278/",
+  "https://www.youtube.com/watch?v=Gv-zl8M9Tpc",
+  "https://www.ctvnews.ca/politics/article/pm-carneys-saudi-arabia-trip-a-high-water-mark-for-relations-business-leader/"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:33:47.635Z] AI CALL FOR: Ottawa, Ontario (2026-07-10)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Ottawa, Ontario
+    Date Range: 2026-07-10
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-10
+- 2:30 p.m. The Prime Minister will arrive in Ottawa, Canada.
+
+--- RAW SUMMARY RECEIVED ---
+null
+
+The provided search results and itinerary contain no public records, press releases, or news coverage detailing any official activities, treaties, meetings, or speeches by PM Carney in Ottawa, Ontario, on July 10, 2026, beyond his scheduled arrival at 2:30 p.m. While sources confirm he was sworn in as Prime Minister earlier and attended Canada Day events in Ottawa on July 1, 2026, no specific events are documented for the requested date [1][4]. The only detailed itinerary provided for mid-July 2026 places him in Calgary, Alberta, on July 11, not Ottawa [3].
+
+--- CITATIONS ---
+[
+  "https://www.bbc.com/news/articles/cgm1lg3gj7vo",
+  "https://www.cbc.ca/news/politics/carney-election-next-steps-1.7522507",
+  "https://finance.yahoo.com/economy/policy/articles/saturday-july-11-2026-211900965.html",
+  "https://www.youtube.com/watch?v=FVbK1rodgK0",
+  "https://www.youtube.com/watch?v=qidx5qusXPE"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:33:56.025Z] AI CALL FOR: Calgary, Alberta (2026-07-11)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Calgary, Alberta
+    Date Range: 2026-07-11
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-11
+- 5:00 p.m. The Prime Minister will meet with representatives of the Treaty 6, Treaty 7, and Treaty 8 First Nations.
+- 7:00 p.m. The Prime Minister will visit the Calgary Stampede grounds.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney traveled to Calgary, Alberta on July 11, 2026, to meet with representatives of Treaty 6, Treaty 7, and Treaty 8 First Nations in a closed-door session focused on national energy cooperation and Indigenous rights [1][2]. Following this private meeting, he visited the Calgary Stampede grounds in the evening to tour vendor stalls and exhibits while engaging with the public during the annual festivities [2][4]. The trip carried significant political weight as it occurred three months before a potential Alberta separatist vote, with discussions also touching on energy policy and provincial cooperation [3][5]. No major treaties were signed or bilateral agreements announced publicly, as the First Nations meeting was closed to media and the Stampede visit was primarily a photo opportunity and public engagement event [1][3].
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/10/saturday-july-11-2026",
+  "https://www.theepochtimes.com/world/carney-visits-calgary-stampede-meets-first-nations-leaders-6060563",
+  "https://info.fr/mark-carney-calgary-stampede-premieres-nations/",
+  "https://tawasulnews.com/en/story/carney-calgary-energy-indigenous-rights-alberta",
+  "https://ground.news/article/carney-heading-to-alberta-for-calgary-stampede_96b346",
+  "https://www.facebook.com/groups/444475679092423/posts/3334177783455517/",
+  "https://www.youtube.com/watch?v=ta7nudhCiPE"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:34:04.324Z] AI CALL FOR: Calgary, Alberta (2026-07-11 to 2026-07-12)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Calgary, Alberta
+    Date Range: 2026-07-11 to 2026-07-12
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-11
+- 5:00 p.m. The Prime Minister will meet with representatives of the Treaty 6, Treaty 7, and Treaty 8 First Nations.
+- 7:00 p.m. The Prime Minister will visit the Calgary Stampede grounds.
+
+### Date: 2026-07-12
+- 9:30 a.m. The Prime Minister will attend a Stampede breakfast.
+- 11:15 a.m. The Prime Minister will visit the Calgary Stampede grounds.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney traveled to Calgary, Alberta on July 11–12, 2026, to meet with representatives of Treaty 6, Treaty 7, and Treaty 8 First Nations and attend events at the Calgary Stampede[1][2]. The closed-door meeting on July 11 focused on national cooperation regarding energy policy and Indigenous rights, though no specific agreements or treaties were announced following the discussion[3][4]. PM Carney subsequently toured the Stampede grounds on July 11 and attended a Stampede breakfast and another grounds visit on July 12 as part of the annual festivities[1][5].
+
+--- CITATIONS ---
+[
+  "https://www.theepochtimes.com/world/carney-visits-calgary-stampede-meets-first-nations-leaders-6060563",
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/10/saturday-july-11-2026",
+  "https://info.fr/mark-carney-calgary-stampede-premieres-nations/",
+  "https://tawasulnews.com/en/story/carney-calgary-energy-indigenous-rights-alberta",
+  "https://ground.news/article/carney-heading-to-alberta-for-calgary-stampede_96b346",
+  "https://www.facebook.com/groups/444475679092423/posts/3334177783455517/",
+  "https://www.youtube.com/watch?v=92HDttcMIhI"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:34:54.353Z] AI CALL FOR: Southwestern Ontario (2026-07-16)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Southwestern Ontario
+    Date Range: 2026-07-16
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-16
+- 11:00 a.m. The Prime Minister will tour a defence manufacturing facility.
+- 11:45 a.m. The Prime Minister will announce new measures to strengthen Canada’s defence capabilities.
+- 2:45 p.m. The Prime Minister will meet with families at a child care centre.
+
+--- RAW SUMMARY RECEIVED ---
+On July 16, 2026, **PM Carney** traveled to **Southwestern Ontario** (specifically London) to tour a defence manufacturing facility and announce a **$2 billion partnership** with **General Dynamics** to build **190 new armoured combat vehicles** for the Canadian Armed Forces [2][3]. During the announcement, he was joined by **Defence Minister David McGuinty** and General Dynamics executives to outline measures strengthening Canada’s defence industrial base [3]. Later that afternoon, **PM Carney** met with families at a **child care centre** to engage on domestic social issues [1][3]. The trip also included reporter questions regarding the **Gordie Howe Bridge** agreement with the United States and federal resource development amid **Ontario wildfires** [3][5].
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/15/thursday-july-16-2026",
+  "https://www.youtube.com/watch?v=p-k1vFvDgIE",
+  "https://www.cpac.ca/headline-politics/episode/pm-mark-carney-partnership-to-build-new-armoured-vehicles--july-16-2026?id=ba4b310b-390a-4f01-903c-b95d7ca4d590",
+  "https://globalnews.ca/news/11962291/carney-stampede/",
+  "https://www.nytimes.com/2026/07/16/weather/carney-wildfire-ontario-government.html",
+  "https://www.cp24.com/video/shows/2026/07/01/watch-pm-carneys-full-address-at-the-canada-day-celebration-in-ottawa/",
+  "https://www.cbc.ca/news/politics/carney-premiers-meeting-1.7489368",
+  "https://www.youtube.com/watch?v=FVbK1rodgK0",
+  "https://www.youtube.com/watch?v=-j3JOxqgUYU"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:35:00.347Z] AI CALL FOR: Central Ontario (2026-07-17)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Central Ontario
+    Date Range: 2026-07-17
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-17
+- 9:00 a.m. The Prime Minister will attend the Dock 2026 (un) Conference.
+
+--- RAW SUMMARY RECEIVED ---
+null
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/16/friday-july-17-2026",
+  "https://doppleronline.ca/huntsville/prime-minister-carney-attends-private-muskoka-conference/",
+  "https://www.youtube.com/watch?v=8ChmvM7Vd9k",
+  "https://en.wikipedia.org/wiki/Draft:2026_Mark_Carney_World_Economic_Forum_speech",
+  "https://www.youtube.com/watch?v=ElkLu0IsBoo&vl=en",
+  "https://www.youtube.com/watch?v=TV80eIV3hWU",
+  "https://www.youtube.com/watch?v=54VyRvemybk"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:35:53.247Z] AI CALL FOR: Ottawa, Ontario (2026-07-01)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Ottawa, Ontario
+    Date Range: 2026-07-01
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-01
+- 10:05 a.m. The Prime Minister will attend a local Canada Day community celebration.
+- 12:00 p.m. The Prime Minister will deliver remarks at the national Canada Day ceremony.
+- LeBreton Flats Park
+
+--- RAW SUMMARY RECEIVED ---
+On July 1, 2026, **PM Carney** attended a local Canada Day community celebration in Ottawa before delivering remarks at the **national Canada Day ceremony** at LeBreton Flats Park [1][2]. During his speech, he lauded Canadians for standing united "in the face of a dangerous and divided world" [1]. Earlier in the day, he also engaged with residents in the Barrhaven suburb of Ottawa by flipping pancakes and shaking hands at a local event [2]. The Prime Minister concluded his Ottawa activities before departing for his hometown of Edmonton to end the day [2].
+
+--- CITATIONS ---
+[
+  "https://www.cp24.com/video/shows/2026/07/01/watch-pm-carneys-full-address-at-the-canada-day-celebration-in-ottawa/",
+  "https://www.youtube.com/watch?v=FVbK1rodgK0"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:35:56.817Z] AI CALL FOR: Edmonton, Alberta (2026-07-01)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Edmonton, Alberta
+    Date Range: 2026-07-01
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-01
+- 6:30 p.m. The Prime Minister will deliver remarks at a local Canada Day community celebration.
+
+--- RAW SUMMARY RECEIVED ---
+null
+
+--- CITATIONS ---
+[
+  "https://edmonton.citynews.ca/2026/07/01/celebrations-mark-canada-day-across-the-country-as-separatist-movements-emerge/",
+  "https://www.ctvnews.ca/edmonton/article/carneys-trip-to-edmonton-cancelled-as-ottawa-thunderstorms-ground-plane/",
+  "https://www.youtube.com/watch?v=kSqyIgw96tM",
+  "https://ici.radio-canada.ca/rci/en/news/2266271/canadians-mark-canada-day-as-carney-urges-unity-heat-grips-central-canada"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:36:07.703Z] AI CALL FOR: Vancouver, British Columbia (2026-07-02)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Vancouver, British Columbia
+    Date Range: 2026-07-02
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-02
+- 10:15 a.m. The Prime Minister will announce a new cooperative prosperity partnership to build a stronger, more sustainable economy. He will be joined by the Premier of British Columbia, David Eby.
+- 11:35 a.m. The Prime Minister will greet the President of the Philippines, Ferdinand Marcos Jr., and the First Lady of the Philippines, Louise Araneta-Marcos.
+- 11:40 a.m. The Prime Minister will meet with the President of the Philippines, Ferdinand Marcos Jr.
+- 12:00 p.m. The Prime Minister will host a working luncheon with the President of the Philippines, Ferdinand Marcos Jr.
+- 1:30 p.m. The Prime Minister will participate in a signing ceremony with the President of the Philippines, Ferdinand Marcos Jr.
+- 1:40 p.m. The Prime Minister will hold a joint media availability with the President of the Philippines, Ferdinand Marcos Jr.
+- 2:20 p.m. The Prime Minister will visit a local community business with the President of the Philippines, Ferdinand Marcos Jr.
+
+--- RAW SUMMARY RECEIVED ---
+On July 2, 2026, PM Carney visited Vancouver to elevate Canada–Philippines relations to a **Strategic Partnership** and sign multiple bilateral agreements with President Ferdinand Marcos Jr., including a joint declaration on **energy and natural resources** and memoranda on **tourism, culture, and labor**[1][4]. During the same day, PM Carney and BC Premier David Eby announced a historic **$200 billion Cooperative Prosperity Agreement** to fund major infrastructure projects such as the **Roberts Bank terminal expansion**, the **George Massey tunnel replacement**, and a new **North Coast transmission line**[5][9]. The trip also featured a working luncheon, a signing ceremony, and a joint media availability where both leaders reaffirmed their commitment to concluding a **bilateral free trade agreement** by the end of the year[1][7]. PM Carney further outlined plans to expand Western Canada’s export capacity through a new **oil pipeline** to the B.C. coast and additional **LNG terminals** to strengthen trade with Asia[6].
+
+--- CITATIONS ---
+[
+  "https://www.youtube.com/watch?v=wP_cNGLYeHg&vl=en",
+  "https://vancouver.citynews.ca/video/2026/07/02/carney-meets-with-philippines-president-in-vancouver/",
+  "https://vancouver.citynews.ca/2026/07/02/carney-premier-eby-vancouver-smith-pipeline-announcement/",
+  "https://www.pm.gc.ca/en/news/statements/2026/07/02/joint-statement-prime-minister-canada-and-president-republic-philippines",
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/02/update-thursday-july-2-2026",
+  "https://www.nytimes.com/2026/07/02/world/canada/carney-trade-oil-pipeline-alberta-british-columbia.html",
+  "https://www.pm.gc.ca/en/videos/2026/07/02/prime-minister-carney-announces-new-partnerships-philippines",
+  "https://www.cbc.ca/player/play/video/9.7206385",
+  "https://www.youtube.com/watch?v=_VSF7itujHA"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:36:12.840Z] AI CALL FOR: Calgary, Alberta (2026-07-02)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Calgary, Alberta
+    Date Range: 2026-07-02
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-02
+- 6:00 p.m. The Prime Minister will provide updates on proposed new energy infrastructure to diversify Canadian exports and build a stronger, more sustainable, more competitive economy. He will be joined by the Premier of Alberta, Danielle Smith.
+
+--- RAW SUMMARY RECEIVED ---
+On July 2, 2026, PM Carney visited Calgary, Alberta, to announce a proposed new West Coast oil pipeline project designed to diversify Canadian energy exports to Asia alongside Alberta Premier Danielle Smith[1][2]. During the visit, PM Carney and Premier Smith held a press conference to confirm that the proposed pipeline route from Bruderheim to Vancouver has been referred to the Major Projects Office and signed a memorandum of understanding with the Oil Sands Alliance for the Pathways Carbon Capture and Storage project[3][4]. The announcement emphasized that the pipeline and Pathways initiatives will collectively create over 100,000 high-paying jobs across Alberta, British Columbia, and the rest of Canada[1]. PM Carney also outlined broader infrastructure plans, including expanding LNG terminals and deep-sea ports in British Columbia to strengthen trade ties with Asian markets amid deteriorating economic relations with the United States[2].
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/speeches/2026/07/02/prime-minister-carney-announces-west-coast-pipeline-project-proposal-and",
+  "https://www.nytimes.com/2026/07/02/world/canada/carney-trade-oil-pipeline-alberta-british-columbia.html",
+  "https://boereport.com/2026/07/02/canadas-carney-announces-new-west-coast-pipeline-to-be-built-by-trans-mountain-corp/",
+  "https://www.cpac.ca/headline-politics/episode/fed-and-alberta-govts-agreement-on-new-pipeline-carbon-capture--july-2-2026?id=3bb61221-b87f-4691-9018-5e5df50dab21",
+  "https://www.cbc.ca/player/play/video/9.6994697",
+  "https://www.theglobeandmail.com/canada/video-carney-smith-announce-pipeline/",
+  "https://boereport.com/2026/07/02/b-c-carney-ink-deal-to-retain-northern-tanker-ban-ahead-of-alberta-pipeline-update/amp/",
+  "https://www.youtube.com/watch?v=77EeCfgZTIE",
+  "https://www.youtube.com/watch?v=dAjxcTrrcyo",
+  "https://influencemap.org/briefing/The-Oil-Gas-Industry-s-Capture-of-Canada-s-Energy-and-Climate-Policy-37149"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:37:03.736Z] AI CALL FOR: Ottawa, Ontario (2026-07-06)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Ottawa, Ontario
+    Date Range: 2026-07-06
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-06
+- 1:10 p.m. The Prime Minister will depart for Halifax, Nova Scotia.
+
+--- RAW SUMMARY RECEIVED ---
+null
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/news-releases/2026/06/30/prime-minister-carney-attend-nato-summit-turkiye-and-visit-saudi",
+  "https://www.youtube.com/watch?v=mUs2qLnAd50",
+  "https://en.wikipedia.org/wiki/List_of_international_prime_ministerial_trips_made_by_Mark_Carney",
+  "https://www.instagram.com/p/DaOB6Yzkkau/",
+  "https://www.facebook.com/CanadianDefenceReview/posts/-prime-minister-mark-carney-announced-that-he-will-travel-to-ankara-t%C3%BCrkiye-from/1676449487816038/",
+  "https://ottawa.citynews.ca/video/2026/07/05/carney-heading-to-europe-for-nato-summit/",
+  "https://toronto.citynews.ca/video/2026/07/05/carney-heading-to-europe-for-nato-summit/",
+  "https://montreal.citynews.ca/video/2026/07/05/carney-heading-to-europe-for-nato-summit/",
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/05/monday-july-6-2026",
+  "https://toronto.citynews.ca/2026/06/30/carney-to-travel-to-turkey-for-nato-summit-next-week-then-saudi-arabia/",
+  "https://www.irishtimes.com/politics/2026/06/07/canadian-prime-minister-mark-carney-to-visit-ireland-next-week/",
+  "https://ca.finance.yahoo.com/news/pm-carney-ireland-meet-leaders-084241402.html"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:37:08.349Z] AI CALL FOR: Halifax, Nova Scotia (2026-07-06)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Halifax, Nova Scotia
+    Date Range: 2026-07-06
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-06
+- 4:50 p.m. The Prime Minister will tour a Canadian Armed Forces base.
+- 5:10 p.m. The Prime Minister will announce new measures to make Canada more secure, resilient, and prosperous.
+- 5:50 p.m. The Prime Minister will depart for Ankara, Türkiye.
+
+--- RAW SUMMARY RECEIVED ---
+On July 6, 2026, **PM Carney** visited **Canadian Forces Base Halifax** to tour the facility and announce **Thyssenkrupp Marine Systems (TKMS)** as the preferred supplier for Canada’s next fleet of **12 modern submarines** under the Canadian Patrol Submarine Project [2]. During a 5:10 p.m. announcement, he declared new measures to enhance Canada’s **security, resilience, and prosperity**, confirming the deal will replace the aging Victoria-class fleet with first deliveries scheduled for 2034 [2][5]. Following the announcement, PM Carney departed Halifax at 5:50 p.m. to travel to **Ankara, Türkiye**, for the **2026 NATO Summit** [1][3].
+
+--- CITATIONS ---
+[
+  "https://www.youtube.com/watch?v=CcsIcNHmIp4",
+  "https://www.pm.gc.ca/en/news/news-releases/2026/07/06/prime-minister-carney-announces-preferred-supplier-canadian-patrol",
+  "https://www.youtube.com/watch?v=mUs2qLnAd50",
+  "https://www.politico.com/newsletters/canada-playbook/2026/07/06/the-end-of-nice-00987516",
+  "https://www.uspa24.com/bericht-27007/prime-minister-mark-carney-in-halifax.html",
+  "https://islandsocialtrends.ca/carney-heads-to-turkiye-for-2026-nato-conference/",
+  "https://halifax.citynews.ca/2026/07/05/carney-to-travel-to-turkey-where-nato-allies-will-focus-on-managing-trump-2/",
+  "https://www.facebook.com/NovaScotiaBuzz/posts/prime-minister-mark-carney-will-be-in-halifax-on-monday-for-what-is-widely-expec/1610503591083169/",
+  "https://www.youtube.com/watch?v=knipyZyURs0&vl=en",
+  "https://www.youtube.com/watch?v=CO8aeuTPvwM"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:37:17.849Z] AI CALL FOR: Ankara, Türkiye (2026-07-07)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Ankara, Türkiye
+    Date Range: 2026-07-07
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-07
+- 9:30 a.m. The Prime Minister will arrive in Ankara, Türkiye.
+- 11:00 a.m. The Prime Minister will meet with the President of Türkiye, Recep Tayyip Erdoğan.
+- 2:30 p.m. The Prime Minister will meet with the President of Ukraine, Volodymyr Zelenskyy.
+- 5:15 p.m. The Prime Minister will meet with the Prime Minister of the Netherlands, Rob Jetten.
+- 6:20 p.m. The Prime Minister will meet with the Chancellor of Germany, Frederich Merz, and the Prime Minister of Norway, Jonas Ghar Støre.
+- 8:10 p.m. The Prime Minister will arrive at a reception hosted by the President of Türkiye, Recep Tayyip Erdoğan.
+- 8:20 p.m. The Prime Minister will participate in the 2026 NATO Summit family photo.
+- 8:30 p.m. The Prime Minister will attend a dinner hosted by the President of Türkiye, Recep Tayyip Erdoğan.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney traveled to Ankara, Türkiye on July 7, 2026, to attend the 2026 NATO Summit, marking his first visit to the country as Prime Minister and the first by a Canadian leader in 11 years [4][8]. During the trip, he met with President Recep Tayyip Erdoğan to launch negotiations for a comprehensive free trade agreement and discuss strengthening defence industrial capacity through the proposed Defence, Security and Resilience Bank [1][11]. He also held bilateral meetings with Ukrainian President Volodymyr Zelenskyy to reaffirm Canada’s military support and air defence assistance, and with German Chancellor Friedrich Merz and Norwegian Prime Minister Jonas Gahr Støre regarding alliance unity [1][2][10]. The summit agenda focused on increasing NATO defence spending to 5% of GDP and finalizing major arms deals, including Canada’s selection of a German-Norwegian consortium for its new submarine fleet [7][8].
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/readouts/2026/07/07/prime-minister-carney-meets-president-turkiye-recep-tayyip-erdogan",
+  "https://www.nationalobserver.com/2026/07/07/news/carney-meets-allied-nations-turkey-margins-nato-summit",
+  "https://www.dailysabah.com/politics/diplomacy/erdogan-holds-talks-with-canadian-pm-ahead-of-nato-summit",
+  "https://www.anews.com.tr/turkey/2026/07/07/canadas-premier-arrives-in-ankara-for-nato-leaders-summit",
+  "https://www.youtube.com/watch?v=OC8wF-HA6c0",
+  "https://www.aa.com.tr/en/pg/photo-gallery/recep-tayyip-erdogan-mark-carney-meeting-in-ankara/164372",
+  "https://www.nationalobserver.com/2026/07/07/news/carney-arrives-turkey-high-level-nato-talks-german-south-korean-leaders",
+  "https://www.youtube.com/watch?v=NOmA-OkCQzE",
+  "https://www.youtube.com/watch?v=TV80eIV3hWU",
+  "https://www.facebook.com/CanadianPM/photos/during-the-2026-nato-summit-in-ankara-prime-minister-carney-met-with-president-z/122187277964875278/",
+  "https://www.facebook.com/CanadianPM/posts/today-prime-minister-carney-met-with-the-president-of-t%C3%BCrkiye-recep-tayyip-erdo%C4%9F/122187268472875278/",
+  "https://www.aa.com.tr/en/americas/canadian-prime-minister-departs-for-turkiye-to-attend-nato-summit-in-ankara/3987963"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:37:26.475Z] AI CALL FOR: Ankara, Türkiye (2026-07-07 to 2026-07-08)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Ankara, Türkiye
+    Date Range: 2026-07-07 to 2026-07-08
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-07
+- 9:30 a.m. The Prime Minister will arrive in Ankara, Türkiye.
+- 11:00 a.m. The Prime Minister will meet with the President of Türkiye, Recep Tayyip Erdoğan.
+- 2:30 p.m. The Prime Minister will meet with the President of Ukraine, Volodymyr Zelenskyy.
+- 5:15 p.m. The Prime Minister will meet with the Prime Minister of the Netherlands, Rob Jetten.
+- 6:20 p.m. The Prime Minister will meet with the Chancellor of Germany, Frederich Merz, and the Prime Minister of Norway, Jonas Ghar Støre.
+- 8:10 p.m. The Prime Minister will arrive at a reception hosted by the President of Türkiye, Recep Tayyip Erdoğan.
+- 8:20 p.m. The Prime Minister will participate in the 2026 NATO Summit family photo.
+- 8:30 p.m. The Prime Minister will attend a dinner hosted by the President of Türkiye, Recep Tayyip Erdoğan.
+
+### Date: 2026-07-08
+- 8:10 a.m. The Prime Minister will arrive at the 2026 North Atlantic Treaty Organization (NATO) Summit.
+- 8:30 a.m. The Prime Minister will hold a brief media availability.
+- 9:00 a.m. The Prime Minister will meet with the Prime Minister of Denmark, Mette Frederiksen.
+- 10:45 a.m. The Prime Minister will be welcomed by the Secretary General of NATO, Mark Rutte, and the President of Türkiye, Recep Tayyip Erdoğan, to the 2026 NATO Summit.
+- 11:00 a.m. The Prime Minister will participate in the official 2026 NATO Summit family photo.
+- 11:15 a.m. The Prime Minister will attend the North Atlantic Council meeting.
+- 2:05 p.m. The Prime Minister will meet with the President of Latvia, Edgars Rinkēvič.
+- 5:30 p.m. The Prime Minister will depart Ankara, Türkiye.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney attended the 2026 NATO Summit in Ankara, Türkiye, from July 7–8, 2026, marking his first official visit to the country and the first by a Canadian Prime Minister in 11 years [1][9]. During the trip, he held bilateral meetings with President Recep Tayyip Erdoğan, Ukrainian President Volodymyr Zelenskyy, and several European leaders including the Prime Ministers of the Netherlands, Norway, and Denmark [1][3][5]. Key outcomes included welcoming Türkiye’s support for Canada’s proposed Defence, Security and Resilience Bank (DSRB) and jointly launching negotiations for a comprehensive Canada-Türkiye free trade agreement [5][12]. PM Carney also addressed reporters on NATO allies’ backing for the DSRB, Canada’s push to increase defence spending to 5% of GDP, and the selection of Germany’s TKMS for Canada’s new submarine fleet [2][6].
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/news-releases/2026/06/30/prime-minister-carney-attend-nato-summit-turkiye-and-visit-saudi",
+  "https://www.youtube.com/watch?v=TV80eIV3hWU",
+  "https://m.aa.com.tr/en/pg/photo-gallery/recep-tayyip-erdogan-mark-carney-meeting-in-ankara/164372",
+  "https://www.dailysabah.com/politics/diplomacy/erdogan-holds-talks-with-canadian-pm-ahead-of-nato-summit/amp",
+  "https://finance.yahoo.com/economy/policy/articles/readout-prime-minister-carney-meets-110700630.html",
+  "https://www.cpac.ca/headline-politics/episode/pm-carney-speaks-with-reporters-in-ankara-turkiye--july-8-2026?id=acb4b0d8-aa21-4375-96f2-f98b3fb71f4b",
+  "https://rdnewsnow.com/2026/07/05/carney-to-travel-to-turkey-where-nato-allies-will-focus-on-managing-trump/",
+  "https://www.youtube.com/watch?v=4IKr2qtq29k",
+  "https://www.youtube.com/watch?v=NOmA-OkCQzE",
+  "https://toronto.citynews.ca/2026/06/30/carney-to-travel-to-turkey-for-nato-summit-next-week-then-saudi-arabia/",
+  "https://www.dailysabah.com/politics/diplomacy/president-erdogan-invites-canadas-pm-carney-to-nato-summit-in-turkiye/amp",
+  "https://www.facebook.com/CanadianPM/posts/today-prime-minister-carney-met-with-the-president-of-t%C3%BCrkiye-recep-tayyip-erdo%C4%9F/122187268472875278/",
+  "https://www.instagram.com/p/DaOB6Yzkkau/",
+  "https://www.facebook.com/CanadianDefenceReview/posts/-prime-minister-mark-carney-announced-that-he-will-travel-to-ankara-t%C3%BCrkiye-from/1676449487816038/"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:37:31.370Z] AI CALL FOR: Jeddah, Saudi Arabia (2026-07-08)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Jeddah, Saudi Arabia
+    Date Range: 2026-07-08
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-08
+- 9:15 p.m. The Prime Minister will arrive in Jeddah, Saudi Arabia.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney arrived in Jeddah on July 8, 2026, marking the first visit by a Canadian prime minister to Saudi Arabia in 26 years, and immediately met with Crown Prince Mohammed bin Salman to deepen bilateral ties in mining, energy, and artificial intelligence [1][2][3]. During the visit, the leaders welcomed the establishment of the Canada-Saudi Arabia Coordination Council and signed two specific memorandums of understanding on energy and AI, alongside 13 commercial agreements worth over $1 billion CAD between Canadian and Saudi companies [2][5]. PM Carney also reaffirmed Canada’s support for regional sovereignty, condemned recent Iranian attacks on Gulf countries, and confirmed Canada’s intent to participate in the 2030 Riyadh World Expo to showcase innovation supporting Saudi Vision 2030 [2][5].
+
+--- CITATIONS ---
+[
+  "https://www.reuters.com/world/middle-east/carney-pitches-tighter-canada-saudi-mining-energy-ties-2026-07-09/",
+  "https://www.pm.gc.ca/en/news/readouts/2026/07/09/prime-minister-carney-meets-crown-prince-and-prime-minister-saudi-arabia",
+  "https://saudigazette.com.sa/article/662844/saudi-arabia/canadian-prime-minister-mark-carney-arrives-in-saudi-arabia-for-official-visit",
+  "https://www.ctvnews.ca/politics/article/pm-carneys-saudi-arabia-trip-a-high-water-mark-for-relations-business-leader/",
+  "https://www.washingtonpost.com/business/2026/07/09/canada-saudi-arabia-carney/4f37234a-7be8-11f1-b194-f872dd4ec5aa_story.html",
+  "https://www.youtube.com/watch?v=Gv-zl8M9Tpc",
+  "https://everythinggp.com/2026/07/08/carney-in-saudi-arabia-seeking-economic-partnership-amid-human-rights-concerns/",
+  "https://www.youtube.com/watch?v=dtzuemMb4iY",
+  "https://www.youtube.com/watch?v=EyYrXTMjlyg"
+]
+=================================================
+
+=================================================
+[2026-07-20T02:37:38.469Z] AI CALL FOR: Jeddah, Saudi Arabia (2026-07-08 to 2026-07-09)
+=================================================
+--- PROMPT SENT ---
+You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
+    Location: Jeddah, Saudi Arabia
+    Date Range: 2026-07-08 to 2026-07-09
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
+    
+    Collected Daily Itinerary Data:
+    ### Date: 2026-07-08
+- 9:15 p.m. The Prime Minister will arrive in Jeddah, Saudi Arabia.
+
+### Date: 2026-07-09
+- 2:05 p.m. The Prime Minister will arrive at the Royal Palace and be greeted by the Crown Prince and Prime Minister of Saudi Arabia, His Royal Highness Mohammed bin Salman.
+- Royal Palace
+- 2:15 p.m. The Prime Minister will meet with the Crown Prince and Prime Minister of Saudi Arabia, His Royal Highness Mohammed bin Salman.
+- Royal Palace
+- 3:00 p.m. The Prime Minister will attend a lunch hosted by the Crown Prince and Prime Minister of Saudi Arabia, His Royal Highness Mohammed bin Salman.
+- Royal Palace
+- 4:15 p.m. The Prime Minister will participate in a signing ceremony with the Crown Prince and Prime Minister of Saudi Arabia, His Royal Highness Mohammed bin Salman.
+- Royal Palace
+- 5:15 p.m. The Prime Minister will deliver remarks and participate in a signing ceremony at the Saudi Arabia-Canada Investment Forum.
+- 6:40 p.m. The Prime Minister will hold a media availability.
+
+--- RAW SUMMARY RECEIVED ---
+PM Carney made his first official visit to Saudi Arabia in 26 years, arriving in Jeddah on July 8, 2026, to meet Crown Prince Mohammed bin Salman at the Royal Palace on July 9 [1][5]. During the bilateral meeting, the leaders welcomed the establishment of the **Canada-Saudi Arabia Coordination Council** and signed two specific **memoranda of understanding (MOUs) on energy and artificial intelligence** to deepen cooperation [1][5]. PM Carney also delivered remarks at the **Saudi Arabia-Canada Investment Forum**, confirmed Canada’s intent to participate in the **2030 Riyadh World Expo**, and condemned recent Iranian attacks on Gulf countries while reaffirming support for regional sovereignty [1][9]. The trip concluded with a media availability where Carney defended the visit despite human rights concerns, emphasizing that direct engagement is more effective than condemnation from afar [9].
+
+--- CITATIONS ---
+[
+  "https://www.pm.gc.ca/en/news/readouts/2026/07/09/prime-minister-carney-meets-crown-prince-and-prime-minister-saudi-arabia",
+  "https://www.reuters.com/world/middle-east/carney-pitches-tighter-canada-saudi-mining-energy-ties-2026-07-09/",
+  "https://www.nationalobserver.com/2026/07/09/news/carneys-saudi-arabia-trip-high-water-mark-relations-business-leader",
+  "https://www.pm.gc.ca/en/news/media-advisories/2026/07/08/thursday-july-9-2026",
+  "https://theintelligencebulletin.com/international-edition/saudicanada-council-launches-as-carney-ends-july-2026/",
+  "https://www.aljazeera.com/economy/2026/7/9/canadian-pm-visits-saudi-arabia-to-strengthen-energy-mining-partnerships",
+  "https://www.youtube.com/watch?v=Azb3D2xND2I",
+  "https://www.youtube.com/watch?v=EyYrXTMjlyg",
+  "https://apnews.com/article/canada-saudi-arabia-carney-244d88ec564a3c17b6cf4bee41f24548"
+]
+=================================================

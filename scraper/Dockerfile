@@ -11,7 +11,9 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install python/make/g++ to compile better-sqlite3, install packages, then remove the build tools to keep the image small
-RUN apk add --no-cache --virtual .build-deps python3 make g++ \
+RUN apk add --no-cache ca-certificates && \
+    update-ca-certificates && \
+    apk add --no-cache --virtual .build-deps python3 make g++ \
     && npm install \
     && apk del .build-deps
 

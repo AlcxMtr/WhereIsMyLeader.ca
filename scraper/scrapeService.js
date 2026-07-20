@@ -100,7 +100,7 @@ function buildDescription(summary, citations, mappedItineraries) {
         ? t.activities.map(act => {
             const cleanAct = act.trim();
             return cleanAct.endsWith('.') ? cleanAct : `${cleanAct}.`;
-          }).join(' ') 
+          }).join('\n') 
         : 'No public itinerary events listed.';
       return t.activities.length > 1 ? `[${t.date}]\n${acts}` : acts;
     }).join('\n\n') + '\n\n';
@@ -116,35 +116,49 @@ function buildDescription(summary, citations, mappedItineraries) {
 }
 
 // 4. The Incremental Aggregation Engine
-// 4. The Incremental Aggregation Engine
 async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
   const rawPrimaryCity = getPrimaryCity(fullLocation);
   const normalizedRowCity = normalizeLocation(rawPrimaryCity);
 
-  const lastAgg = db.prepare('SELECT * FROM aggregated_trips ORDER BY id DESC LIMIT 1').get();
+  // Check if a journey matching these temporal anchors already exists inside our aggregated storage data
+  const exactDuplicate = db.prepare(`
+    SELECT id, arrival, departure FROM aggregated_trips 
+    WHERE city = ? AND arrival = ? AND departure = ?
+    LIMIT 1
+  `).get(rawPrimaryCity, dateString, dateString);
 
   let targetAggId;
   let arrival;
   let departure = dateString;
 
-  if (lastAgg && normalizeLocation(lastAgg.city) === normalizedRowCity) {
-    targetAggId = lastAgg.id;
-    arrival = lastAgg.arrival;
-    db.prepare('UPDATE aggregated_trips SET departure = ? WHERE id = ?').run(departure, targetAggId);
+  if (exactDuplicate) {
+    // FIX: exact twin item found, anchor target update variables seamlessly onto it
+    targetAggId = exactDuplicate.id;
+    arrival = exactDuplicate.arrival;
   } else {
-    if (lastAgg) {
-      const gapDays = getDaysBetween(lastAgg.departure, dateString);
-      if (gapDays > 1 && gapDays <= 4) {
-        const bridgedDeparture = addDays(dateString, -1);
-        db.prepare('UPDATE aggregated_trips SET departure = ? WHERE id = ?').run(bridgedDeparture, lastAgg.id);
+    // Standard matching progression rules continue below...
+    const lastAgg = db.prepare('SELECT * FROM aggregated_trips ORDER BY id DESC LIMIT 1').get();
+
+    if (lastAgg && normalizeLocation(lastAgg.city) === normalizedRowCity) {
+      targetAggId = lastAgg.id;
+      arrival = lastAgg.arrival;
+      db.prepare('UPDATE aggregated_trips SET departure = ? WHERE id = ?').run(departure, targetAggId);
+    } else {
+      if (lastAgg) {
+        const gapDays = getDaysBetween(lastAgg.departure, dateString);
+        if (gapDays > 1 && gapDays <= 4) {
+          const bridgedDeparture = addDays(dateString, -1);
+          db.prepare('UPDATE aggregated_trips SET departure = ? WHERE id = ?').run(bridgedDeparture, lastAgg.id);
+        }
       }
+      arrival = dateString;
+      const info = db.prepare('INSERT INTO aggregated_trips (city, lat, lng, arrival, departure) VALUES (?, ?, ?, ?, ?)')
+        .run(rawPrimaryCity, lat, lng, arrival, departure);
+      targetAggId = info.lastInsertRowid;
     }
-    arrival = dateString;
-    const info = db.prepare('INSERT INTO aggregated_trips (city, lat, lng, arrival, departure) VALUES (?, ?, ?, ?, ?)')
-      .run(rawPrimaryCity, lat, lng, arrival, departure);
-    targetAggId = info.lastInsertRowid;
   }
 
+  // Fetch all raw daily rows connected to this specific multi-day stay
   const rawTrips = db.prepare(`SELECT date, itinerary, location FROM trips WHERE date >= ? AND date <= ?`)
     .all(arrival, departure);
 
@@ -154,8 +168,6 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
     activities: JSON.parse(t.itinerary)
   }));
 
-  // FIX: Make the AI call fault-tolerant. 
-  // Default to a 'null' response so the fallback description logic engages if the API crashes.
   let aiResponse = { summary: "null", citations: [] };
   
   try {
@@ -164,12 +176,10 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
     console.warn(`[Warning] AI Summarization failed for ${fullLocation}. Falling back to raw itinerary. Reason: ${error.message}`);
   }
 
-  // FIX: Change .contains() (invalid JS) to .includes()
   const finalSummary = aiResponse.summary.includes("null") ? null : aiResponse.summary;
   const citationsJson = JSON.stringify(aiResponse.citations);
   const compiledDesc = buildDescription(finalSummary, aiResponse.citations, mappedItineraries);
 
-  // Because this is now safely reached, the database 'desc' column will never be left NULL
   db.prepare('UPDATE aggregated_trips SET summary = ?, citations = ?, desc = ? WHERE id = ?')
     .run(finalSummary, citationsJson, compiledDesc, targetAggId);
 }

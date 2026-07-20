@@ -1,13 +1,34 @@
-// FIX: Force Node.js inside the Docker container to accept the SSL certificate
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 import OpenAI from "openai";
+import fs from "fs";
+import path from "path";
 
 // Initialize the client pointing to Perplexity's API endpoint
 const perplexity = new OpenAI({
   apiKey: process.env.PERPLEXITY_API_KEY,
   baseURL: "https://api.perplexity.ai",
 });
+
+// Helper to write dedicated AI logs without flooding the main console
+function logAiDebug(location, dateRange, prompt, summary, citations) {
+  const isDocker = process.env.NODE_ENV === 'production';
+  const logDir = isDocker ? '/app/data' : path.resolve('../shared-data');
+  const logPath = path.join(logDir, 'ai_debug.log');
+  
+  const timestamp = new Date().toISOString();
+  const logEntry = `\n=================================================\n` +
+                   `[${timestamp}] AI CALL FOR: ${location} (${dateRange})\n` +
+                   `=================================================\n` +
+                   `--- PROMPT SENT ---\n${prompt.trim()}\n\n` +
+                   `--- RAW SUMMARY RECEIVED ---\n${summary}\n\n` +
+                   `--- CITATIONS ---\n${JSON.stringify(citations, null, 2)}\n` +
+                   `=================================================\n`;
+
+  try {
+    fs.appendFileSync(logPath, logEntry, 'utf8');
+  } catch (err) {
+    console.error("Failed to write to ai_debug.log:", err);
+  }
+}
 
 /**
  * Searches the web and generates a single cohesive summary for the Prime Minister's entire multi-day stay at a location.
@@ -18,7 +39,6 @@ const perplexity = new OpenAI({
  * @returns {Promise<{summary: string, citations: string[]}>}
  */
 export async function summarizeItinerary(arrivalDate, departureDate, location, itineraries) {
-  // Format the raw itineraries array into a clean textual timeline for the LLM prompt context
   const formattedTimeline = itineraries
     .map(item => {
       const dayActivities = item.activities.length > 0 
@@ -33,39 +53,42 @@ export async function summarizeItinerary(arrivalDate, departureDate, location, i
     : `${arrivalDate} to ${departureDate}`;
 
   const promptContent = `
-    You are a meticulous, objective researcher compiling an official historical archive of the Prime Minister's travels.
-    Below is the complete collected itinerary timeline for the Prime Minister's stay at a specific location.
-    
+    You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    Consider the following location and date range.
+
     Location: ${location}
     Date Range: ${dateRangeString}
+
+    TASK:
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
+    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    
+    STRICT CONSTRAINTS:
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
+    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+
+    To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
     
     Collected Daily Itinerary Data:
     ${formattedTimeline}
-
-    TASK:
-    1. Cross-reference this date range and location against the live web to find news coverage, official press releases, and confirmed media reports covering what took place.
-    2. Synthesize a concise, highly relevant, and interesting narrative summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
-    
-    STRICT CONSTRAINTS:
-    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you MUST output exactly: "null"
-    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
-    - Do NOT infer, guess, or generalize based on typical political visits. Stick strictly to facts reported in the active search results.
   `;
 
   try {
     const response = await perplexity.chat.completions.create({
-      model: "sonar", // Perplexity's search-grounded model
+      model: "sonar", 
       messages: [
         { role: "system", content: "You are a factual, precise research assistant specializing in historical political archiving." },
         { role: "user", content: promptContent }
       ],
-      temperature: 0.15, // Slightly higher to allow narrative synthesis while enforcing factual boundaries
+      temperature: 0.15, 
     });
 
     const summary = response.choices[0].message.content;
-    
-    // Perplexity automatically maps source URLs into this array property
     const citations = response.citations || [];
+
+    // Quietly log the entire transaction to the debug file
+    logAiDebug(location, dateRangeString, promptContent, summary, citations);
 
     return {
       summary: summary.trim(),
@@ -74,6 +97,8 @@ export async function summarizeItinerary(arrivalDate, departureDate, location, i
 
   } catch (error) {
     console.error("Perplexity API Stay Summarization Error:", error);
+    // Also log the error to the debug file so you don't lose context
+    logAiDebug(location, dateRangeString, promptContent, `ERROR: ${error.message}`, []);
     throw error;
   }
 }
