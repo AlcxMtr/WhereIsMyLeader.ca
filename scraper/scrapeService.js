@@ -205,6 +205,7 @@ async function scrapeSingleDay(url, dateString) {
         if (
             lowerText.includes('note: all times local') || 
             lowerText.includes('note for media') || 
+            lowerText.includes('note to media') || 
             lowerText.includes('notes for media') || 
             lowerText.includes('open coverage') ||
             lowerText.includes('pooled photo opportunity') ||
