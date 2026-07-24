@@ -78,6 +78,8 @@ export default function GlobeMap({
   const globeRef = useRef<GlobeHandle | null>(null);
   const animationTokenRef = useRef(0);
   const [dimensions, setDimensions] = useState({ width: 1000, height: 800 });
+  const [expandedDetailTripId, setExpandedDetailTripId] = useState<number | null>(null);
+  const [isDetailExpanded, setIsDetailExpanded] = useState(false);
 
   // ------------------------------------------------------------------
   // Country overlay — single 110m world GeoJSON fetch (once on mount)
@@ -195,6 +197,7 @@ export default function GlobeMap({
   );
 
   const detailHtmlData = useMemo(() => buildDetailHtmlData(activeDetail), [activeDetail]);
+  const currentStayTripId = travelData.length ? travelData[travelData.length - 1].id : null;
 
   useEffect(() => {
     if (!startupTarget) return;
@@ -369,6 +372,8 @@ export default function GlobeMap({
   const renderDetailHtml = useCallback(
     (datum: object) => {
       const item = datum as HtmlDetailDatum;
+      const detailIsExpanded = expandedDetailTripId === item.trip.id && isDetailExpanded;
+      const isCurrentStay = currentStayTripId != null && item.trip.id === currentStayTripId;
       const currentIndex = travelData.findIndex(trip => trip.id === item.trip.id);
       const previousTrip = currentIndex > 0 ? travelData[currentIndex - 1] : null;
       const nextTrip =
@@ -378,6 +383,12 @@ export default function GlobeMap({
         trip: item.trip,
         theme,
         colors,
+        isCurrentStay,
+        isExpanded: detailIsExpanded,
+        onToggleExpanded: (nextExpanded: boolean) => {
+          setExpandedDetailTripId(item.trip.id);
+          setIsDetailExpanded(nextExpanded);
+        },
         previousTrip,
         nextTrip,
         onPrevious: () => {
@@ -390,10 +401,26 @@ export default function GlobeMap({
           onFlightNavigationStart(nextTrip);
           runFocusSequence(nextTrip, item.trip);
         },
-        onClose: () => { setActiveDetail(null); setGlowingCountryCode(null); },
+        onClose: () => {
+          setActiveDetail(null);
+          setGlowingCountryCode(null);
+          setExpandedDetailTripId(null);
+          setIsDetailExpanded(false);
+        },
       });
     },
-    [colors, onFlightNavigationStart, runFocusSequence, setActiveDetail, setGlowingCountryCode, theme, travelData]
+    [
+      colors,
+      currentStayTripId,
+      expandedDetailTripId,
+      isDetailExpanded,
+      onFlightNavigationStart,
+      runFocusSequence,
+      setActiveDetail,
+      setGlowingCountryCode,
+      theme,
+      travelData,
+    ]
   );
 
   useEffect(() => {

@@ -127,6 +127,11 @@ export default function Sidebar({
   };
 
   const cityLabel = (city: string) => city.split(',')[0]?.trim() || city;
+  const cityBubbleLabel = (city: string) => {
+    const label = cityLabel(city);
+    const maxChars = 30;
+    return label.length > maxChars ? `${label.slice(0, maxChars)}...` : label;
+  };
 
   const toggleStay = (stayKey: string) => {
     setExpandedStays(prev => ({ ...prev, [stayKey]: !prev[stayKey] }));
@@ -218,44 +223,42 @@ export default function Sidebar({
         zIndex: 20,
       }}
     >
-      <div style={{ padding: '16px', borderBottom: `1px solid ${glassBorder}`, position: 'relative' }}>
-        <button
-          className="cyber-icon-btn"
-          data-theme={theme}
-          onClick={onToggleCollapsed}
-          aria-label="Hide sidebar"
-          title="Hide sidebar"
-          style={{
-            position: 'absolute',
-            top: '16px',
-            right: '16px',
-            width: '34px',
-            height: '34px',
-            borderRadius: '10px',
-            color: colors.buttonText,
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 800,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M7.8 2.2L4 6l3.8 3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px', paddingRight: '48px' }}>
+      <div style={{ padding: '16px', borderBottom: `1px solid ${glassBorder}` }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
           <div>
             <div style={{ fontWeight: 800, fontSize: '15px', color: colors.text }}>Mark Carney</div>
             <div style={{ fontSize: '12px', color: colors.textSoft, marginTop: '2px' }}>Travel Log</div>
           </div>
-          <ThemeToggle
-            theme={theme}
-            onToggle={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            colors={colors}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <ThemeToggle
+              theme={theme}
+              onToggle={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            />
+            <button
+              className="cyber-icon-btn"
+              data-theme={theme}
+              onClick={onToggleCollapsed}
+              aria-label="Hide sidebar"
+              title="Hide sidebar"
+              style={{
+                width: '34px',
+                height: '34px',
+                borderRadius: '10px',
+                color: colors.buttonText,
+                cursor: 'pointer',
+                fontSize: '16px',
+                fontWeight: 800,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M7.8 2.2L4 6l3.8 3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end' }}>
@@ -497,7 +500,7 @@ export default function Sidebar({
                               display: 'flex',
                               alignItems: 'center',
                               gap: '10px',
-                              padding: '10px 12px 10px 18px',
+                              padding: isLatest ? '10px 18px 10px 24px' : '10px 12px 10px 18px',
                               marginTop: i === 0 ? 0 : '8px',
                               border: `1px solid ${glassBorder}`,
                               borderRadius: '10px',
@@ -529,7 +532,7 @@ export default function Sidebar({
                                   textOverflow: 'ellipsis',
                                 }}
                               >
-                                {cityLabel(loc.city)}
+                                {cityBubbleLabel(loc.city)}
                                 {isLatest ? (
                                   <span
                                     style={{

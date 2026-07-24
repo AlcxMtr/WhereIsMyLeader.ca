@@ -15,10 +15,29 @@ function markdownToHtml(text: string): string {
     .replace(/\n/g, '<br>');
 }
 
+function withLinkedCitations(html: string, citations: string[], linkColor: string): string {
+  if (!citations.length) return html;
+
+  return html.replace(/\[(\d+)\]/g, (match, rawIndex) => {
+    const citationNumber = Number(rawIndex);
+    if (!Number.isFinite(citationNumber) || citationNumber < 1 || citationNumber > citations.length) {
+      return match;
+    }
+
+    const href = citations[citationNumber - 1];
+    if (!href) return match;
+
+    return `<sup><a href="${href}" target="_blank" rel="noopener noreferrer" style="color: ${linkColor}; text-decoration: underline; text-underline-offset: 1px; font-weight: 700;">[${citationNumber}]</a></sup>`;
+  });
+}
+
 export function createTripDetailHtmlElement({
   trip,
   theme,
   colors,
+  isCurrentStay,
+  isExpanded,
+  onToggleExpanded,
   previousTrip,
   nextTrip,
   onPrevious,
@@ -28,6 +47,9 @@ export function createTripDetailHtmlElement({
   trip: TravelPoint;
   theme: ThemeMode;
   colors: ThemeColors;
+  isCurrentStay: boolean;
+  isExpanded: boolean;
+  onToggleExpanded: (nextExpanded: boolean) => void;
   previousTrip: TravelPoint | null;
   nextTrip: TravelPoint | null;
   onPrevious: () => void;
@@ -37,6 +59,17 @@ export function createTripDetailHtmlElement({
   const { name: countryName, code: countryCode } = getCountryInfo(trip.city);
   const flagUrl = countryCode ? `https://flagcdn.com/w80/${countryCode}.png` : null;
   const rangeLabel = formatTripDateRange(trip.arrival, trip.departure, ' -> ');
+  const summaryText = trip.summary?.trim() || trip.desc?.trim() || '';
+  const fullText = trip.desc?.trim() || summaryText;
+  const gradientTopLeft = isCurrentStay
+    ? theme === 'dark'
+      ? 'rgba(22, 163, 74, 0.42)'
+      : 'rgba(22, 163, 74, 0.28)'
+    : theme === 'dark'
+      ? 'rgba(8, 145, 178, 0.4)'
+      : 'rgba(37, 99, 235, 0.26)';
+  const gradientBottomRight = theme === 'dark' ? 'rgba(9, 18, 42, 0.94)' : 'rgba(228, 236, 250, 0.96)';
+  const detailCardBg = `linear-gradient(135deg, ${gradientTopLeft} 0%, ${gradientBottomRight} 72%)`;
 
   const wrapper = document.createElement('div');
   wrapper.style.width = 'min(360px, calc(100vw - 28px))';
@@ -45,7 +78,7 @@ export function createTripDetailHtmlElement({
   wrapper.style.transform = 'translate(18px, calc(-56% + 14px + var(--detail-shift-y, 0px)))';
 
   const card = document.createElement('div');
-  card.style.background = colors.detailBg;
+  card.style.background = detailCardBg;
   card.style.color = colors.detailText;
   card.style.border = `1px solid ${colors.detailBorder}`;
   card.style.borderRadius = '14px';
@@ -109,8 +142,9 @@ export function createTripDetailHtmlElement({
     const subtitle = document.createElement('div');
     subtitle.innerText = rangeLabel;
     subtitle.style.fontSize = '12px';
+    subtitle.style.fontWeight = '600';
     subtitle.style.marginTop = '2px';
-    subtitle.style.color = colors.detailSub;
+    subtitle.style.color = theme === 'dark' ? colors.detailSub : colors.detailText;
     titleWrap.appendChild(subtitle);
   }
 
@@ -121,7 +155,6 @@ export function createTripDetailHtmlElement({
   body.className = 'cyber-scrollbar';
   body.dataset.theme = theme;
   body.dataset.scrolling = 'false';
-  body.innerHTML = markdownToHtml(trip.desc);
   body.style.marginTop = '12px';
   body.style.fontSize = '13px';
   body.style.lineHeight = '1.6';
@@ -131,6 +164,18 @@ export function createTripDetailHtmlElement({
   body.style.wordBreak = 'break-word';
   body.style.flex = '1';
 
+  const narrative = document.createElement('div');
+  body.appendChild(narrative);
+
+  const citations = Array.isArray(trip.citations) ? trip.citations.filter(Boolean) : [];
+
+  const syncNarrative = () => {
+    const rendered = markdownToHtml(isExpanded ? fullText : summaryText);
+    narrative.innerHTML = withLinkedCitations(rendered, citations, colors.detailText);
+    body.scrollTop = 0;
+  };
+  syncNarrative();
+
   body.addEventListener(
     'wheel',
     e => {
@@ -138,6 +183,34 @@ export function createTripDetailHtmlElement({
     },
     { passive: true }
   );
+
+  const detailActionWrap = document.createElement('div');
+  detailActionWrap.style.marginTop = '10px';
+  detailActionWrap.style.display = 'flex';
+  detailActionWrap.style.justifyContent = 'flex-end';
+  let hasDetailToggle = false;
+
+  if (summaryText !== fullText) {
+    const learnMoreButton = document.createElement('button');
+    learnMoreButton.innerText = isExpanded ? 'Show less' : 'Learn more';
+    learnMoreButton.style.border = `1px solid ${colors.detailBorder}`;
+    learnMoreButton.style.background = 'transparent';
+    learnMoreButton.style.color = colors.detailSub;
+    learnMoreButton.style.borderRadius = '8px';
+    learnMoreButton.style.padding = '5px 8px';
+    learnMoreButton.style.fontSize = '11px';
+    learnMoreButton.style.fontWeight = '700';
+    learnMoreButton.style.cursor = 'pointer';
+    learnMoreButton.style.whiteSpace = 'nowrap';
+
+    learnMoreButton.onclick = e => {
+      e.stopPropagation();
+      onToggleExpanded(!isExpanded);
+    };
+
+    detailActionWrap.appendChild(learnMoreButton);
+    hasDetailToggle = true;
+  }
 
   const navWrap = document.createElement('div');
   navWrap.style.marginTop = '12px';
@@ -218,7 +291,7 @@ export function createTripDetailHtmlElement({
   stem.style.bottom = '-10px';
   stem.style.width = '18px';
   stem.style.height = '18px';
-  stem.style.background = colors.detailBg;
+  stem.style.background = detailCardBg;
   stem.style.borderRight = `1px solid ${colors.detailBorder}`;
   stem.style.borderBottom = `1px solid ${colors.detailBorder}`;
   stem.style.transform = 'rotate(45deg)';
@@ -226,6 +299,9 @@ export function createTripDetailHtmlElement({
   card.appendChild(closeButton);
   card.appendChild(header);
   card.appendChild(body);
+  if (hasDetailToggle) {
+    card.appendChild(detailActionWrap);
+  }
   card.appendChild(navWrap);
   card.appendChild(stem);
   wrapper.appendChild(card);
