@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs'; // Required for filesystem checks
 
 export const dynamic = 'force-dynamic';
 
@@ -16,13 +17,35 @@ interface Trip {
 export async function GET() {
   try {
     const isDocker = process.env.NODE_ENV === 'production';
+    
+    // Define paths for both data sources
     const dbPath = isDocker 
       ? path.join('/app/data', 'trips.db') 
       : path.resolve('../shared-data/trips.db');
+      
+    const jsonPath = isDocker
+      ? path.join('/app/data', 'trips_fallback.json')
+      : path.resolve('../shared-data/trips_fallback.json');
 
+    // 1. Intercept execution if the database is missing
+    if (!fs.existsSync(dbPath)) {
+      console.warn("Database not found. Executing JSON fallback.");
+      
+      if (!fs.existsSync(jsonPath)) {
+        return NextResponse.json(
+          { error: "Fatal: Database and fallback JSON are both missing." }, 
+          { status: 404 }
+        );
+      }
+
+      // Read and return the JSON file directly
+      const fallbackData = fs.readFileSync(jsonPath, 'utf8');
+      return NextResponse.json(JSON.parse(fallbackData));
+    }
+
+    // 2. Proceed with DB connection ONLY if the file exists
     const db = new Database(dbPath, { readonly: true });
 
-    // The logic is now pre-compiled in the new aggregated_trips table
     const rows = db.prepare(`
       SELECT id, city, lat, lng, arrival, departure, desc 
       FROM aggregated_trips 
@@ -35,14 +58,12 @@ export async function GET() {
       return NextResponse.json([]);
     }
 
-    // Map the flat SQL columns to the nested frontend JSON interface
-const aggregatedTrips: Trip[] = rows.map(row => ({
+    const aggregatedTrips: Trip[] = rows.map(row => ({
       id: row.id,
       city: row.city,
       coords: [row.lat || 0, row.lng || 0],
       arrival: row.arrival,
       departure: row.departure,
-      // FIX: Add a safe fallback so a NULL database field won't crash the server
       desc: row.desc ? row.desc.trim() : "No data available."
     }));
 

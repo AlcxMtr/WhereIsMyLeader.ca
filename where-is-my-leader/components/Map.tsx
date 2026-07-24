@@ -33,15 +33,6 @@ export default function Map() {
         setAllTravelData(data);
       } catch (apiError) {
         console.warn('API failed, attempting to load static fallback:', apiError);
-
-        try {
-          const res = await fetch('/api/trips.json');
-          if (!res.ok) throw new Error(`Static JSON returned status ${res.status}`);
-          const data: TravelPoint[] = await res.json();
-          setAllTravelData(data);
-        } catch (staticError) {
-          console.error('Critical Error: Both API and Static JSON failed', staticError);
-        }
       }
     };
 
