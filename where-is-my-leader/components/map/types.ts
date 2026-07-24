@@ -33,6 +33,13 @@ export interface HtmlDetailDatum {
   trip: TravelPoint;
 }
 
+export interface CountryPolygonDatum {
+  type: 'Feature';
+  countryCode: string;
+  geometry: object;
+  properties: Record<string, unknown>;
+}
+
 export type ThemeMode = 'light' | 'dark';
 
 export type SelectionState = {

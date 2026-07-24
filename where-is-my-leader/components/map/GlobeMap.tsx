@@ -12,7 +12,10 @@ import {
 import { buildGreatCirclePath, getDistanceBasedMidAltitude, sleep } from './globeUtils';
 import { getThemeColors } from './theme';
 import { createTripDetailHtmlElement } from './tripDetailHtml';
+import { getCountryInfo } from './tripUtils';
+import { flagPrimaryColors } from './flagColors';
 import type {
+  CountryPolygonDatum,
   GlobeHandle,
   HtmlDetailDatum,
   PointDatum,
@@ -22,6 +25,25 @@ import type {
 } from './types';
 
 const Globe = dynamic(() => import('react-globe.gl'), { ssr: false });
+
+// Colour helpers — module-scoped so references are always stable
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '');
+  return `rgba(${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}, ${alpha})`;
+}
+function hexBrightRgba(hex: string, boost: number, alpha: number): string {
+  const h = hex.replace('#', '');
+  const c = (s: number) => Math.min(255, Math.round(parseInt(h.slice(s, s + 2), 16) * boost));
+  return `rgba(${c(0)}, ${c(2)}, ${c(4)}, ${alpha})`;
+}
+const SIDE_TRANSPARENT = () => 'rgba(0,0,0,0)';
+
+// Natural Earth 110m has ISO_A2="-99" for a handful of countries; fall back to ADM0_A3 mapping.
+const ADM0_A3_FALLBACK: Record<string, string> = {
+  FRA: 'fr',
+  NOR: 'no',
+  CYN: 'cy',
+};
 
 export default function GlobeMap({
   travelData,
@@ -57,6 +79,80 @@ export default function GlobeMap({
   const animationTokenRef = useRef(0);
   const [dimensions, setDimensions] = useState({ width: 1000, height: 800 });
 
+  // ------------------------------------------------------------------
+  // Country overlay — single 110m world GeoJSON fetch (once on mount)
+  // ------------------------------------------------------------------
+  type RawFeature = { properties: Record<string, unknown>; geometry: object };
+  const [rawWorldFeatures, setRawWorldFeatures] = useState<RawFeature[]>([]);
+
+  useEffect(() => {
+    fetch('/geojson/world-110m.geojson')
+      .then(r => r.json())
+      .then((d: { features: RawFeature[] }) => setRawWorldFeatures(d.features ?? []))
+      .catch(() => {});
+  }, []);
+
+  const visitedCodes = useMemo(() => {
+    const s = new Set<string>();
+    travelData.forEach(t => { const { code } = getCountryInfo(t.city); if (code) s.add(code); });
+    return s;
+  }, [travelData]);
+
+  // glowingCountryCode is set immediately when navigation starts (not after animation)
+  // so the overlay brightens as soon as the user initiates a trip.
+  const [glowingCountryCode, setGlowingCountryCode] = useState<string | null>(null);
+
+  const [hoveredCountryCode, setHoveredCountryCode] = useState<string | null>(null);
+  const handlePolygonHover = useCallback((datum: object | null) => {
+    setHoveredCountryCode((datum as CountryPolygonDatum | null)?.countryCode ?? null);
+  }, []);
+
+  // Stable polygon data — only rebuilt when world data or visited countries change.
+  // Active/hovered state lives in accessor functions so globe.gl updates only
+  // materials for changed polygons (no full mesh teardown = no flicker).
+  const countryPolygons = useMemo<CountryPolygonDatum[]>(() => {
+    const resolveCode = (f: RawFeature): string | undefined => {
+      const raw = f.properties.ISO_A2 as string | undefined;
+      if (raw && raw !== '-99') return raw.toLowerCase();
+      return ADM0_A3_FALLBACK[f.properties.ADM0_A3 as string ?? ''];
+    };
+    return rawWorldFeatures
+      .filter(f => { const code = resolveCode(f); return code && visitedCodes.has(code); })
+      .map(f => ({
+        type: 'Feature' as const,
+        countryCode: resolveCode(f)!,
+        geometry: f.geometry,
+        properties: f.properties,
+      }));
+  }, [rawWorldFeatures, visitedCodes]);
+
+  const capColorFn = useCallback((d: object) => {
+    const { countryCode } = d as CountryPolygonDatum;
+    const hex = flagPrimaryColors[countryCode] ?? '#ffffff';
+    const isGlowing = countryCode === glowingCountryCode;
+    const isHovered = countryCode === hoveredCountryCode;
+    if (isGlowing && isHovered) return hexBrightRgba(hex, 1.55, 0.65);
+    if (isGlowing)              return hexBrightRgba(hex, 1.4,  0.52);
+    if (isHovered)              return hexBrightRgba(hex, 1.2,  0.36);
+    return hexToRgba(hex, 0.24);
+  }, [glowingCountryCode, hoveredCountryCode]);
+
+  const strokeColorFn = useCallback((d: object) => {
+    const { countryCode } = d as CountryPolygonDatum;
+    const hex = flagPrimaryColors[countryCode] ?? '#ffffff';
+    const isGlowing = countryCode === glowingCountryCode;
+    const isHovered = countryCode === hoveredCountryCode;
+    if (isGlowing || isHovered) return hexBrightRgba(hex, 1.6, 0.85);
+    return hexBrightRgba(hex, 1.35, 0.55);
+  }, [glowingCountryCode, hoveredCountryCode]);
+
+  const altitudeFn = useCallback((d: object) => {
+    const { countryCode } = d as CountryPolygonDatum;
+    if (countryCode === hoveredCountryCode) return 0.022;
+    if (countryCode === glowingCountryCode) return 0.012;
+    return 0.008;
+  }, [glowingCountryCode, hoveredCountryCode]);
+
   const startupTarget = useMemo(() => {
     if (!travelData.length) return null;
 
@@ -87,8 +183,8 @@ export default function GlobeMap({
   }, [sidebarVisible]);
 
   const pointsData = useMemo(
-    () => buildPointsData(travelData, colors.latestPoint, colors.point),
-    [travelData, colors.latestPoint, colors.point]
+    () => buildPointsData(travelData, colors.latestPoint, theme, colors.futureArc),
+    [travelData, colors.latestPoint, theme, colors.futureArc]
   );
 
   const pointMap = useMemo(() => buildPointMap(travelData), [travelData]);
@@ -156,6 +252,7 @@ export default function GlobeMap({
       const isStillCurrent = () => animationTokenRef.current === token;
 
       setActiveDetail(null);
+      setGlowingCountryCode(getCountryInfo(target.city).code ?? null);
 
       let departureTrip = originOverride ?? null;
       if (!departureTrip) {
@@ -237,7 +334,7 @@ export default function GlobeMap({
 
       setActiveDetail(target);
     },
-    [setActiveDetail, travelData]
+    [setActiveDetail, setGlowingCountryCode, travelData]
   );
 
   const runPinFocus = useCallback(
@@ -251,6 +348,7 @@ export default function GlobeMap({
       const isStillCurrent = () => animationTokenRef.current === token;
 
       setActiveDetail(null);
+      setGlowingCountryCode(getCountryInfo(target.city).code ?? null);
 
       globe.pointOfView(
         {
@@ -265,7 +363,7 @@ export default function GlobeMap({
 
       setActiveDetail(target);
     },
-    [setActiveDetail]
+    [setActiveDetail, setGlowingCountryCode]
   );
 
   const renderDetailHtml = useCallback(
@@ -292,10 +390,10 @@ export default function GlobeMap({
           onFlightNavigationStart(nextTrip);
           runFocusSequence(nextTrip, item.trip);
         },
-        onClose: () => setActiveDetail(null),
+        onClose: () => { setActiveDetail(null); setGlowingCountryCode(null); },
       });
     },
-    [colors, onFlightNavigationStart, runFocusSequence, setActiveDetail, theme, travelData]
+    [colors, onFlightNavigationStart, runFocusSequence, setActiveDetail, setGlowingCountryCode, theme, travelData]
   );
 
   useEffect(() => {
@@ -304,8 +402,11 @@ export default function GlobeMap({
   }, [selection, runPinFocus]);
 
   useEffect(() => {
-    if (!travelData.length) setActiveDetail(null);
-  }, [travelData, setActiveDetail]);
+    if (!travelData.length) {
+      const t = setTimeout(() => { setActiveDetail(null); setGlowingCountryCode(null); }, 0);
+      return () => clearTimeout(t);
+    }
+  }, [travelData, setActiveDetail, setGlowingCountryCode]);
 
   const handleManualWheelZoom = useCallback((event: WheelEvent<HTMLDivElement>) => {
     const globe = globeRef.current;
@@ -427,6 +528,13 @@ export default function GlobeMap({
         htmlLat={(d: object) => (d as HtmlDetailDatum).lat}
         htmlLng={(d: object) => (d as HtmlDetailDatum).lng}
         htmlElement={renderDetailHtml}
+        polygonsData={countryPolygons}
+        polygonAltitude={altitudeFn}
+        polygonCapColor={capColorFn}
+        polygonStrokeColor={strokeColorFn}
+        polygonSideColor={SIDE_TRANSPARENT}
+        polygonsTransitionDuration={300}
+        onPolygonHover={handlePolygonHover}
       />
 
       <TimelineRange

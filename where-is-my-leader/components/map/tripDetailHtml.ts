@@ -2,6 +2,19 @@ import type { ThemeColors } from './theme';
 import { formatTripDateRange, getCountryInfo } from './tripUtils';
 import type { TravelPoint, ThemeMode } from './types';
 
+function markdownToHtml(text: string): string {
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+  return escaped
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>');
+}
+
 export function createTripDetailHtmlElement({
   trip,
   theme,
@@ -108,7 +121,7 @@ export function createTripDetailHtmlElement({
   body.className = 'cyber-scrollbar';
   body.dataset.theme = theme;
   body.dataset.scrolling = 'false';
-  body.innerText = trip.desc;
+  body.innerHTML = markdownToHtml(trip.desc);
   body.style.marginTop = '12px';
   body.style.fontSize = '13px';
   body.style.lineHeight = '1.6';

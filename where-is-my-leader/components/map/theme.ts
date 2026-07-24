@@ -26,7 +26,7 @@ export function getThemeColors(theme: ThemeMode) {
       globeBg: '#030712',
       atmosphere: '#60a5fa',
       futureArc: '#38bdf8',
-      point: '#fb7185',
+      point: '#e11d48',
       latestPoint: '#22c55e',
       globeImageUrl: 'https://unpkg.com/three-globe/example/img/earth-night.jpg',
       bumpImageUrl: 'https://unpkg.com/three-globe/example/img/earth-topology.png',

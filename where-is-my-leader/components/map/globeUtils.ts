@@ -110,10 +110,10 @@ export function buildGreatCirclePath(from: [number, number], to: [number, number
 
 export function getPastGradientColor(index: number, total: number, theme: ThemeMode): string {
   const stopsDark: [number, number, number][] = [
-    [239, 68, 68],
-    [249, 115, 22],
-    [234, 179, 8],
-    [34, 197, 94],
+    [220, 38, 38],
+    [234, 88, 12],
+    [202, 138, 4],
+    [22, 163, 74],
   ];
 
   const stopsLight: [number, number, number][] = [
