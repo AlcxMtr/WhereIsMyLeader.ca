@@ -83,8 +83,16 @@ function cleanSummary(val) {
   return val;
 }
 
+function hardCodeFix(notProperCity) {
+    if (notProperCity.includes("Dalvay-by-the-Sea")){
+        return "Charlottetown";
+    }
+    return notProperCity;
+}
+
 export async function getCoordinates(locationString) {
-  const primaryCity = getPrimaryCity(locationString);
+  let primaryCity = getPrimaryCity(locationString);
+  primaryCity = hardCodeFix(primaryCity);
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
       params: { q: primaryCity, format: 'json', limit: 1 },

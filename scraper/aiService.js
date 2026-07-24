@@ -63,13 +63,15 @@ export async function summarizeItinerary(arrivalDate, departureDate, location, i
 
     TASK:
     1. Cross-reference this date range and location with news coverage, official press releases, and media reports.
-    2. Synthesize your findings into a strict JSON object with exactly two keys: "long_summary" and "short_summary".
-       - "long_summary": A concise description (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred.
-       - "short_summary": An even shorter ONE SENTENCE summary of the trip. Don't link any citations in this summary.
+    2. Synthesize your findings strictly into the following JSON format. You MUST return valid JSON matching this exact schema:
+    {
+      "long_summary": "A concise description (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred.",
+      "short_summary": "An even shorter ONE SENTENCE summary of the trip."
+    }
     
     STRICT CONSTRAINTS:
-    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred, you MUST return a JSON object where both fields are null: {"long_summary": null, "short_summary": null}
-    - Do not include conversational filler, introductory text, or markdown formatting. Output ONLY valid JSON.
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred, you MUST return this exact JSON: {"long_summary": null, "short_summary": null}
+    - Do not include conversational filler, introductory text, or markdown formatting. Output ONLY the JSON object.
     - Provide a continuous summary; do not split it up into individual daily bullet points.
     - Please refer to dates in user friendly format. For example, don't write "2026-07-19", write "July 19th" instead.
 
