@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import Database from 'better-sqlite3';
 import path from 'path';
-import fs from 'fs'; // Required for filesystem checks
+import fs from 'fs';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,6 +12,8 @@ interface Trip {
   arrival: string;
   departure: string;
   desc: string;
+  summary: string;
+  citations: string[];
 }
 
 export async function GET() {
@@ -47,10 +49,21 @@ export async function GET() {
     const db = new Database(dbPath, { readonly: true });
 
     const rows = db.prepare(`
-      SELECT id, city, lat, lng, arrival, departure, desc 
+      SELECT id, city, lat, lng, arrival, departure, short_summary, long_summary, citations, desc 
       FROM aggregated_trips 
       ORDER BY arrival ASC
-    `).all() as { id: number, city: string, lat: number | null, lng: number | null, arrival: string, departure: string, desc: string }[];
+    `).all() as { 
+      id: number; 
+      city: string; 
+      lat: number | null; 
+      lng: number | null; 
+      arrival: string; 
+      departure: string; 
+      short_summary: string | null; 
+      long_summary: string | null; 
+      citations: string | null; 
+      desc: string | null; 
+    }[];
 
     db.close();
 
@@ -58,14 +71,31 @@ export async function GET() {
       return NextResponse.json([]);
     }
 
-    const aggregatedTrips: Trip[] = rows.map(row => ({
-      id: row.id,
-      city: row.city,
-      coords: [row.lat || 0, row.lng || 0],
-      arrival: row.arrival,
-      departure: row.departure,
-      desc: row.desc ? row.desc.trim() : "No data available."
-    }));
+    const aggregatedTrips: Trip[] = rows.map(row => {
+      let parsedCitations: string[] = [];
+      if (row.citations) {
+        try {
+          parsedCitations = JSON.parse(row.citations);
+        } catch {
+          parsedCitations = [];
+        }
+      }
+
+      // Use long_summary for desc if present; otherwise fall back to pre-compiled desc/itinerary
+      const finalDesc = row.long_summary ? row.long_summary.trim() : (row.desc ? row.desc.trim() : "No data available.");
+      const finalSummary = row.short_summary ? row.short_summary.trim() : (row.desc ? row.desc.trim() : "No data available.");
+
+      return {
+        id: row.id,
+        city: row.city,
+        coords: [row.lat || 0, row.lng || 0],
+        arrival: row.arrival,
+        departure: row.departure,
+        desc: finalDesc,
+        summary: finalSummary,
+        citations: parsedCitations,
+      };
+    });
 
     return NextResponse.json(aggregatedTrips);
 

@@ -31,12 +31,12 @@ function logAiDebug(location, dateRange, prompt, summary, citations) {
 }
 
 /**
- * Searches the web and generates a single cohesive summary for the Prime Minister's entire multi-day stay at a location.
+ * Searches the web and generates a cohesive summary for the Prime Minister's stay.
  * @param {string} arrivalDate - The day the PM arrived (e.g., "2026-06-15")
  * @param {string} departureDate - The day the PM departed (e.g., "2026-06-17")
  * @param {string} location - The location of the stay (e.g., "Évian, France")
- * @param {Array<{date: string, activities: string[]}>} itineraries - Array of daily raw scraping entries collected during the stay
- * @returns {Promise<{summary: string, citations: string[]}>}
+ * @param {Array<{date: string, activities: string[]}>} itineraries - Array of daily raw scraping entries
+ * @returns {Promise<{longSummary: string | null, shortSummary: string | null, citations: string[]}>}
  */
 export async function summarizeItinerary(arrivalDate, departureDate, location, itineraries) {
   const formattedTimeline = itineraries
@@ -52,21 +52,26 @@ export async function summarizeItinerary(arrivalDate, departureDate, location, i
     ? arrivalDate 
     : `${arrivalDate} to ${departureDate}`;
 
+  // PROMPT MODIFIED TO REQUIRE STRICT JSON OUTPUT
   const promptContent = `
-    You are an objective journalist compiling an official historical archive of the Canadian Prime Minister's travels.
-    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney"
+    You are an objective journalist compiling a historical archive of the Canadian Prime Minister's travels.
+    Given that this archive is for the Canadian viewer, you SHOULD refer to Canadian Prime Minister Mark Carney simply as "PM Carney".
     Consider the following location and date range.
 
     Location: ${location}
     Date Range: ${dateRangeString}
 
     TASK:
-    1. Cross-reference this date range and location with news coverage, official press releases, and media reports covering what took place.
-    2. Synthesize a concise summary (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred (e.g., key treaties signed, bilateral meetings held, prominent individuals met, speeches delivered, or major public announcements made).
+    1. Cross-reference this date range and location with news coverage, official press releases, and media reports.
+    2. Synthesize your findings into a strict JSON object with exactly two keys: "long_summary" and "short_summary".
+       - "long_summary": A concise description (3-4 sentences total) detailing the overall trip. Focus on what *actually* occurred.
+       - "short_summary": An even shorter ONE SENTENCE summary of the trip. Don't link any citations in this summary.
     
     STRICT CONSTRAINTS:
-    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred during this entire date range at this location, you must output: "null"
-    - Provide a single continuous summary for the whole trip; do not split it up into individual daily bullet points.
+    - If your web searches reveal absolutely zero public records, press releases, or news coverage about what occurred, you MUST return a JSON object where both fields are null: {"long_summary": null, "short_summary": null}
+    - Do not include conversational filler, introductory text, or markdown formatting. Output ONLY valid JSON.
+    - Provide a continuous summary; do not split it up into individual daily bullet points.
+    - Please refer to dates in user friendly format. For example, don't write "2026-07-19", write "July 19th" instead.
 
     To help provide some additional context for your research, here is the media advisory itinerary for the Prime Minister's stay at this location.
     
@@ -78,26 +83,36 @@ export async function summarizeItinerary(arrivalDate, departureDate, location, i
     const response = await perplexity.chat.completions.create({
       model: "sonar", 
       messages: [
-        { role: "system", content: "You are a factual, precise research assistant specializing in historical political archiving." },
+        { role: "system", content: "You are a factual, precise research assistant specializing in historical political archiving. You output exclusively in JSON format." },
         { role: "user", content: promptContent }
       ],
       temperature: 0.15, 
     });
 
-    const summary = response.choices[0].message.content;
+    const rawContent = response.choices[0].message.content.trim();
     const citations = response.citations || [];
 
-    // Quietly log the entire transaction to the debug file
-    logAiDebug(location, dateRangeString, promptContent, summary, citations);
+    // Strip markdown code fences if the LLM ignores the "no markdown" constraint
+    const jsonString = rawContent.replace(/^```(json)?\n?/, '').replace(/\n?```$/, '').trim();
+    
+    let parsedData;
+    try {
+      parsedData = JSON.parse(jsonString);
+    } catch (parseError) {
+      throw new Error(`Failed to parse JSON from LLM output. Raw string: ${rawContent}`);
+    }
+
+    // Quietly log the raw transaction to the debug file
+    logAiDebug(location, dateRangeString, promptContent, rawContent, citations);
 
     return {
-      summary: summary.trim(),
+      longSummary: parsedData.long_summary,
+      shortSummary: parsedData.short_summary,
       citations: citations
     };
 
   } catch (error) {
     console.error("Perplexity API Stay Summarization Error:", error);
-    // Also log the error to the debug file so you don't lose context
     logAiDebug(location, dateRangeString, promptContent, `ERROR: ${error.message}`, []);
     throw error;
   }

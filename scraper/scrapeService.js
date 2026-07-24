@@ -34,7 +34,8 @@ db.exec(`
     lng REAL,
     arrival TEXT,
     departure TEXT,
-    summary TEXT,
+    short_summary TEXT,
+    long_summary TEXT,
     citations JSON,
     desc TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -75,6 +76,13 @@ function addDays(dateStr, days) {
   return date.toISOString().split('T')[0];
 }
 
+// Safely normalizes null string representations from LLMs
+function cleanSummary(val) {
+  if (!val || val === "null") return null;
+  if (typeof val === 'string' && val.includes("null")) return null;
+  return val;
+}
+
 export async function getCoordinates(locationString) {
   const primaryCity = getPrimaryCity(locationString);
   try {
@@ -91,28 +99,17 @@ export async function getCoordinates(locationString) {
   return { lat: null, lng: null };
 }
 
-// 3. String Compiler for the Frontend Description
-function buildDescription(summary, citations, mappedItineraries) {
-  if (!summary || summary === "null" || summary.includes("null")) {
-    // Fallback: output the raw daily itineraries
+// 3. String Compiler for the Detailed Frontend Description
+function buildDescFromItinerary(mappedItineraries) {
     return mappedItineraries.map(t => {
-      const acts = t.activities.length > 0 
+        const acts = t.activities.length > 0 
         ? t.activities.map(act => {
             const cleanAct = act.trim();
             return cleanAct.endsWith('.') ? cleanAct : `${cleanAct}.`;
-          }).join('\n') 
+            }).join('\n') 
         : 'No public itinerary events listed.';
-      return mappedItineraries.length > 1 ? `[${t.date}]\n${acts}` : acts;
+        return mappedItineraries.length > 1 ? `[${t.date}]\n${acts}` : acts;
     }).join('\n\n') + '\n\n';
-  }
-
-  let content = summary;
-
-  if (citations && citations.length > 0) {
-    content += '\n\nSources:\n' + citations.map((url, i) => `[${i + 1}] ${url}`).join('\n');
-  }
-  
-  return content + '\n\n';
 }
 
 // 4. The Incremental Aggregation Engine
@@ -120,7 +117,6 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
   const rawPrimaryCity = getPrimaryCity(fullLocation);
   const normalizedRowCity = normalizeLocation(rawPrimaryCity);
 
-  // Check if a journey matching these temporal anchors already exists inside our aggregated storage data
   const exactDuplicate = db.prepare(`
     SELECT id, arrival, departure FROM aggregated_trips 
     WHERE city = ? AND arrival = ? AND departure = ?
@@ -132,11 +128,9 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
   let departure = dateString;
 
   if (exactDuplicate) {
-    // FIX: exact twin item found, anchor target update variables seamlessly onto it
     targetAggId = exactDuplicate.id;
     arrival = exactDuplicate.arrival;
   } else {
-    // Standard matching progression rules continue below...
     const lastAgg = db.prepare('SELECT * FROM aggregated_trips ORDER BY id DESC LIMIT 1').get();
 
     if (lastAgg && normalizeLocation(lastAgg.city) === normalizedRowCity) {
@@ -158,7 +152,6 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
     }
   }
 
-  // Fetch all raw daily rows connected to this specific multi-day stay
   const rawTrips = db.prepare(`SELECT date, itinerary, location FROM trips WHERE date >= ? AND date <= ?`)
     .all(arrival, departure);
 
@@ -168,7 +161,7 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
     activities: JSON.parse(t.itinerary)
   }));
 
-  let aiResponse = { summary: "null", citations: [] };
+  let aiResponse = { longSummary: null, shortSummary: null, citations: [] };
   
   try {
     aiResponse = await summarizeItinerary(arrival, departure, fullLocation, mappedItineraries);
@@ -176,12 +169,13 @@ async function syncAggregatedTrip(dateString, fullLocation, lat, lng) {
     console.warn(`[Warning] AI Summarization failed for ${fullLocation}. Falling back to raw itinerary. Reason: ${error.message}`);
   }
 
-  const finalSummary = aiResponse.summary.includes("null") ? null : aiResponse.summary;
-  const citationsJson = JSON.stringify(aiResponse.citations);
-  const compiledDesc = buildDescription(finalSummary, aiResponse.citations, mappedItineraries);
+  const finalLongSummary = cleanSummary(aiResponse.longSummary);
+  const finalShortSummary = cleanSummary(aiResponse.shortSummary);
+  const citationsJson = JSON.stringify(aiResponse.citations || []);
+  const compiledDesc = buildDescFromItinerary(mappedItineraries);
 
-  db.prepare('UPDATE aggregated_trips SET summary = ?, citations = ?, desc = ? WHERE id = ?')
-    .run(finalSummary, citationsJson, compiledDesc, targetAggId);
+  db.prepare('UPDATE aggregated_trips SET short_summary = ?, long_summary = ?, citations = ?, desc = ? WHERE id = ?')
+    .run(finalShortSummary, finalLongSummary, citationsJson, compiledDesc, targetAggId);
 }
 
 // 5. The Scraper Controller
@@ -246,7 +240,6 @@ async function scrapeSingleDay(url, dateString) {
         insertTrip.run(dateString, index, stop.location, itineraryJson, lat, lng);
         console.log(` -> Saved Raw: Stop ${index} - ${stop.location}`);
 
-        // Sync and re-summarize this aggregated stay block
         await syncAggregatedTrip(dateString, stop.location, lat, lng);
     }
 
@@ -294,7 +287,6 @@ export async function performTwoDayLookback() {
   const targetDate = DateTime.now().setZone('America/Toronto').minus({ days: 2 }).toFormat('yyyy-MM-dd');
   console.log(`\n[Lookback Engine] Scanning for closed journeys ending on ${targetDate}...`);
 
-  // Target any aggregated stay that officially concluded exactly 2 days ago
   const tripsToUpdate = db.prepare(`SELECT * FROM aggregated_trips WHERE departure = ?`).all(targetDate);
 
   if (tripsToUpdate.length === 0) {
@@ -305,7 +297,6 @@ export async function performTwoDayLookback() {
   for (const agg of tripsToUpdate) {
     console.log(` -> Re-summarizing Final Record: ${agg.city} (${agg.arrival} to ${agg.departure})`);
     
-    // Pull the raw data block to feed to the AI
     const rawTrips = db.prepare(`SELECT date, itinerary, location FROM trips WHERE date >= ? AND date <= ?`).all(agg.arrival, agg.departure);
     const normalizedRowCity = normalizeLocation(agg.city);
     const matchingTrips = rawTrips.filter(t => normalizeLocation(getPrimaryCity(t.location)) === normalizedRowCity);
@@ -317,13 +308,20 @@ export async function performTwoDayLookback() {
 
     const originalLocationStr = matchingTrips[0]?.location || agg.city;
 
-    const aiResponse = await summarizeItinerary(agg.arrival, agg.departure, originalLocationStr, mappedItineraries);
+    let aiResponse = { longSummary: null, shortSummary: null, citations: [] };
+
+    try {
+      aiResponse = await summarizeItinerary(agg.arrival, agg.departure, originalLocationStr, mappedItineraries);
+    } catch (error) {
+      console.warn(`[Warning] AI Summarization failed for ${originalLocationStr}. Reason: ${error.message}`);
+    }
+
+    const finalLongSummary = cleanSummary(aiResponse.longSummary);
+    const finalShortSummary = cleanSummary(aiResponse.shortSummary);
+    const citationsJson = JSON.stringify(aiResponse.citations || []);
+    const compiledDesc = buildDescFromItinerary(mappedItineraries);
     
-    const finalSummary = aiResponse.summary === "null" ? null : aiResponse.summary;
-    const citationsJson = JSON.stringify(aiResponse.citations);
-    const compiledDesc = buildDescription(finalSummary, aiResponse.citations, mappedItineraries);
-    
-    db.prepare(`UPDATE aggregated_trips SET summary = ?, citations = ?, desc = ? WHERE id = ?`)
-      .run(finalSummary, citationsJson, compiledDesc, agg.id);
+    db.prepare(`UPDATE aggregated_trips SET short_summary = ?, long_summary = ?, citations = ?, desc = ? WHERE id = ?`)
+      .run(finalShortSummary, finalLongSummary, citationsJson, compiledDesc, agg.id);
   }
 }

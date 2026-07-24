@@ -5,6 +5,8 @@ export interface TravelPoint {
   desc: string;
   arrival: string;
   departure: string;
+  summary: string;
+  citations: string[];
 }
 
 export interface PointDatum {
