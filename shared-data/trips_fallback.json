@@ -6,980 +6,30 @@
             45.4208777,
             -75.6901106
         ],
-        "arrival": "2026-01-05",
-        "departure": "2026-01-05",
-        "desc": "8:00 a.m. The Prime Minister will depart for Paris, France."
+        "arrival": "2026-07-01",
+        "departure": "2026-07-01",
+        "desc": "PM Carney was scheduled to spend Canada Day in Ottawa, attending a local Canada Day community celebration at 10:05 a.m. and delivering remarks at the national Canada Day ceremony at LeBreton Flats Park at 12:00 p.m. Media coverage from the time indicates that he was in Ottawa for the festivities before plans to fly to Edmonton later that afternoon. A July 2 report also noted that thunderstorms in Ottawa disrupted his travel plans and prevented him from making his intended appearance in Edmonton, leading to the cancellation of that part of the trip.[1][2]",
+        "summary": "PM Carney spent Canada Day in Ottawa for community and national celebrations, with weather later disrupting his planned travel to Edmonton.[1][2]",
+        "citations": [
+            "https://www.nationalobserver.com/2026/07/02/news/thunderstorms-ottawa-keep-carney-delivering-his-canada-day-speech-edmonton",
+            "https://www.youtube.com/watch?v=kSqyIgw96tM"
+        ]
     },
     {
         "id": 3,
-        "city": "Paris, France",
+        "city": "Edmonton, Alberta",
         "coords": [
-            48.8588897,
-            2.320041
+            53.5462055,
+            -113.491241
         ],
-        "arrival": "2026-01-05",
-        "departure": "2026-01-06",
-        "desc": "PM Carney traveled to Paris, France from January 5–6, 2026, to attend the \"Coalition of the Willing\" meeting aimed at accelerating a negotiated peace for Ukraine supported by strong security guarantees[1][6]. During the trip, he held bilateral meetings with NATO Secretary General Mark Rutte, Danish Prime Minister Mette Frederiksen, and Finnish President Alexander Stubb, while also participating in an official family photo and the coalition meeting alongside President of France Emmanuel Macron at the Palais de l’Elysée[1][3][5]. The primary objective of these engagements was to finalize security guarantees for Ukraine and discuss Canada’s potential role in facilitating a ceasefire in the Russia-Ukraine war[2][4].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/01/02/prime-minister-carney-participate-peace-negotiations-ukraine-france\n[2] https://www.youtube.com/watch?v=sgJeGIRiSuw&vl=en\n[3] https://www.youtube.com/watch?v=cBQPdJmMsQc\n[4] https://www.ctvnews.ca/politics/article/in-paris-carney-set-to-talk-about-canadas-role-in-eventual-ukraine-ceasefire/\n[5] https://www.youtube.com/watch?v=KtJxZQYHEWg\n[6] https://www.cbc.ca/news/politics/ukraine-russia-war-canada-coalition-security-9.7033136\n[7] https://www.youtube.com/watch?v=kVZZG8itd5g\n[8] https://x.com/CanadianPM/status/2007153358474281415\n[9] https://www.pm.gc.ca/en/news/readouts/2026/01/20/prime-minister-carney-meets-president-france-emmanuel-macron\n[10] https://en.wikipedia.org/wiki/List_of_international_prime_ministerial_trips_made_by_Mark_Carney\n[11] https://www.yahoo.com/news/carney-macron-meet-paris-us-155132795.html\n[12] https://www.youtube.com/watch?v=Q-oM_WtMiTk"
+        "arrival": "2026-07-01",
+        "departure": "2026-07-01",
+        "desc": "6:30 p.m. The Prime Minister will deliver remarks at a local Canada Day community celebration.",
+        "summary": "6:30 p.m. The Prime Minister will deliver remarks at a local Canada Day community celebration.",
+        "citations": []
     },
     {
         "id": 4,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-01-06",
-        "departure": "2026-01-06",
-        "desc": "10:30 p.m. The Prime Minister will arrive in Ottawa, Canada."
-    },
-    {
-        "id": 5,
-        "city": "Prince Rupert, British Columbia",
-        "coords": [
-            54.3126572,
-            -130.32549
-        ],
-        "arrival": "2026-01-13",
-        "departure": "2026-01-13",
-        "desc": "On January 13, 2026, PM Carney made a brief stop in Prince Rupert, British Columbia, to meet with Coastal First Nations leadership regarding the federal major projects agenda and marine conservation [3][5]. During the productive closed-door meeting, the Prime Minister and Indigenous leaders discussed strengthening ocean protection and building a sustainable economy, though the First Nations reaffirmed their opposition to new pipelines and lifting the north coast tanker moratorium [2][4]. Following this engagement, PM Carney visited a local business before departing for Vancouver to fly to Beijing, marking the start of his first Canadian Prime Ministerial visit to China in nearly a decade [5][8].\n\nSources:\n[1] https://www.youtube.com/watch?v=MzRee3y3GgY&vl=en\n[2] https://www.youtube.com/watch?v=3Fo6t7M5YAc\n[3] https://winnipeg.citynews.ca/2026/01/13/carney-meets-with-coastal-first-nations-today-to-talk-major-projects-oceans/\n[4] https://www.youtube.com/watch?v=UUAHxsvsSx8\n[5] https://www.pm.gc.ca/en/news/media-advisories/2026/01/12/tuesday-january-13-2026\n[6] https://x.com/MarkJCarney/status/2011187972821946552\n[7] https://www.youtube.com/watch?v=7_aHkUrXOOw\n[8] https://thenorthernview.com/2026/01/12/prime-minister-to-meet-with-coastal-first-nations-in-prince-rupert-this-week/\n[9] https://islandsocialtrends.ca/carney-quick-stop-in-prince-rupert-on-his-way-to-china/\n[10] https://www.politico.com/newsletters/canada-playbook/2026/01/13/carneys-coastal-confab-00723851\n[11] https://www.theglobeandmail.com/politics/article-carney-coastal-first-nations-natural-resource-projects/"
-    },
-    {
-        "id": 6,
-        "city": "Vancouver, British Columbia",
-        "coords": [
-            49.2608724,
-            -123.113952
-        ],
-        "arrival": "2026-01-13",
-        "departure": "2026-01-13",
-        "desc": "2:45 p.m. The Prime Minister will depart for Beijing, People’s Republic of China."
-    },
-    {
-        "id": 7,
-        "city": "Beijing, People’s Republic of China",
-        "coords": [
-            39.9057136,
-            116.3912972
-        ],
-        "arrival": "2026-01-14",
-        "departure": "2026-01-17",
-        "desc": "PM Carney’s January 14–17, 2026, trip to Beijing marked the first visit by a Canadian Prime Minister to China since 2017, aimed at resetting “complex” bilateral ties after nearly a decade of tension [2][3][4]. During the four-day state visit, PM Carney held high-level meetings with President Xi Jinping, Premier Li Qiang, and NPC Chairman Zhao Leji, culminating in a joint statement establishing a new **strategic partnership** focused on energy, clean technology, and climate competitiveness [1][10]. The visit produced a **preliminary landmark trade agreement** to reduce Chinese tariffs on Canadian canola from 84% to 15% by March 1, while allowing approximately 49,000 Chinese electric vehicles into Canada at a 6.1% levy [10][11], alongside five new memorandums of understanding covering agriculture, crime combat, and cultural exchanges [10][14]. PM Carney publicly announced these outcomes during a media availability on January 16 and delivered opening remarks at a Canada China Business Council gala dinner [10][17].\n\nSources:\n[1] https://www.reuters.com/world/china/china-canada-move-reset-ties-carney-visits-2026-01-15/\n[2] https://www.reuters.com/world/asia-pacific/carney-beijing-reset-complex-canada-china-ties-says-minister-2026-01-14/\n[3] https://www.reuters.com/world/china/canadian-prime-minister-visits-china-after-nearly-decade-tense-relations-2026-01-13/\n[4] https://english.cctv.com/2026/01/15/ARTIQKRnLwKBC0OV5hbQpAHF260115.shtml\n[5] https://www.nytimes.com/2026/01/17/world/canada/carney-china-trade-tariffs.html\n[6] https://www.washingtontimes.com/news/2026/jan/14/canadian-prime-minister-mark-carney-begins-landmark-four-day-visit/\n[7] https://www.youtube.com/watch?v=BaLiD2uz4BM\n[8] https://www.youtube.com/watch?v=w3t4Ch_iI9o\n[9] https://www.globaltimes.cn/page/202601/1353230.shtml\n[10] https://www.pm.gc.ca/en/news/news-releases/2026/01/16/prime-minister-carney-forges-new-strategic-partnership-peoples\n[11] https://www.youtube.com/watch?v=W98_vv4IyN0&vl=en\n[12] https://www.youtube.com/watch?v=P3qmC42sA5s\n[13] https://www.cnbc.com/2026/01/30/china-beijing-trade-tariffs-trump-starmer-carney.html\n[14] https://www.politico.com/newsletters/canada-playbook/2026/01/15/carneys-beijing-welcome-00730463\n[15] https://www.theguardian.com/world/2026/jan/16/china-canada-partnership-new-global-realities-carney-xi-jinping\n[16] https://www.politico.com/newsletters/canada-playbook/2026/01/12/carneys-beijing-balancing-act-00721797\n[17] https://www.youtube.com/watch?v=aY37_V5ML9g\n[18] https://www.cbc.ca/news/politics/carney-to-visit-china-9.7036190"
-    },
-    {
-        "id": 8,
-        "city": "Doha, Qatar",
-        "coords": [
-            25.3108807,
-            51.5081812
-        ],
-        "arrival": "2026-01-17",
-        "departure": "2026-01-19",
-        "desc": "PM Carney made his first official visit to Qatar as the sitting Canadian Prime Minister, arriving in Doha on January 17, 2026, to deepen bilateral ties and diversify Canada's trade relationships [1][4]. During a historic meeting with Amir Sheikh Tamim bin Hamad Al Thani on January 18, the leaders established a new strategic alliance, with Qatar pledging significant investments in Canada's infrastructure, energy, and defense sectors [2][10]. The trip culminated in major public announcements, including plans to conclude a Foreign Investment Promotion and Protection Agreement by summer, launch talks on a double-taxation treaty, expand air services, and appoint a defense attaché in Doha [5][11]. PM Carney held a brief media availability to detail these outcomes before departing for Zurich on January 19 to attend the World Economic Forum [1][10].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/01/08/prime-minister-carney-diversify-canadas-trade-attract-new-investment\n[2] https://www.pm.gc.ca/en/news/readouts/2026/01/18/prime-minister-carney-meets-amir-qatar-his-highness-sheikh-tamim-bin-hamad\n[3] https://www.pm.gc.ca/en/news/statements/2026/01/18/prime-minister-mark-carney-canada-and-amir-qatar-his-highness-sheikh\n[4] https://thepeninsulaqatar.com/article/17/01/2026/prime-minister-of-canada-arrives-in-doha\n[5] https://www.youtube.com/watch?v=WXnw-26cDus\n[6] https://www.youtube.com/watch?v=kNiTUU2GBeU\n[7] https://www.ctvnews.ca/politics/article/why-is-carney-in-qatar/\n[8] https://toronto.citynews.ca/2026/01/17/mark-carney-visiting-qatar-to-drum-up-investment-despite-brutal-human-rights-record/\n[9] https://www.youtube.com/watch?v=C9I2oUGhsrc\n[10] https://www.cbc.ca/news/politics/carney-in-qatar-9.7050314\n[11] https://www.youtube.com/watch?v=ZxpwpmqQ8do\n[12] https://www.youtube.com/watch?v=j8_aOAuZzQY"
-    },
-    {
-        "id": 9,
-        "city": "Zurich, Switzerland",
-        "coords": [
-            47.3744489,
-            8.5410422
-        ],
-        "arrival": "2026-01-19",
-        "departure": "2026-01-19",
-        "desc": "4:30 p.m. The Prime Minister will arrive in Zurich, Switzerland."
-    },
-    {
-        "id": 10,
-        "city": "Davos, Switzerland",
-        "coords": [
-            46.796198,
-            9.8236892
-        ],
-        "arrival": "2026-01-20",
-        "departure": "2026-01-21",
-        "desc": "PM Carney attended the World Economic Forum Annual Meeting in Davos, Switzerland from January 20–21, 2026, where he delivered a featured plenary speech titled “Principled and Pragmatic: Canada’s Path” to pitch Canada as a premier destination for global investment [1][2][8]. During the trip, he participated in a Country Strategy Dialogue, held a bilateral meeting with French President Emmanuel Macron, and engaged with investors and world leaders at the Investors Industry Governors Meeting and an Informal Gathering of World Economic Leaders [1][2]. His remarks at the forum emphasized Canada’s competitive advantages in natural resources, agriculture, energy, and advanced technologies to deepen economic partnerships [2]. The visit marked PM Carney’s first participation in the World Economic Forum as Prime Minister and concluded his nine-day global tour aimed at courting foreign investment [2][3].\n\nSources:\n[1] https://www.ctvnews.ca/business/article/carney-kicks-off-pitch-for-investment-at-world-economic-forum-in-davos-switzerland/\n[2] https://www.pm.gc.ca/en/news/news-releases/2026/01/07/prime-minister-carney-build-strategic-partnerships-diversify-canadas\n[3] https://vancouver.citynews.ca/2026/01/20/carney-wraps-up-his-world-tour-today-with-meetings-in-switzerland/\n[4] https://toronto.citynews.ca/2026/01/13/mark-carney-off-to-china-qatar-and-davos-to-court-investment-mend-fences-with-beijing/\n[5] https://kitchener.citynews.ca/2026/02/26/carney-follows-up-speech-in-davos-with-trip-to-india-australia-japan/\n[6] https://en.wikipedia.org/wiki/List_of_international_prime_ministerial_trips_made_by_Mark_Carney\n[7] https://www.cjme.com/2026/01/19/carney-heading-to-switzerland-to-take-part-in-world-economic-forum/\n[8] https://en.wikipedia.org/wiki/Mark_Carney's_Davos_speech"
-    },
-    {
-        "id": 11,
-        "city": "Zurich, Switzerland",
-        "coords": [
-            47.3744489,
-            8.5410422
-        ],
-        "arrival": "2026-01-21",
-        "departure": "2026-01-21",
-        "desc": "[2026-01-21]\n4:30 p.m. The Prime Minister will depart for Ottawa, Ontario.\nNote to media:."
-    },
-    {
-        "id": 12,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-01-21",
-        "departure": "2026-01-21",
-        "desc": "8:00 p.m. The Prime Minister will arrive in Ottawa, Ontario."
-    },
-    {
-        "id": 13,
-        "city": "Québec City, Québec",
-        "coords": [
-            46.8137431,
-            -71.2084061
-        ],
-        "arrival": "2026-01-22",
-        "departure": "2026-01-24",
-        "desc": "PM Carney traveled to Québec City, Québec from January 22 to 23, 2026, to convene a winter Cabinet Planning Forum focused on delivering greater stability, security, and prosperity for Canadians [1][2]. During the retreat, he delivered remarks on Canada’s foundational choices and shared values before leading the Cabinet Planning Forum sessions with his ministers [1]. On January 22, prior to the cabinet session at the Citadelle, PM Carney addressed the media to deny retracting his Davos comments regarding the rules-based global order following a conversation with U.S. President Donald Trump [4]. The trip centered on internal government strategy and economic priorities, including building trade relationships, ahead of Parliament’s resumption [3].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/01/21/prime-minister-carney-hold-winter-cabinet-planning-forum-focused\n[2] https://x.com/CanadianPM/status/2014068971251675415\n[3] https://www.youtube.com/watch?v=kZh2IAM_YUI\n[4] https://www.reuters.com/world/canada-pm-carney-denies-retracting-davos-comments-talk-with-trump-2026-01-27/"
-    },
-    {
-        "id": 14,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-01-25",
-        "departure": "2026-01-26",
-        "desc": "9:30 a.m. The Prime Minister will arrive at the National Caucus retreat.\n\n9:00 a.m. The Prime Minister will announce new measures to make life more affordable for Canadians."
-    },
-    {
-        "id": 15,
-        "city": "Greater Toronto Area, Ontario",
-        "coords": [
-            43.9019833,
-            -79.268313
-        ],
-        "arrival": "2026-01-26",
-        "departure": "2026-01-26",
-        "desc": "On January 26, 2026, PM Carney met with Ontario Premier Doug Ford in the Greater Toronto Area to address criticisms regarding Canada’s newly signed trade agreement with China, specifically concerning the influx of Chinese electric vehicles [2][4]. Following their meeting in Etobicoke, the two leaders visited a local business and later shared pizza at a Pizza Nova franchise, where they publicly emphasized their commitment to \"Team Canada\" and downplayed any political rift [3][4]. During their discussions, they focused on key economic sectors including energy, minerals, the automotive industry, and the \"Ring of Fire\" resource development [3]. The leaders also acknowledged plans to continue these negotiations at a upcoming First Ministers summit in Ottawa [6].\n\nSources:\n[1] https://www.cpac.ca/headline-politics/episode/mark-carney-and-doug-ford-visit-toronto-area-business--january-26-2026?id=464f21cf-dc77-4241-a5ab-f2a8029d3b00\n[2] https://www.ctvnews.ca/video/2026/01/26/ctv-national-news-carney-meets-with-ford-amid-criticisms-over-canadas-trade-deal-with-china/\n[3] https://www.ctvnews.ca/toronto/article/doug-ford-and-mark-carney-mend-fences-over-pizza/\n[4] https://ca.news.yahoo.com/team-canada-carney-ford-meet-205129579.html\n[5] https://www.youtube.com/watch?v=lnNi9Swk9hE\n[6] https://www.youtube.com/watch?v=95hksrE_o4I\n[7] https://www.theglobeandmail.com/politics/article-politics-insider-carney-ford-discussed-early-federal-election/\n[8] https://www.youtube.com/watch?v=tc90bMZ2OyM"
-    },
-    {
-        "id": 16,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-01-27",
-        "departure": "2026-02-04",
-        "desc": "[2026-01-27]\n9:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n11:00 a.m. The Prime Minister will deliver remarks at the International Holocaust Remembrance Day ceremony.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n4:00 p.m. The Prime Minister will meet with the Premier of Nunavut, John Main.\n5:15 p.m. The Prime Minister will meet with Team Canada Olympic hockey players.\n\n[2026-01-28]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n12:45 p.m. The Prime Minister will meet with the Premier of British Columbia, David Eby.\n1:20 p.m. The Prime Minister will meet with the Premier of Alberta, Danielle Smith, and the Premier of British Columbia, David Eby.\n4:00 p.m. The Prime Minister will meet with the Premier of the Yukon, Currie Dixon.\n7:00 p.m. The Prime Minister will host a First Ministers’ working dinner.\n\n[2026-01-29]\n9:00 a.m. The Prime Minister will host a First Ministers’ Meeting.\n2:15 p.m. The Prime Minister will hold a media availability.\nSecond floorWest BlockParliament Hill.\n6:30 p.m. The Prime Minister will participate in an event to highlight the strength of the Canadian film and television sector.\n\n[2026-02-03]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n4:00 p.m. The Prime Minister will deliver remarks at the Official Portrait Unveiling Ceremony for the Right Honourable Stephen Harper.\n\n[2026-02-04]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n5:30 p.m. The Prime Minister will meet with the Big City Mayors’ Caucus of the Federation of Canadian Municipalities.\n7:30 p.m. The Prime Minister will attend and deliver remarks at a Black History Month reception."
-    },
-    {
-        "id": 17,
-        "city": "Vaughan, Ontario",
-        "coords": [
-            43.7941544,
-            -79.5268023
-        ],
-        "arrival": "2026-02-05",
-        "departure": "2026-02-08",
-        "desc": "On February 5, 2026, **PM Carney** visited Vaughan, Ontario to tour an auto parts manufacturing facility and officially launch **Canada’s new automotive strategy** aimed at transforming the sector for the future [1][3]. During a news conference, he announced a **$2.3 billion buyer incentive program** for electric vehicles, a **$1.5 billion investment** in national charging infrastructure, and the repeal of the EV sales mandate while introducing stricter greenhouse gas emission standards [2][4]. The strategy also includes a new **Work-Sharing grant** to prevent layoffs, a **workforce alliance** for advanced manufacturing, and the establishment of an **Automotive Task Force** to coordinate federal and Ontario government action [4][5]. Later that day, PM Carney attended a virtual meeting with Atlantic premiers, though the primary focus of the Vaughan trip remained the unveiling of these major auto sector measures [1].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/02/04/thursday-february-5-2026\n[2] https://www.youtube.com/watch?v=HeNW-J8ATUU&vl=en\n[3] https://x.com/CanadianPM/status/2019566082038567041\n[4] https://www.canada.ca/en/innovation-science-economic-development/news/2026/02/prime-minister-carney-unveils-canadas-new-automotive-strategy-to-protect-jobs-and-position-our-country-as-a-global-leader-in-next-generation-vehicl.html\n[5] https://www.pm.gc.ca/en/news/news-releases/2026/02/05/prime-minister-carney-launches-new-strategy-transform-canadas-auto\n[6] https://www.pm.gc.ca/en/videos/2026/02/05/prime-minister-carney-announces-new-strategy-transform-canadas-auto-industry\n[7] https://www.bbc.com/news/articles/cgm1lg3gj7vo\n[8] https://www.youtube.com/watch?v=peLLnTam_1g\n[9] https://www.cbc.ca/news/politics/carney-premiers-meeting-1.7489368\n[10] https://www.youtube.com/watch?v=gyaRjR7jfsM\n[11] https://www.youtube.com/watch?v=HC_m9qkV5js"
-    },
-    {
-        "id": 18,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-02-09",
-        "departure": "2026-02-12",
-        "desc": "[2026-02-09]\n11:30 a.m. The Prime Minister will host a working lunch for the Prime Minister of Luxembourg, Luc Frieden.\n12:45 p.m. The Prime Minister will meet with the Prime Minister of Luxembourg, Luc Frieden.\n\n[2026-02-10]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-02-11]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n2:00 p.m. The Prime Minister will make a statement in the House of Commons.\nWest BlockParliament Hill.\nPlease note: In light of Tuesday’s tragic events in Tumbler Ridge, British Columbia, the Prime Minister’s previously announced schedule for Wednesday, February 11, was suspended. More details to follow."
-    },
-    {
-        "id": 19,
-        "city": "Tumbler Ridge, British Columbia",
-        "coords": [
-            55.1262007,
-            -120.998067
-        ],
-        "arrival": "2026-02-13",
-        "departure": "2026-02-16",
-        "desc": "6:15 p.m. The Prime Minister will attend a community vigil."
-    },
-    {
-        "id": 20,
-        "city": "Montréal, Québec",
-        "coords": [
-            45.5031824,
-            -73.5698065
-        ],
-        "arrival": "2026-02-17",
-        "departure": "2026-02-17",
-        "desc": "PM Carney visited Montréal on February 17, 2026, to tour a production and manufacturing assembly line before announcing Canada’s first **Stratégie industrielle de défense** (Industrial Defence Strategy) [1][2]. During the 10:30 a.m. announcement, he outlined new measures designed to **strengthen security**, **create prosperity**, and **reinforce strategic autonomy** by prioritizing Canadian companies and building domestic capacity [1][3]. The strategy’s framework focuses on three pillars: **bâtir** (build), **établir des partenariats** (establish partnerships), and **acheter** (buy), with a clear directive to “build in Canada” [2]. This trip marked the formal launch of a major federal initiative to bolster the nation’s defence industrial base.\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/02/16/tuesday-february-17-2026\n[2] https://www.pm.gc.ca/fr/videos/2026/02/17/premier-ministre-carney-lance-la-premiere-strategie-industrielle-de-defense-du\n[3] https://www.pm.gc.ca/fr/nouvelles/avis-aux-medias/2026/02/16/mardi-17-fevrier-2026\n[4] https://www.youtube.com/watch?v=gXrfQEHBYds&vl=en\n[5] https://www.cpac.ca/headline-politics/episode/pm-mark-carney-meets-with-quebec-premier-christine-frechette--april-17-2026?id=d5a3ecc5-e87d-4782-8da4-f21e58b1ff1c\n[6] https://www.ctvnews.ca/politics/article/pm-carney-to-deliver-speech-on-canadian-choices-and-values-in-quebec-city/\n[7] https://ici.radio-canada.ca/nouvelle/2148258/mark-carney-montreal-saint-patrick-legault\n[8] https://www.youtube.com/watch?v=n7EhQ6B9R5s"
-    },
-    {
-        "id": 21,
-        "city": "Edmonton, Alberta",
-        "coords": [
-            53.5462055,
-            -113.491241
-        ],
-        "arrival": "2026-02-18",
-        "departure": "2026-02-18",
-        "desc": "11:00 a.m. The Prime Minister will meet with the Member of Parliament for Edmonton Riverbend."
-    },
-    {
-        "id": 22,
-        "city": "Richmond, British Columbia",
-        "coords": [
-            49.163168,
-            -123.137414
-        ],
-        "arrival": "2026-02-18",
-        "departure": "2026-02-18",
-        "desc": "On February 18, 2026, **PM Carney** visited **Richmond, British Columbia** to celebrate **Lunar New Year** with the local Chinese community at **Continental Seafood Restaurant**, where he enjoyed dim sum and distributed red pockets with gold coin chocolates [2][3][7]. Following the celebration, he toured an **affordable housing project** in the city as part of his community engagement stops in Metro Vancouver [1][5]. The visit also included a brief meeting with the **Member of Parliament for Edmonton Riverbend** earlier in the day before his Richmond appearance [1]. This trip focused on **community engagement** and **Liberal Party activities** rather than signing treaties or delivering major policy announcements [2].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/02/18/update-wednesday-february-18-2026\n[2] https://connectfm.ca/en/news/post/prime-minister-mark-carney-to-visit-richmond-and-vancouver-for-community-events-and-party\n[3] https://dailyhive.com/vancouver/carney-continental-seafood-richmond\n[4] https://ibftoday.ca/carney-hits-the-b-c-hustings-as-mcguinty-drops-by-seaspan-shipyard-to-see-progress-on-joint-support-ships-ipolitics/\n[5] https://energeticcity.ca/2026/02/18/prime-minister-carney-returning-to-b-c-one-week-after-mass-shooting/\n[6] https://www.shutterstock.com/image-photo/prime-minister-mark-carney-met-members-2741155133\n[7] https://nomsmagazine.com/report-mark-carney-continental-seafood-richmond/\n[8] https://www.visitrichmondbc.com/blogs/seasonal/lunar-new-year-the-insiders-guide/"
-    },
-    {
-        "id": 23,
-        "city": "Vancouver, British Columbia",
-        "coords": [
-            49.2608724,
-            -123.113952
-        ],
-        "arrival": "2026-02-18",
-        "departure": "2026-02-18",
-        "desc": "2:40 p.m. The Prime Minister will tour an affordable housing project."
-    },
-    {
-        "id": 24,
-        "city": "Surrey, British Columbia",
-        "coords": [
-            49.1913033,
-            -122.849143
-        ],
-        "arrival": "2026-02-19",
-        "departure": "2026-02-19",
-        "desc": "PM Carney visited Surrey, British Columbia on February 19, 2026, to meet with senior law enforcement officials from the B.C. extortion task force to address rising extortion incidents in the Lower Mainland [1][2]. During the meeting, he announced significant resource increases, including $1.7 billion in recent budget funding for the RCMP and Canada Border Services Agency, the deployment of 20 additional RCMP officers and helicopter resources to the region, and the creation of a new financial crimes agency to \"follow the money\" [1]. He also highlighted upcoming legislation, specifically Bill C-12, which will make recruiting youth into extortion an explicit crime and include measures to support victims of violence [1].\n\nSources:\n[1] https://www.youtube.com/watch?v=N68GHvYel3Y\n[2] https://vicnews.com/2026/02/19/carney-meets-b-c-extortion-task-force-leaders-in-surrey/\n[3] https://www.youtube.com/watch?v=XAWBfIaIpAU\n[4] https://www.pm.gc.ca/en/news/media-advisories/2026/02/18/thursday-february-19-2026\n[5] https://www.youtube.com/watch?v=B5q0E1S6OUU"
-    },
-    {
-        "id": 25,
-        "city": "Burnaby, British Columbia",
-        "coords": [
-            49.2433804,
-            -122.972545
-        ],
-        "arrival": "2026-02-19",
-        "departure": "2026-02-21",
-        "desc": "11:00 a.m. The Prime Minister will cheer on Team Canada’s women’s Olympic hockey team during the gold medal game."
-    },
-    {
-        "id": 26,
-        "city": "Chelsea, Québec",
-        "coords": [
-            45.5031737,
-            -75.808023
-        ],
-        "arrival": "2026-02-22",
-        "departure": "2026-02-23",
-        "desc": "PM Carney traveled to Chelsea, Québec on February 22, 2026, to join cheering fans and watch Team Canada’s men’s Olympic hockey team compete against the United States in the gold-medal game at the 2026 Winter Olympics[1]. Wearing a Team Canada jersey, he greeted supporters, posed for photos, and shared in the national excitement as Canada pursued its 10th Olympic men’s hockey gold medal[1]. No treaties, bilateral meetings, speeches, or major public announcements were made during this specific visit; the trip was solely for the purpose of supporting the Olympic team[1].\n\nSources:\n[1] https://www.youtube.com/watch?v=SvjGJZGEdaA\n[2] https://www.ctvnews.ca/politics/article/pm-carney-to-deliver-speech-on-canadian-choices-and-values-in-quebec-city/\n[3] https://x.com/CanadianPM/status/2014068971251675415\n[4] https://www.youtube.com/watch?v=kZh2IAM_YUI"
-    },
-    {
-        "id": 27,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-02-24",
-        "departure": "2026-02-26",
-        "desc": "[2026-02-24]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-02-25]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n\n10:00 a.m. The Prime Minister will depart for Mumbai, India."
-    },
-    {
-        "id": 28,
-        "city": "Mumbai, India",
-        "coords": [
-            19.054999,
-            72.8692035
-        ],
-        "arrival": "2026-02-27",
-        "departure": "2026-03-01",
-        "desc": "PM Carney arrived in Mumbai on February 27, 2026, for his inaugural official visit to India, marking the first bilateral trip by a Canadian Prime Minister since 2018 with a primary focus on boosting trade and mending previously strained diplomatic ties [1][4]. During his two days in Mumbai, he engaged with business leaders and Canadian pension funds, visited a cultural exhibition, met university researchers at an innovation showcase, and delivered remarks at the Canada-India Growth and Investment Forum [1][2]. Although the detailed bilateral meetings with Prime Minister Narendra Modi occurred later in New Delhi, the Mumbai leg established the commercial groundwork for the visit, which ultimately concluded with India and Canada signing eight agreements covering uranium supply, clean energy, critical minerals, and defense cooperation [2][6].\n\nSources:\n[1] https://www.reuters.com/world/americas/canadas-carney-visits-india-boost-trade-mend-ties-latest-middle-powers-trip-2026-02-27/\n[2] https://economictimes.com/news/india/canadian-pm-mark-carney-to-visit-india-from-february-27-to-march-2-mea-releases-full-schedule/articleshow/128803063.cms\n[3] https://www.aljazeera.com/news/2026/2/27/canadas-pm-carney-in-india-to-bolster-trade-and-mend-ties\n[4] https://www.tribuneindia.com/news/india/canadian-pm-mark-carney-arrives-in-mumbai-for-4-day-india-visit/\n[5] https://timesofindia.indiatimes.com/short-videos/briefs/canadian-pm-mark-carney-arrives-in-mumbai-on-first-india-visit/shorttakes/128884237.cms\n[6] https://thediplomat.com/2026/03/canada-india-relations-stabilize-with-pm-carneys-visit/\n[7] https://www.youtube.com/watch?v=fVXiMDK02vs\n[8] https://www.pm.gc.ca/en/news/statements/2026/03/02/joint-statement-prime-minister-carney-and-prime-minister-modi\n[9] https://www.youtube.com/watch?v=2wwdN0QpHjE"
-    },
-    {
-        "id": 29,
-        "city": "New Delhi, India",
-        "coords": [
-            28.6138954,
-            77.2090057
-        ],
-        "arrival": "2026-03-01",
-        "departure": "2026-03-02",
-        "desc": "PM Carney met with Indian Prime Minister Narendra Modi in New Delhi on March 2, 2026, to launch a strategic reset in Canada-India relations following years of diplomatic strain[2][6]. The leaders signed a new critical minerals partnership and a Memorandum of Understanding on Clean Energy Cooperation, while also finalizing Terms of Reference to launch formal negotiations for a Comprehensive Economic Partnership Agreement (CEPA) aimed at concluding by end-2026[1][10]. Key commercial outcomes included a $2.6 billion Canadian uranium supply agreement between Cameco and India, alongside 10 additional commercial agreements worth over $5.5 billion[3][6]. PM Carney also participated in the India-Canada CEO Forum with Modi before departing for Sydney, marking his first official visit to India as Canada's Prime Minister[2][11].\n\nSources:\n[1] https://www.youtube.com/watch?v=chpvF7u6bdw\n[2] https://economictimes.com/news/india/canadian-pm-mark-carney-to-visit-india-from-february-27-to-march-2-mea-releases-full-schedule/articleshow/128803063.cms\n[3] https://toronto.citynews.ca/2026/03/02/carney-meets-with-indian-pm-modi-in-new-delhi-touts-energy-partnership/\n[4] https://www.reuters.com/world/americas/canadas-carney-visit-india-early-march-ontario-minister-says-2026-02-16/\n[5] https://newsonair.gov.in/canadian-pm-to-begin-india-visit-in-mumbai-hold-high-level-talks-in-new-delhi/\n[6] https://www.cnbc.com/2026/03/03/canada-india-modi-carney-relationship-trump.html\n[7] https://x.com/ANI/status/2025905937803067745\n[8] https://www.theguardian.com/world/2026/mar/01/canada-india-trade-meetings\n[9] https://www.youtube.com/watch?v=kVT8f651aKY\n[10] https://www.pm.gc.ca/en/news/statements/2026/03/02/joint-statement-prime-minister-carney-and-prime-minister-modi\n[11] https://www.youtube.com/watch?v=2wwdN0QpHjE"
-    },
-    {
-        "id": 30,
-        "city": "Sydney, Australia",
-        "coords": [
-            -33.8698439,
-            151.2082848
-        ],
-        "arrival": "2026-03-03",
-        "departure": "2026-03-05",
-        "desc": "PM Carney arrived in Sydney, Australia on March 3, 2026, for a trade-focused segment of a three-country mission, where he attended and witnessed two signing ceremonies establishing the **Canadian Australian Pension Funds Investment Initiative** to connect institutional investors from both nations[1][2]. Following a media availability to address the initiative and global developments, he delivered remarks to the press and later participated in a **featured conversation at the Lowy Institute** on March 4 to discuss trade, security, and regional cooperation[2][7]. The visit, which underscored Canada’s commitment to strengthening bilateral ties with Australia, concluded with his departure for Canberra on March 5 to meet with Prime Minister Anthony Albanese[2][4].\n\nSources:\n[1] https://www.youtube.com/watch?v=SPTikNJZMuA\n[2] https://www.youtube.com/watch?v=U2-Hss6sXFQ\n[3] https://www.youtube.com/watch?v=SkavlenyMOM\n[4] https://islandsocialtrends.ca/prime-minister-carney-in-australia-to-boost-trade/\n[5] https://www.youtube.com/watch?v=Q5_HOcBfWJU\n[6] https://www.youtube.com/watch?v=hYsgtSUe3KM\n[7] https://www.pm.gc.ca/en/news/speeches/2026/03/04/prime-minister-carney-delivers-remarks-media-sydney-australia\n[8] https://www.npr.org/2026/03/04/g-s1-112556/carney-says-he-backs-strikes-on-iran-with-some-regret-as-world-order-frays"
-    },
-    {
-        "id": 31,
-        "city": "Canberra, Australia",
-        "coords": [
-            -35.2975906,
-            149.1012676
-        ],
-        "arrival": "2026-03-05",
-        "departure": "2026-03-06",
-        "desc": "PM Carney’s March 5–6, 2026 visit to Canberra marked his first official trip to Australia as Prime Minister, focused on strengthening bilateral trade, defence, and Indo-Pacific security ties with Prime Minister Anthony Albanese[1][3]. During the visit, he met with Albanese and Australia’s Cabinet, delivered a rare address to both Houses of the Australian Parliament, and held a joint media availability highlighting expanded cooperation in energy, critical minerals, defence, and artificial intelligence[1][3][6]. The leaders announced formalized ministerial economic talks, progress toward modernizing the Canada-Australia Tax Treaty, and welcomed growing investment collaboration between Canadian pension funds and Australian superannuation funds[3]. PM Carney also met with Governor-General Sam Mostyn and attended a Defence Science and Technology Showcase before departing for Tokyo on March 6[1][3].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/statements/2026/03/05/joint-statement-prime-minister-mark-carney-and-prime-minister-anthony\n[2] https://www.youtube.com/watch?v=xWaTHLE_dzk\n[3] https://www.pm.gc.ca/en/news/readouts/2026/03/05/prime-minister-carney-meets-prime-minister-australia-anthony-albanese\n[4] https://www.youtube.com/watch?v=vTV-I8kwbic&vl=en\n[5] https://www.youtube.com/watch?v=F-SqpFD7uU8\n[6] https://www.youtube.com/watch?v=hYsgtSUe3KM\n[7] https://x.com/CanadianPM/status/2029550563369628032\n[8] https://www.theguardian.com/australia-news/live/2026/mar/03/australia-politics-live-anthony-albanese-mark-carney-iran-parliament-question-time-angus-taylor-pauline-hanson-jim-chalmers-rba-interest-rates-cost-of-living-inflation-ntwnfb\n[9] https://www.wsws.org/en/articles/2026/02/02/qyse-f02.html"
-    },
-    {
-        "id": 32,
-        "city": "Tokyo, Japan",
-        "coords": [
-            35.6768601,
-            139.7638947
-        ],
-        "arrival": "2026-03-06",
-        "departure": "2026-03-07",
-        "desc": "PM Carney arrived in Tokyo on March 6, 2026, for his first official visit to Japan since taking office, where he met with Japanese Prime Minister Takaichi Sanae for a bilateral summit and working dinner [1][7]. The leaders signed a new **Comprehensive Strategic Partnership** covering defence, energy, critical minerals, trade, and technology, and released a joint statement to the media following a signing ceremony [2][8]. Key outcomes included enhanced security cooperation (such as potential Japanese participation in Operation Nanook), joint AI development, LNG exports, and a bilateral Memorandum of Cooperation for fisheries and marine research [8][10]. PM Carney departed Tokyo on March 7 to return to Ottawa, concluding a 10-day Indo-Pacific tour that also included stops in India and Australia [3][4].\n\nSources:\n[1] https://www.mofa.go.jp/na/na1/ca/pageite_000001_01494.html\n[2] https://www.youtube.com/watch?v=hrOrYIl3sJg\n[3] https://www.youtube.com/watch?v=SeiTMsQIX4k\n[4] https://toronto.citynews.ca/2026/03/05/carney-to-cap-indo-pacific-trip-with-tokyo-visit-focused-on-trade-security/\n[5] https://www.youtube.com/watch?v=9X_v5JwaH_M\n[6] https://www.youtube.com/watch?v=ucNaiiGStrw\n[7] https://japan.kantei.go.jp/105/actions/202603/06canada.html\n[8] https://www.pm.gc.ca/en/news/news-releases/2026/03/06/prime-minister-carney-forges-new-comprehensive-strategic-partnership\n[9] https://www.youtube.com/watch?v=nkhTzUYb5No\n[10] https://www.cbc.ca/news/politics/carney-japan-visit-9.7116888\n[11] https://www.japantimes.co.jp/news/2026/02/24/japan/politics/canada-carney-japan-visit/\n[12] https://www.youtube.com/watch?v=7hknZj-hM1s"
-    },
-    {
-        "id": 33,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-03-07",
-        "departure": "2026-03-12",
-        "desc": "4:00 p.m. The Prime Minister will arrive in Ottawa, Ontario.\n\n[2026-03-09]\n10:30 a.m. The Prime Minister will meet with the Premier of Prince Edward Island, Rob Lantz.\n7:15 p.m. The Prime Minister will attend a community iftar.\n\n[2026-03-10]\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-03-11]\n9:30 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n6:00 p.m. The Prime Minister will deliver remarks at an event to celebrate St. Patrick’s Day.\n\n[2026-03-12]\n9:30 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill."
-    },
-    {
-        "id": 34,
-        "city": "Yellowknife, Northwest Territories",
-        "coords": [
-            62.4540807,
-            -114.377385
-        ],
-        "arrival": "2026-03-12",
-        "departure": "2026-03-12",
-        "desc": "On March 12, 2026, Prime Minister Mark Carney visited Yellowknife, Northwest Territories, to announce a new **$40 billion plan** to defend and transform Canada’s Northern and Arctic region, focusing on military sovereignty and infrastructure development[3][7]. The initiative includes **$32 billion** for upgrading military forward operating locations in Yellowknife, Inuvik, Iqaluit, and Goose Bay, alongside **$2.7 billion** for four new remote operational hubs and major projects like the Grays Bay deepwater port and an all-season Arctic Economic and Security Corridor road[1][5]. During the visit, PM Carney met with **N.W.T. Premier R.J. Simpson** and federal Minister Rebecca Alty to discuss the plan's implementation before departing for Oslo, Norway[2][8].\n\nSources:\n[1] https://www.youtube.com/watch?v=EYEpu5fT4bI\n[2] https://www.youtube.com/watch?v=J4_zoMklzIE\n[3] https://yukon-news.com/2026/03/12/carney-announces-40-billion-for-northern-defence-and-infrastructure-2/\n[4] https://www.cbc.ca/player/play/video/9.7126851\n[5] https://www.washingtontimes.com/news/2026/mar/12/mark-carney-announces-billions-defense-infrastructure-canadas-north/\n[6] https://islandsocialtrends.ca/arctic-region-carney-in-nwt-before-heading-to-norway/\n[7] https://www.pm.gc.ca/en/news/backgrounders/2026/03/12/prime-minister-carney-announces-ambitious-new-plan-defend-build-and\n[8] https://www.cbc.ca/news/canada/north/prime-minister-carney-yellowknife-defence-9.7126601"
-    },
-    {
-        "id": 35,
-        "city": "Oslo, Norway",
-        "coords": [
-            59.9133301,
-            10.7389701
-        ],
-        "arrival": "2026-03-13",
-        "departure": "2026-03-13",
-        "desc": "PM Carney arrived in Oslo, Norway on March 13, 2026, as part of a three-day diplomatic and security visit that included observing the NATO-led \"Cold Response\" exercise in Bardufoss before returning to Oslo for bilateral and multilateral meetings [1][3]. During his time in Oslo, PM Carney held a bilateral meeting with Norwegian Prime Minister Jonas Gahr Støre, where they signed a memorandum of understanding on critical minerals and issued joint statements on Arctic security, space-based technologies, and sovereign AI capabilities [1][4]. The trip culminated in PM Carney attending the Canada-Nordic Summit, where he met with leaders from Denmark, Finland, Iceland, and Sweden to deepen geopolitical coordination and enhance transatlantic security in the North [1][9].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/03/09/prime-minister-carney-travel-norway-and-united-kingdom-strengthen\n[2] https://www.ctvnews.ca/politics/article/carneys-trip-shifts-from-defence-to-nordic-skiing-before-meeting-with-norways-pm/\n[3] https://nationalnewswatch.com/2026/03/13/carney-to-observe-nato-drills-in-northern-norway-with-norwegian-and-german-leaders\n[4] https://www.pm.gc.ca/en/news/readouts/2026/03/14/prime-minister-carney-meets-prime-minister-norway-jonas-gahr-store\n[5] https://www.youtube.com/watch?v=qFSb6O1LPbI\n[6] https://www.youtube.com/watch?v=YDOtMbHKL3g\n[7] https://www.nytimes.com/2026/03/15/world/canada/nordic-leaders-praise-carney-as-they-discuss-arctic-security.html\n[8] https://www.facebook.com/now.canada/posts/-canadian-prime-minister-mark-carney-is-set-to-travel-to-norway-from-march-1315-/1337770081713689/\n[9] https://www.youtube.com/watch?v=q0HkAYpMIJk&vl=en"
-    },
-    {
-        "id": 36,
-        "city": "Bardufoss, Norway",
-        "coords": [
-            69.065637,
-            18.5159237
-        ],
-        "arrival": "2026-03-13",
-        "departure": "2026-03-13",
-        "desc": "On March 13, 2026, **PM Carney** traveled to **Bardufoss, Norway** to observe **NATO’s Exercise Cold Response**, a major military drill involving approximately 30,000 troops from 14 nations in the High North [1][2]. During the visit, he held bilateral meetings and participated in a joint media availability with **Norwegian Prime Minister Jonas Gahr Støre** and **German Chancellor Friedrich Merz** to discuss international security, including Russia’s war in Ukraine and the conflict in the Middle East [1][7]. PM Carney also reaffirmed Canada’s commitment to Arctic security, announcing a **$35 billion investment** to enhance military presence and capabilities in the North [3][12]. The leaders expressed shared support for Ukraine’s sovereignty and agreed to maintain close contact on transatlantic defense and deterrence efforts [1][11].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/readouts/2026/03/13/prime-minister-carney-meets-prime-minister-norway-jonas-gahr-store-and\n[2] https://www.pm.gc.ca/en/news/news-releases/2026/03/09/prime-minister-carney-travel-norway-and-united-kingdom-strengthen\n[3] https://www.youtube.com/watch?v=CJ_YdeAYJ2c\n[4] https://www.regjeringen.no/en/whats-new/prime-ministers-see-first-hand-how-allies-are-training-to-defend-norway/id3152230/\n[5] https://www.youtube.com/watch?v=py_2nQPHZgM\n[6] https://ca.news.yahoo.com/carney-arrives-norway-ahead-arctic-233702512.html\n[7] https://www.facebook.com/CanadianPM/posts/in-bardufoss-prime-minister-carney-met-with-the-prime-minister-of-norway-jonas-g/122169702650875278/\n[8] https://www.youtube.com/watch?v=LvAQXxqQywU\n[9] https://x.com/CanadianPM/status/2032550507584131582\n[10] https://ca.news.yahoo.com/carney-observe-nato-drills-northern-080018601.html\n[11] https://www.pm.gc.ca/fr/nouvelles/comptes-rendus/2026/03/13/premier-ministre-carney-rencontre-premier-ministre-de-la\n[12] https://ca.news.yahoo.com/were-ready-defend-arctic-carney-172516867.html"
-    },
-    {
-        "id": 37,
-        "city": "Holmenkollen, Norway",
-        "coords": [
-            59.9603535,
-            10.6649715
-        ],
-        "arrival": "2026-03-14",
-        "departure": "2026-03-14",
-        "desc": "PM Carney traveled to Holmenkollen, Norway on March 14, 2026, to meet with Canadian athletes competing in the International Ski Federation Nordic World Cup and to hold a bilateral meeting with Norwegian Prime Minister Jonas Gahr Støre[1][4]. During the visit, the two leaders issued a joint statement establishing a new partnership focused on space-based technologies, artificial intelligence, critical minerals, and Euro-Atlantic security, while also signing a memorandum of understanding on critical minerals to secure supply chains[8]. PM Carney emphasized Canada's role as a reliable low-risk oil and gas producer amid global supply disruptions caused by the conflict in Iran, and both leaders condemned Iranian attacks while reaffirming support for Ukraine[6][8]. The trip also included a closed working dinner hosted by Prime Minister Støre in Oslo and preparations for the upcoming Canada-Nordic Summit[4][8].\n\nSources:\n[1] https://www.cpac.ca/headline-politics/episode/pm-carney-meets-with-canadian-athletes-in-holmenkollen-norway--march-14-2026?id=81857e42-eb22-4869-b4e6-eaecbdc7b065\n[2] https://www.youtube.com/watch?v=ykf2U1DxEWA\n[3] https://x.com/CanadianPM/status/2032916641231651276\n[4] https://www.pm.gc.ca/en/news/media-advisories/2026/03/13/saturday-march-14-2026\n[5] https://winnipeg.citynews.ca/2026/03/14/carneys-trip-shifts-from-defence-to-nordic-skiing-before-meeting-with-norways-pm/\n[6] https://www.youtube.com/watch?v=gqIrk0czBlI\n[7] https://www.youtube.com/watch?v=obf4gJTtii4\n[8] https://www.pm.gc.ca/en/news/readouts/2026/03/14/prime-minister-carney-meets-prime-minister-norway-jonas-gahr-store\n[9] https://www.facebook.com/CanadianPM/posts/following-the-conclusion-of-the-canada-nordic-summit-prime-minister-carney-parti/122170000682875278/"
-    },
-    {
-        "id": 38,
-        "city": "Oslo, Norway",
-        "coords": [
-            59.9133301,
-            10.7389701
-        ],
-        "arrival": "2026-03-14",
-        "departure": "2026-03-15",
-        "desc": "PM Carney attended the Canada-Nordic Summit in Oslo, Norway, on March 15, 2026, where he met with the prime ministers of Denmark, Finland, Iceland, Norway, and Sweden to strengthen transatlantic security and Arctic defense cooperation[1][9]. During the summit, he participated in a joint media availability with Nordic leaders to address Arctic security, defense procurement, and threats to national sovereignty[1][3]. The trip also included a working dinner with Norwegian Prime Minister Jonas Gahr Støre on March 14, marking PM Carney’s first visit to Norway since taking office and the first by a Canadian Prime Minister since 1980[1][2]. Following the summit, PM Carney departed Oslo for London to meet with UK Prime Minister Sir Keir Starmer and hold an audience with King Charles III[1][4].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/03/15/prime-minister-carney-deepens-cooperation-nordic-countries-defence\n[2] https://everythinggp.com/2026/03/15/carney-to-conclude-norway-trip-with-nordic-5-meeting-before-heading-to-london/\n[3] https://www.youtube.com/watch?v=q0HkAYpMIJk&vl=en\n[4] https://www.nytimes.com/2026/03/15/world/canada/nordic-leaders-praise-carney-as-they-discuss-arctic-security.html\n[5] https://panow.com/2026/03/15/carney-to-conclude-norway-trip-with-nordic-5-meeting-before-heading-to-london/\n[6] https://www.youtube.com/watch?v=qFSb6O1LPbI\n[7] https://www.cpac.ca/headline-politics/episode/pm-carney-meets-with-norwegian-pm-in-oslo--march-14-2026?id=8f2f190b-ab9d-4c9e-9ccf-f0f18b04445b\n[8] https://www.youtube.com/watch?v=obf4gJTtii4\n[9] https://www.cbc.ca/news/politics/carney-norway-nordic-summit-defence-russia-greenland-9.7129246"
-    },
-    {
-        "id": 39,
-        "city": "London, United Kingdom",
-        "coords": [
-            51.5074456,
-            -0.1277653
-        ],
-        "arrival": "2026-03-15",
-        "departure": "2026-03-16",
-        "desc": "PM Carney arrived in London on March 15, 2026, for a bilateral visit to the United Kingdom, where he met with UK Prime Minister Sir Keir Starmer at 10 Downing Street the following morning [1][2]. During their meeting, the leaders discussed the Middle East conflict, condemned Iranian missile and drone attacks, and reaffirmed support for Ukraine while emphasizing the need to restore freedom of navigation in the Strait of Hormuz [1][2]. They also strengthened the Canada-UK partnership by agreeing to deepen economic and security cooperation, including innovative financing for defence production through initiatives like the proposed Defence, Security and Resilience Bank [2]. PM Carney additionally held an audience with King Charles III during the trip, which followed his participation in NATO exercises in Norway [6][7].\n\nSources:\n[1] https://www.gov.uk/government/news/pm-meeting-with-prime-minister-carney-of-canada-16-march-2026\n[2] https://www.pm.gc.ca/en/news/readouts/2026/03/16/prime-minister-carney-meets-prime-minister-united-kingdom-sir-keir-starmer\n[3] https://www.youtube.com/watch?v=FB0MhAUGMaA\n[4] https://www.pm.gc.ca/en/news/readouts/2026/03/15/prime-minister-carney-speaks-prime-minister-united-kingdom-sir-keir\n[5] https://www.youtube.com/watch?v=geo68DpTLYI&vl=en\n[6] https://globalnews.ca/news/11728427/carney-king-charles-uk-trip-2026/\n[7] https://ca.news.yahoo.com/photo-gallery-prime-minister-carney-143458311.html\n[8] https://toronto.citynews.ca/2026/03/12/carney-to-meet-with-king-charles-while-in-united-kingdom/"
-    },
-    {
-        "id": 40,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-03-24",
-        "departure": "2026-03-25",
-        "desc": "[2026-03-24]\n7:50 a.m. The Prime Minister will deliver remarks at the National Prayer Breakfast.\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest Block Parliament Hill.\n\n[2026-03-25]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n2:00 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n4:00 p.m. The Prime Minister will meet with His Highness Prince Rahim Aga Khan V.\n5:15 p.m. The Prime Minister will attend a dinner hosted by the Governor General, Her Excellency the Right Honourable Mary Simon, to welcome His Highness the Aga Khan to Canada."
-    },
-    {
-        "id": 41,
-        "city": "Halifax, Nova Scotia",
-        "coords": [
-            44.648618,
-            -63.5859487
-        ],
-        "arrival": "2026-03-26",
-        "departure": "2026-03-27",
-        "desc": "PM Carney traveled to Halifax, Nova Scotia on March 26–27, 2026, to announce that Canada has officially reached its NATO defence spending target of 2% of GDP and to unveil over $3 billion in funding for defence infrastructure in Atlantic Canada[3]. During the trip, he toured a Royal Canadian Navy vessel, visited an aerospace and defence manufacturing facility, and delivered remarks at the Halifax Chamber of Commerce highlighting the boost to defence spending[1][3][7]. On March 27, PM Carney met with Nova Scotia Premier Tim Houston and signed a bilateral agreement to simplify federal and provincial environmental approvals for major infrastructure and resource projects[5][6].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/03/25/thursday-march-26-2026\n[2] https://www.pm.gc.ca/en/news/readouts/2026/03/26/prime-minister-carney-participates-virtual-meeting-joint-expeditionary\n[3] https://www.cpac.ca/headline-politics/episode/pm-carney-on-canada-reaching-nato-defence-spending-target--march-26-2026?id=6dc0abf8-e7a9-4538-98ef-dc6233e1e338\n[4] https://business.halifaxchamber.com/events/details/a-fireside-chat-on-energy-and-climate-with-prime-minister-mark-carney-4408?calendarMonth=2026-03-01\n[5] https://www.youtube.com/watch?v=5_UP--Eq4_Q\n[6] https://halifax.citynews.ca/2026/03/27/mark-carney-signs-deal-with-nova-scotia-to-simplify-some-environmental-reviews/\n[7] https://ca.news.yahoo.com/mark-carney-delivers-speech-halifax-164400530.html"
-    },
-    {
-        "id": 42,
-        "city": "Pubnico, Nova Scotia",
-        "coords": [
-            43.7024423,
-            -65.7839702
-        ],
-        "arrival": "2026-03-27",
-        "departure": "2026-03-28",
-        "desc": "PM Carney traveled to Pubnico, Nova Scotia on March 27, 2026, where he met with local lobster harvesters and community members at the wharf to discuss the fishing industry [1][2]. During this broader Nova Scotia visit, he also held a bilateral meeting with Premier Tim Houston in Halifax to sign a \"one project, one review\" co-operation agreement aimed at fast-tracking environmental approvals for major infrastructure and resource projects [1][8]. Earlier that morning, PM Carney delivered remarks at the Halifax Chamber of Commerce, where he reaffirmed his commitment to canceling the consumer carbon tax [2][4]. The trip combined direct engagement with coastal communities in Pubnico with high-level intergovernmental negotiations to streamline regulatory processes in the province [1][7].\n\nSources:\n[1] https://www.cjls.com/2026/03/27/carney-tours-pubnico-meets-with-lobster-fishers-community/\n[2] https://www.pm.gc.ca/en/news/media-advisories/2026/03/26/friday-march-27-2026\n[3] https://www.youtube.com/watch?v=5_UP--Eq4_Q\n[4] https://www.pm.gc.ca/en/news/speeches/2026/03/27/prime-minister-carney-delivers-remarks-halifax-chamber-commerce\n[5] https://finance.yahoo.com/economy/policy/articles/friday-march-27-2026-131400006.html\n[6] https://www.cpac.ca/headline-politics/episode/pm-mark-carney-meets-with-ns-premier-tim-houston--march-27-2026?id=7e525be9-eb67-4eec-b5d9-1fa80aff6243\n[7] https://toronto.citynews.ca/video/2026/03/27/carney-in-nova-scotia-as-ndp-converge-in-winnipeg/\n[8] https://toronto.citynews.ca/2026/03/27/mark-carney-signs-deal-with-nova-scotia-to-simplify-some-environmental-reviews/"
-    },
-    {
-        "id": 43,
-        "city": "Hamilton, Ontario",
-        "coords": [
-            43.2560802,
-            -79.8728583
-        ],
-        "arrival": "2026-03-29",
-        "departure": "2026-03-29",
-        "desc": "[2026-03-29]\n5:15 p.m. The Prime Minister will meet with workers.\n8:00 p.m. The Prime Minister will attend the 2026 JUNO Awards."
-    },
-    {
-        "id": 44,
-        "city": "Toronto, Ontario",
-        "coords": [
-            43.6534817,
-            -79.3839347
-        ],
-        "arrival": "2026-03-30",
-        "departure": "2026-03-30",
-        "desc": "On March 30, 2026, PM Carney visited Toronto to meet with Ontario Premier Doug Ford and announce a new $8.8 billion federal-provincial partnership to accelerate homebuilding, infrastructure, and transit in the province[1][3]. The cost-matching agreement includes cuts to municipal development charges and the removal of the HST for new homes valued up to $1 million[1]. During the visit, the two leaders settled recent differences over trade and Chinese electric vehicles in a \"highly constructive discussion\" accompanied by pizza, with Ford declaring they are \"united as one nation\"[2]. PM Carney also addressed reporter questions regarding Liberal MP Michael Ma’s committee testimony on forced labour in China and commented on Air Canada CEO Michael Rousseau’s upcoming retirement[1].\n\nSources:\n[1] https://www.youtube.com/watch?v=hWAksaIcalk&vl=en\n[2] https://www.cbc.ca/player/play/video/9.7061619\n[3] https://www.pm.gc.ca/en/news/media-advisories/2026/03/29/monday-march-30-2026\n[4] https://www.toronto.ca/legdocs/mmis/2026/ra/bgrd/backgroundfile-286043.pdf\n[5] https://finance.yahoo.com/economy/policy/articles/monday-march-30-2026-215900795.html\n[6] https://www.cbc.ca/news/politics/carney-premiers-meeting-1.7489368\n[7] https://www.reuters.com/world/americas/ontario-premier-says-he-carney-agreed-not-impose-counter-measures-till-april-2-2025-03-27/\n[8] https://www.youtube.com/watch?v=p0eP_E0o-98"
-    },
-    {
-        "id": 45,
-        "city": "Wakefield, Québec",
-        "coords": [
-            45.639968,
-            -75.92926
-        ],
-        "arrival": "2026-03-31",
-        "departure": "2026-03-31",
-        "desc": "On March 31, 2026, Prime Minister Mark Carney visited Wakefield, Québec, to announce a new $3.8 billion nature strategy designed to protect 30% of Canada’s lands and waters by 2030[1][3]. During the news conference, PM Carney unveiled the creation of two major conservation areas: the Wiinipaakw Indigenous Protected Area and National Marine Conservation Area in Eastern James Bay, and the Seal River Watershed National Park Reserve in Manitoba[1]. He also addressed political questions at the event, firmly stating that proroguing Parliament had “never even entered his thinking” despite speculation about upcoming byelections[4]. The strategy includes three pillars—protecting nature, building Canada well, and mobilizing capital—along with the launch of an Expert Taskforce on Natural Capital Accounting to integrate nature’s value into economic decision-making[2][3].\n\nSources:\n[1] https://www.youtube.com/watch?v=Jnu8GzSKz6M\n[2] https://www.youtube.com/watch?v=oUg0Q2k3P0A\n[3] https://www.pm.gc.ca/en/news/news-releases/2026/03/31/prime-minister-carney-launches-new-nature-strategy-protect-canadas\n[4] https://halifax.citynews.ca/2026/03/31/never-even-entered-my-thinking-carney-says-hes-not-considering-prorogation/\n[5] https://www.pm.gc.ca/en/news/news-releases/2026/02/23/prime-minister-carney-diversify-canadas-trade-attract-new-investment"
-    },
-    {
-        "id": 46,
-        "city": "Brampton, Ontario",
-        "coords": [
-            43.685832,
-            -79.7599366
-        ],
-        "arrival": "2026-04-07",
-        "departure": "2026-04-07",
-        "desc": "On April 7, 2026, **PM Carney** visited **Brampton, Ontario** to launch the **$51-billion Build Communities Strong Fund** and announce its inaugural project, the **$64-million Embleton Community Centre and Park**[1][2][6]. During the visit, he outlined the fund's allocation for roads, bridges, water systems, and community centres while encouraging youth to pursue careers in the trades to support these infrastructure initiatives[7][10]. Later that morning, **PM Carney** toured a **local law enforcement facility** alongside **Brampton Mayor Patrick Brown**, where he also addressed reporter questions on the U.S.-Israeli military operation in Iran and community concerns regarding the **Alto high-speed rail project**[1][3][5].\n\nSources:\n[1] https://www.youtube.com/watch?v=HDmsBlWKwZQ\n[2] https://www.youtube.com/watch?v=vwamMn8BE30\n[3] https://www.cpac.ca/headline-politics/episode/pm-carney-on-local-infrastructure-alto-high-speed-rail-project--april-7-2026?id=e35457b5-135a-47c9-add9-016b2ccbd14a\n[4] https://www.facebook.com/groups/377662074170339/posts/1359817372621466/\n[5] https://www.youtube.com/watch?v=7l_6y6VuyXU\n[6] https://x.com/CanadianPM/status/2041543359257325888\n[7] https://lethbridgenewsnow.com/2026/04/07/carney-breaks-down-plans-to-spend-51b-on-local-infrastructure/\n[8] https://www.politico.com/newsletters/canada-playbook/2026/04/07/break-week-00861269\n[9] https://www.straitstimes.com/world/canadas-carney-set-to-win-majority-government-in-special-elections\n[10] https://ca.news.yahoo.com/carney-rolls-infrastructure-agenda-says-183653539.html"
-    },
-    {
-        "id": 47,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-04-08",
-        "departure": "2026-04-08",
-        "desc": "[2026-04-08]\n9:30 a.m. The Prime Minister will chair the Cabinet meeting.\n12:00 p.m. The Prime Minister will meet with the Member of Parliament for Sarnia—Lambton—Bkejwanong.\n7:20 p.m. The Prime Minister will speak with Canadian astronaut Jeremy Hansen and the Artemis II crew."
-    },
-    {
-        "id": 48,
-        "city": "Montérégie, Québec",
-        "coords": [
-            45.5528202,
-            -72.9467046
-        ],
-        "arrival": "2026-04-09",
-        "departure": "2026-04-12",
-        "desc": "On April 9, 2026, PM Carney traveled to Montérégie, Québec, to officially launch construction on the Contrecœur container terminal at the Port of Montreal, a major initiative to diversify Canada’s trade and strengthen economic resilience[1][2]. During the announcement, he stated the project will increase the port’s capacity by approximately 60% and create about 4,000 high-paying jobs during construction, with thousands more once operational[2]. The initiative is projected to generate over $750 million annually for the Canadian economy by better connecting domestic products to global markets through integrated rail, road, and marine infrastructure[2]. This event fulfilled the media advisory’s scheduled 11:00 a.m. announcement of an important trade-diversification initiative[1].\n\nSources:\n[1] https://www.youtube.com/watch?v=OZEnvzGPK7Q\n[2] https://www.youtube.com/watch?v=8L1tmLrJjKU\n[3] https://www.cpac.ca/headline-politics/episode/pm-mark-carney-announces-launch-of-work-on-a-major-project-in-quebec?id=c4f269ae-88bc-4af6-9fb1-09a3eb8da5b5\n[4] https://globalnews.ca/news/11622752/mark-carney-parliament-returns-2026/\n[5] https://ici.radio-canada.ca/info/en-direct/1012625/assermentation-cabinet-mark-carney-ministres?publication=2164717"
-    },
-    {
-        "id": 49,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-04-13",
-        "departure": "2026-04-29",
-        "desc": "6:00 p.m. The Prime Minister will attend and deliver remarks at an event to celebrate Vaisakhi and Sikh Heritage Month.\n\n[2026-04-14]\n10:00 a.m. The Prime Minister will announce new measures to bring down costs for Canadians.\nThird floorWest BlockParliament Hill.\n12:50 p.m. The Prime Minister will join the President of Finland, Alexander Stubb, to participate in a practice with the Ottawa Charge.\n1:40 p.m. The Prime Minister will welcome the President of Finland, Alexander Stubb, to Parliament.\nMackenzie DoorsWest BlockParliament Hill.\n1:50 p.m. The Prime Minister will meet with the President of Finland, Alexander Stubb.\nThird floorWest BlockParliament Hill.\n4:00 p.m. The Prime Minister will meet with the Premier of Manitoba, Wab Kinew.\n6:00 p.m. The Prime Minister will host a working dinner for the President of Finland, Alexander Stubb.\n\n[2026-04-15]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n11:15 a.m. The Prime Minister will meet with the Premier of Québec, Christine Fréchette.\n\n11:00 a.m. The Prime Minister will meet with the Premier of New Brunswick, Susan Holt.\n\n[2026-04-21]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-04-22]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n1:15 p.m. The Prime Minister will meet with students to mark Earth Day.\n\n10:00 a.m. The Prime Minister will announce new measures to accelerate homebuilding in Ottawa.\n\n9:15 a.m. The Prime Minister will announce a new measure to build Canada strong for all.\n\n[2026-04-28]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n3:45 p.m. The Prime Minister will meet with the Minister of Finance and National Revenue, François-Philippe Champagne, prior to tabling the 2026 Spring Economic Update.\nWest BlockParliament Hill.\n4:00 p.m. The Prime Minister will attend the tabling of the 2026 Spring Economic Update in the House of Commons.\nWest BlockParliament Hill.\n\n[2026-04-29]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n4:30 p.m. The Prime Minister will deliver remarks to trade union workers."
-    },
-    {
-        "id": 50,
-        "city": "Oakville, Ontario",
-        "coords": [
-            43.447436,
-            -79.666672
-        ],
-        "arrival": "2026-04-30",
-        "departure": "2026-05-01",
-        "desc": "PM Carney visited Oakville, Ontario on April 30, 2026, to meet with skilled trades workers and announce the $6 billion \"Team Canada Strong\" measure aimed at recruiting and training up to 100,000 Red Seal tradespeople over five years [2][3]. During a brief media availability following the meeting, he detailed key provisions of the initiative, including a $400 weekly income top-up for apprentices and a $5,000 certification bonus for Red Seal trade graduates [3]. The Prime Minister also addressed reporters on unrelated national issues, including the denial of entry to Mehdi Taj at Pearson International Airport and Canada's selection to host a new multinational defence bank [1]. This visit marked a historic return to Local 793, where he delivered the announcement shortly after securing a come-from-behind election victory [3].\n\nSources:\n[1] https://www.youtube.com/watch?v=iF1Pk5DTbrY\n[2] https://www.pm.gc.ca/en/news/media-advisories/2026/04/29/thursday-april-30-2026\n[3] https://iuoelocal793.org/pm-carney-makes-historic-return-visit-to-local-793/\n[4] https://www.youtube.com/watch?v=5Hew_aGBvoM\n[5] https://www.pm.gc.ca/en/news/news-releases/2026/01/07/prime-minister-carney-build-strategic-partnerships-diversify-canadas"
-    },
-    {
-        "id": 51,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-02",
-        "departure": "2026-05-02",
-        "desc": "4:00 p.m. The Prime Minister will depart for Yerevan, Armenia, to participate in the 8th European Political Community Summit."
-    },
-    {
-        "id": 52,
-        "city": "Yerevan, Armenia",
-        "coords": [
-            40.1777112,
-            44.5126233
-        ],
-        "arrival": "2026-05-03",
-        "departure": "2026-05-04",
-        "desc": "PM Carney made his first official visit to Armenia, attending the 8th European Political Community (EPC) Summit in Yerevan as the first non-European leader ever invited to the event [1][4]. During the trip, he held bilateral meetings with key leaders including Armenian Prime Minister Nikol Pashinyan, Ukrainian President Volodymyr Zelenskyy, French President Emmanuel Macron, and European Council President António Costa [1][4]. PM Carney delivered remarks at the Summit’s Plenary Session and participated in a roundtable on economic security and the green transition, while emphasizing collective security, transatlantic defense readiness, and support for Ukraine [4][8]. The visit also reinforced Canada-Armenia bilateral ties, highlighted by the 2023 opening of a Canadian embassy in Yerevan and the presence of over 60,000 Canadians of Armenian descent [1].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/readouts/2026/05/03/prime-minister-carney-meets-prime-minister-armenia-nikol-pashinyan\n[2] https://www.youtube.com/watch?v=0GBrGZL40uI\n[3] https://www.youtube.com/watch?v=-pAEXZCZNUw&vl=en\n[4] https://www.pm.gc.ca/en/news/news-releases/2026/05/04/prime-minister-carney-strengthens-trade-and-security-partnerships\n[5] https://www.facebook.com/CanadianPM/posts/in-yerevan-today-on-his-first-official-visit-to-armenia-prime-minister-carney-me/122178192260875278/\n[6] https://www.cbc.ca/news/politics/politics-armenia-canada-ties-9.7185261\n[7] https://x.com/CanadianPM/status/2051060927739392475\n[8] https://www.france24.com/en/europe/20260504-europe-canada-leaders-meet-in-armenia-amid-uncertainty-over-us-policy-trump-russia-ukraine-iran-war-nato\n[9] https://www.youtube.com/watch?v=6CPe6nugUiM\n[10] https://www.youtube.com/watch?v=XU6xC_olcAY\n[11] https://www.youtube.com/watch?v=2X0LE-yc2Ns\n[12] https://ca.news.yahoo.com/pm-mark-carney-armenia-european-183533244.html\n[13] https://www.youtube.com/watch?v=2hbUyZfh8J0"
-    },
-    {
-        "id": 53,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-04",
-        "departure": "2026-05-06",
-        "desc": "10:15 p.m. The Prime Minister will arrive in Ottawa, Canada.\n\n[2026-05-05]\n8:45 a.m. The Prime Minister will participate in a Sacred Bundle Ceremony with the National Family and Survivors Circle to commemorate the National Day of Awareness for Missing and Murdered Indigenous Women, Girls and 2SLGBTQI+ People.\n10:30 a.m. The Prime Minister will announce a new appointment.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-05-06]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill."
-    },
-    {
-        "id": 54,
-        "city": "Mirabel, Québec",
-        "coords": [
-            45.6323151,
-            -73.9838454
-        ],
-        "arrival": "2026-05-06",
-        "departure": "2026-05-06",
-        "desc": "On May 6, 2026, PM Carney traveled to Mirabel, Québec to announce a historic record investment in the Canadian aerospace industry, specifically a deal for AirAsia to order 150 Airbus A220-300 aircraft assembled at the local facility [2][3]. Accompanied by Québec Premier Christine Fréchette and executives from AirAsia and Airbus, the Prime Minister delivered remarks emphasizing how this order will strengthen the industry and support thousands of Canadian jobs [2][5]. Later that afternoon, PM Carney visited a local business to highlight recent funding aimed at protecting workers and domestic industries [1][4]. This trip marked the announcement of Canada’s largest commercial aircraft order, underscoring the government’s broader economic strategy to expand international trade partnerships with ASEAN nations [5][6].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/05/05/wednesday-may-6-2026\n[2] https://www.youtube.com/watch?v=ne3rO1EJhFc&vl=en\n[3] https://www.youtube.com/watch?v=v0lXGe6sQW0\n[4] https://www.pm.gc.ca/fr/nouvelles/avis-aux-medias/2026/05/05/mercredi-6-mai-2026\n[5] https://www.youtube.com/watch?v=HMUR0YfUL7U\n[6] https://www.youtube.com/watch?v=ls-P0aFdN2M\n[7] https://www.pm.gc.ca/fr/videos/2026/05/06/premier-ministre-carney-salue-la-plus-importante-commande-davions-commerciaux-au"
-    },
-    {
-        "id": 55,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-07",
-        "departure": "2026-05-08",
-        "desc": "[2026-05-07]\n9:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n2:00 p.m. The Prime Minister will meet with Her Royal Highness Princess Margriet of the Netherlands.\n\n9:30 a.m. The Prime Minister will meet with the Premier of Alberta, Danielle Smith."
-    },
-    {
-        "id": 56,
-        "city": "Toronto, Ontario",
-        "coords": [
-            43.6534817,
-            -79.3839347
-        ],
-        "arrival": "2026-05-08",
-        "departure": "2026-05-12",
-        "desc": "[2026-05-08]\n4:20 p.m. The Prime Minister will visit a youth sports facility.\n5:30 p.m. The Prime Minister will meet with the President of Guyana, Dr. Mohamed Irfaan Ali.\n7:00 p.m. The Prime Minister will attend a dinner hosted by Canada 2020.\n\n2:00 p.m. The Prime Minister will deliver remarks at the 2026 Global Progress Action Summit."
-    },
-    {
-        "id": 57,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-13",
-        "departure": "2026-05-14",
-        "desc": "[2026-05-13]\n9:10 a.m. The Prime Minister will meet Canadian Space Agency astronauts Jeremy Hansen and Jenni Gibbons, as well as members of the Artemis II crew.\n9:50 a.m. The Prime Minister will participate in an activity with students alongside Canadian Space Agency astronauts Jeremy Hansen and Jenni Gibbons, as well as members of the Artemis II crew.\n11:30 a.m. The Prime Minister will chair the Cabinet meeting.\n\n[2026-05-14]\n10:00 a.m. The Prime Minister will announce a new agenda to deliver clean, affordable, and reliable energy for Canadians.\nThird FloorWest BlockParliament Hill."
-    },
-    {
-        "id": 58,
-        "city": "Calgary, Alberta",
-        "coords": [
-            51.0456064,
-            -114.057541
-        ],
-        "arrival": "2026-05-15",
-        "departure": "2026-05-18",
-        "desc": "On May 15, 2026, **PM Carney** visited **Calgary, Alberta** to sign an **implementation agreement** with **Premier Danielle Smith** that strengthens **energy collaboration** and commits both governments to **net zero by 2050**[1][3]. The deal includes plans for a **new oil pipeline** potentially beginning construction in **2027** and establishes a **lower rate of increase** for Alberta's industrial **carbon price**[1][5]. Following the signing ceremony, **PM Carney** held a bilateral meeting with **Premier Smith**, met with **unionised skilled trades workers**, and conducted a brief **media availability** to address questions on the pipeline and federal-provincial relations[3][6].\n\nSources:\n[1] https://www.youtube.com/watch?v=dAjxcTrrcyo&vl=en\n[2] https://www.youtube.com/watch?v=Iv-E5tsemaA\n[3] https://www.pm.gc.ca/en/news/media-advisories/2026/05/14/friday-may-15-2026\n[4] https://www.reuters.com/world/albertas-separatists-hit-by-legal-setback-ahead-carney-visit-2026-05-15/\n[5] https://www.cpac.ca/headline-politics/episode/pm-carney-comments-after-signing-energy-deal-with-alberta--may-15-2026?id=ca07399b-8908-4f26-b45a-68a773ee1791\n[6] https://www.politico.com/newsletters/canada-playbook/2026/05/15/lets-make-a-deal-00923055\n[7] https://www.ctvnews.ca/calgary/article/prime-minister-mark-carney-set-to-attend-last-day-of-calgary-stampede/\n[8] https://globalnews.ca/news/11962291/carney-stampede/\n[9] https://www.winnipegfreepress.com/arts-and-life/life/greenpage/2026/05/15/carney-smith-set-to-make-energy-announcement-carbon-price-deal-expected\n[10] https://www.cbc.ca/news/canada/calgary/carney-alberta-rallies-1.7519628\n[11] https://www.cbc.ca/player/play/video/9.6721272\n[12] https://www.cbc.ca/news/canada/calgary/carney-calgary-campaign-stop-1.7504562"
-    },
-    {
-        "id": 59,
-        "city": "Saint-Michel-des-Saints, Québec",
-        "coords": [
-            46.6786221,
-            -73.9176803
-        ],
-        "arrival": "2026-05-19",
-        "departure": "2026-05-19",
-        "desc": "On May 19, 2026, PM Carney visited Saint-Michel-des-Saints, Québec, to officially announce and break ground on the Matawinie Graphite Mine, a project expected to become the largest graphite mine within G7 countries [2]. During a speech delivered outside the site amidst heavy rainfall, he announced an important initiative to build a stronger, more resilient economy centered on this critical mineral development [1][2]. This event marks the commencement of construction for the mine in Northern Quebec, positioning Canada as a key player in the global graphite supply chain [2].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/05/19/update-tuesday-may-19-2026\n[2] https://www.cbc.ca/player/play/video/9.7204995"
-    },
-    {
-        "id": 60,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-19",
-        "departure": "2026-05-19",
-        "desc": "7:00 p.m. The Prime Minister will attend a dinner hosted by the Governor General, Her Excellency the Right Honourable Mary Simon, to welcome His Majesty King Felipe VI, King of Spain."
-    },
-    {
-        "id": 61,
-        "city": "Vancouver, British Columbia",
-        "coords": [
-            49.2608724,
-            -123.113952
-        ],
-        "arrival": "2026-05-20",
-        "departure": "2026-05-23",
-        "desc": "PM Carney visited Vancouver on May 20, 2026, to deliver remarks and participate in a featured fireside conversation with the Greater Vancouver Board of Trade, joined by board president and CEO Bridgitte Anderson[1][3]. During this engagement, he publicly backed advancing British Columbia’s resource economy and supported progress in the province’s resource sector, addressing business executives prior to his meeting with provincial leadership[5]. Later that morning, PM Carney met with BC Premier David Eby to discuss regional priorities, delivering brief remarks alongside the Premier ahead of their bilateral discussion[2][4]. The trip focused on strengthening economic ties and addressing ongoing tensions regarding Ottawa’s energy agreements with Alberta and potential new pipeline projects to the BC coastline[5].\n\nSources:\n[1] https://www.cpac.ca/headline-politics/episode/pm-mark-carney-addresses-greater-vancouver-board-of-trade--may-20-2026?id=96d153b9-0ae9-461f-bc0b-56a855b74630\n[2] https://www.youtube.com/watch?v=rBBJomOS40E\n[3] https://www.pm.gc.ca/en/news/media-advisories/2026/05/19/wednesday-may-20-2026\n[4] https://www.youtube.com/watch?v=lLjrbP-UNow\n[5] https://www.cbc.ca/player/play/video/9.7206385"
-    },
-    {
-        "id": 62,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-24",
-        "departure": "2026-05-27",
-        "desc": "[2026-05-24]\n9:30 a.m. The Prime Minister will participate in a ‘Canada Celebrates’ FIFA World Cup 26™ event.\n9:55 a.m. The Prime Minister will meet with members of local youth soccer clubs.\n\n[2026-05-25]\n10:00 a.m. The Prime Minister will tour a homebuilding site.\n10:20 a.m. The Prime Minister will hold a brief media availability.\n2:30 p.m. The Prime Minister will meet with the Mayor of Vancouver, Ken Sim.\n\n[2026-05-26]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-05-27]\n8:30 a.m. The Prime Minister will announce new measures to make Canada more secure, resilient, and prosperous.\n9:00 a.m. The Prime Minister will hold a brief media availability.\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n12:50 p.m. The Prime Minister will deliver remarks to celebrate the athletes from the Milano Cortina 2026 Olympic and Paralympic Winter Games.\nFirst floorSir John A. Macdonald Building.\n1:10 p.m. The Prime Minister will take part in an activity with members of Canada’s Olympic and Paralympic curling teams.\n3:40 p.m. The Prime Minister will depart for New York City, United States of America."
-    },
-    {
-        "id": 63,
-        "city": "New York City, United States of America",
-        "coords": [
-            40.7127281,
-            -74.0060152
-        ],
-        "arrival": "2026-05-27",
-        "departure": "2026-05-28",
-        "desc": "PM Carney traveled to New York City from May 27 to 28, 2026, to position Canada as a premier investment hub by pitching the country to top global business leaders and investors [1][2]. During the trip, he met with members of the Business Roundtable and delivered remarks at a featured conversation with the Economic Club of New York, where he announced a goal to secure **$1 trillion in new investment** over the next five years [1][3][4]. The Prime Minister’s primary objective was to promote Canada to CEOs, entrepreneurs, and portfolio managers as a destination for major capital inflows [2]. He departed for Ottawa on the evening of May 28 after completing these high-profile business engagements [1].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/05/24/prime-minister-carney-position-canada-investment-hub-visit-new-york-city\n[2] https://www.pm.gc.ca/fr/nouvelles/communiques/2026/05/24/premier-ministre-carney-se-rendra-new-york-positionner-canada-pole-investissement\n[3] https://www.youtube.com/watch?v=mKLRUB2xW_4\n[4] https://www.youtube.com/watch?v=TVy5QIFuEiA"
-    },
-    {
-        "id": 64,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-05-28",
-        "departure": "2026-05-31",
-        "desc": "9:10 p.m. The Prime Minister will arrive in Ottawa, Canada.\n\n[2026-05-29]\n10:00 a.m. The Prime Minister will deliver remarks at an event to recognise the contributions of Her Excellency the Right Honourable Mary Simon, Governor General of Canada.\n1:00 p.m. The Prime Minister will meet with the Premier of the Yukon, Currie Dixon.\n2:00 p.m. The Prime Minister will meet with the Minister of Foreign Affairs of the People’s Republic of China, Wang Yi.\n4:00 p.m. The Prime Minister will attend a reception honouring the service of Her Excellency the Right Honourable Mary Simon, Governor General of Canada."
-    },
-    {
-        "id": 65,
-        "city": "Nepean, Ontario",
-        "coords": [
-            45.2862008,
-            -75.7512324
-        ],
-        "arrival": "2026-06-01",
-        "departure": "2026-06-01",
-        "desc": "On June 1, 2026, PM Carney visited his Nepean, Ontario riding to officially launch the new federal agency **Build Canada Homes** with a **$13 billion** initial investment and announce eight approved local housing projects. During a tour of an affordable homebuilding site, he revealed that these projects will deliver over **1,100 new rental units** in Ottawa, exceeding initial targets by 10% [2][8]. The Prime Minister, accompanied by Housing Minister Robertson and Ottawa Mayor Sutcliffe, emphasized that the agency will expedite construction on public land to double Canada's annual home-building pace [2][4]. This visit marked the formal implementation of his signature housing policy to prioritize modern, factory-built housing across six cities, including Ottawa [4][6].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/05/31/monday-june-1-2026\n[2] https://ca.finance.yahoo.com/news/carney-unveils-housing-projects-own-140554820.html\n[3] https://www.cbc.ca/news/canada/ottawa/canada-ottawa-homes-construction-spending-plan-affordable-9.7173763\n[4] https://www.ctvnews.ca/politics/article/carney-government-launches-build-canada-homes-with-13b-initial-investment/\n[5] https://housing-infrastructure.canada.ca/bch-mc/news-nouvelles-eng.html\n[6] https://www.youtube.com/watch?v=hPiA5paYHkU\n[7] https://www.cbc.ca/news/politics/carney-double-pace-home-building-1.7497947\n[8] https://www.youtube.com/watch?v=XbLU8YY9WDQ"
-    },
-    {
-        "id": 66,
-        "city": "Toronto, Ontario",
-        "coords": [
-            43.6534817,
-            -79.3839347
-        ],
-        "arrival": "2026-06-01",
-        "departure": "2026-06-01",
-        "desc": "On June 1, 2026, PM Carney delivered a speech at Toronto's Holy Blossom Temple declaring that \"Canada's civic compact is failing Jewish Canadians\" due to antisemitism reaching unprecedented post-war levels [2][6]. During this address, he announced the establishment of the new **Ministerial Advisory Council on Rights, Equality, and Inclusion** to coordinate a whole-of-federal-government approach against hate [3][4]. PM Carney also highlighted six legislative measures, most notably **Bill C-9 (the Combating Hate Act)**, which strengthens the Criminal Code by creating new offenses for intimidation at places of worship and community institutions [1][7]. The trip focused entirely on outlining these government efforts to combat antisemitism and reinforcing protections for Jewish Canadians through enhanced research, data collection, and policy alignment [4][5].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/speeches/2026/06/01/canadian-covenant-prime-minister-carney-highlights-new-measures-combat-antisemitism\n[2] https://www.washingtonpost.com/world/2026/06/01/canada-carney-jewish-community-antisemitism/6d72641c-5e12-11f1-9c46-d6211372eede_story.html\n[3] https://www.reuters.com/world/carney-promises-to-combat-antisemitism-canada-citing-surge-hate-crimes-2026-06-01/\n[4] https://www.cbc.ca/news/politics/carney-canada-failing-jewish-canadians-9.7219707\n[5] https://www.youtube.com/watch?v=WUS-afzT930\n[6] https://www.cbc.ca/player/play/video/9.7219788\n[7] https://www.youtube.com/watch?v=VQJGM_-N79o\n[8] https://www.youtube.com/watch?v=OPXJOl4kXOY"
-    },
-    {
-        "id": 67,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-06-02",
-        "departure": "2026-06-02",
-        "desc": "[2026-06-02]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n12:30 p.m. The Prime Minister will meet with the Professional Women’s Hockey League 2026 Walter Cup champions, the Montréal Victoire."
-    },
-    {
-        "id": 68,
-        "city": "Longueuil, Québec",
-        "coords": [
-            45.521906,
-            -73.4644578
-        ],
-        "arrival": "2026-06-02",
-        "departure": "2026-06-02",
-        "desc": "On June 2, 2026, PM Carney visited Longueuil, Québec, to announce a new federal-provincial infrastructure partnership with Québec Premier Christine Fréchette, committing nearly $10 billion over 10 years to fund local projects [1][3]. The agreement includes approximately $6 billion for public transit improvements, such as the Québec tramway and network electrification, and $3.5 billion for housing, educational institutions, community centers, and health infrastructure [7]. During the visit, PM Carney also met with local health care professionals at 4:20 p.m. to discuss regional health priorities [2][4]. This trip marked a significant bilateral announcement aimed at modernizing public services and strengthening essential infrastructure across Québec [7][9].\n\nSources:\n[1] https://www.youtube.com/watch?v=CRA_XhwjjVA\n[2] https://www.pm.gc.ca/en/news/media-advisories/2026/06/01/tuesday-june-2-2026\n[3] https://chatnewstoday.ca/2026/06/02/canada-reaches-deal-with-quebec-on-billions-of-dollars-in-infrastructure-funding/\n[4] https://www.pm.gc.ca/fr/nouvelles/avis-aux-medias/2026/06/01/mardi-2-juin-2026\n[5] https://www.youtube.com/watch?v=nxcxfGdPYr8\n[6] https://www.985fm.ca/audio/781006/annonce-sur-le-transport-en-commun-les-milliards-vont-pleuvoir-a-longueuil\n[7] https://www.youtube.com/watch?v=Sfq0sNnDTWk\n[8] https://www.pm.gc.ca/en/news/news-releases/2026/06/07/prime-minister-carney-travel-france-ireland-and-2026-g7-leaders\n[9] https://www.youtube.com/watch?v=7jEGQ4-uuas\n[10] https://www.cp24.com/video/shows/2026/07/01/watch-pm-carneys-full-address-at-the-canada-day-celebration-in-ottawa/"
-    },
-    {
-        "id": 69,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-06-03",
-        "departure": "2026-06-03",
-        "desc": "[2026-06-03]\n10:00 a.m. The Prime Minister will attend the National Caucus meeting.\nWest BlockParliament Hill.\n12:20 p.m. The Prime Minister will deliver remarks recognising the contributions of Their Excellencies the Right Honourable Mary Simon, Governor General of Canada, and Mr. Whit Fraser at a farewell reception held in their honour.\nSir John A. Macdonald Building144 Wellington Street.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n5:30 p.m. The Prime Minister will deliver remarks and participate in a featured conversation on Canada’s economic strategy with the Ontario Global 100 and Québec Global 100."
-    },
-    {
-        "id": 70,
-        "city": "Toronto, Ontario",
-        "coords": [
-            43.6534817,
-            -79.3839347
-        ],
-        "arrival": "2026-06-04",
-        "departure": "2026-06-04",
-        "desc": "On June 4, 2026, PM Carney visited Toronto to announce Canada’s new national artificial intelligence strategy, which includes free AI training, protections against deepfakes, and a pledge to create 250,000 AI-related jobs [1][4]. During the trip, he toured an AI institute, met with researchers, and held bilateral meetings with Prime Minister Mia Mottley of Barbados and Prime Minister Dickon Mitchell of Grenada to strengthen trade and security partnerships [1][2]. PM Carney also participated in a working lunch with Mottley and attended the Bizot Conference as part of his schedule [2].\n\nSources:\n[1] https://www.youtube.com/watch?v=PwcBY6PbJXw\n[2] https://www.pm.gc.ca/en/news/readouts/2026/06/04/prime-minister-carney-meets-prime-minister-grenada-dickon-mitchell\n[3] https://www.cpac.ca/headline-politics/episode/pm-carney-launches-advisory-council-on-rights-equality-and-inclusion?id=5f7c0ddb-b5c0-4cc2-9b00-51eee2e37354\n[4] https://www.pm.gc.ca/fr/videos/2026/06/04/premier-ministre-carney-lance-la-nouvelle-strategie-nationale-du-canada-matiere\n[5] https://www.youtube.com/watch?v=Axq4pSXcfUA"
-    },
-    {
-        "id": 71,
-        "city": "Greater Toronto Area, Ontario",
-        "coords": [
-            43.9019833,
-            -79.268313
-        ],
-        "arrival": "2026-06-05",
-        "departure": "2026-06-07",
-        "desc": "On June 5, 2026, **PM Carney** visited a grocery store in **Brampton**, part of the Greater Toronto Area, to mark the launch of the first payment date for the new **Canada Groceries and Essentials Benefit** [3]. During the visit, he highlighted that **12 million Canadians**, including 5 million Ontarians, received a one-time top-up payment equivalent to a 50% increase in their GST Credit, with a family of four receiving up to **$533** immediately [3][4]. This event officially initiated the benefit, which replaces the GST/HST credit and includes a permanent **25% increase** in quarterly payments for the next five years, providing up to **$1,890** annually for a family of four [1][3]. The Prime Minister's appearance underscored the government's affordability initiative aimed at offsetting rising grocery costs for households across the country [4][5].\n\nSources:\n[1] https://www.canada.ca/en/department-finance/news/2026/06/canadians-to-begin-receiving-enhanced-canada-groceries-and-essentials-benefit-starting-today0.html\n[2] https://www.youtube.com/watch?v=c_n7ay_6kDQ\n[3] https://www.youtube.com/watch?v=Q5Zq90Bh35U\n[4] https://www.ctvnews.ca/canada/article/check-your-bank-account-new-grocery-benefit-payments-start-in-canada-today/\n[5] https://www.youtube.com/watch?v=0rii01xtt58\n[6] https://www.cbc.ca/news/politics/grocery-rebate-one-time-top-up-june-9.7168052\n[7] https://www.youtube.com/watch?v=ofsmvxi1gQE\n[8] https://finance.yahoo.com/economy/policy/articles/mark-carney-sends-grocery-checks-141500488.html"
-    },
-    {
-        "id": 72,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-06-08",
-        "departure": "2026-06-10",
-        "desc": "[2026-06-08]\n9:35 a.m. The Prime Minister will deliver remarks at the installation ceremony of the 31st Governor General of Canada.\nSenate of Canada2 Rideau Street.\n11:35 a.m. The Prime Minister will attend a ceremony at the National War Memorial with the 31st Governor General of Canada, the Right Honourable Louise Arbour.\n\n[2026-06-09]\n10:00 a.m. The Prime Minister will chair the Cabinet meeting.\nWest BlockParliament Hill.\n12:25 p.m. The Prime Minister will deliver remarks at the Pride flag raising ceremony on Parliament Hill.\n2:15 p.m. The Prime Minister will attend Question Period.\nWest BlockParliament Hill.\n\n[2026-06-10]\n10:00 a.m. The Prime Minister attend the National Caucus meeting.\nWest BlockParliament Hill.\n1:00 p.m. The Prime Minister will chair the First Ministers’ Meeting."
-    },
-    {
-        "id": 73,
-        "city": "Toronto, Ontario",
-        "coords": [
-            43.6534817,
-            -79.3839347
-        ],
-        "arrival": "2026-06-11",
-        "departure": "2026-06-11",
-        "desc": "On June 11, 2026, in Toronto, Ontario, **PM Carney** announced the launch of Canada’s first **National Food Security Strategy** to build a more resilient and affordable food system for Canadians[1]. The announcement included major investments such as a **$1 billion food link fund** at the Ontario Food Terminal to expand food terminals, a **$150 million food security fund** for small businesses, and **$750 million** for greenhouses and hydroponics to boost year-round fresh produce production[1]. PM Carney also outlined regulatory modernization to speed up approvals for seeds, feeds, and fertilizers while prioritizing food security alongside safety[1]. Following the announcement, he departed Toronto at 8:30 p.m. for Paris, France, ahead of meetings with French President Emmanuel Macron and the G7 summit in the French Alps[2].\n\nSources:\n[1] https://www.youtube.com/watch?v=fQlR4fkIYyU\n[2] https://toronto.citynews.ca/2026/06/11/carney-to-visit-paris-dublin-ahead-of-g7-summit-in-french-alps/\n[3] https://www.youtube.com/watch?v=PwcBY6PbJXw\n[4] https://www.youtube.com/watch?v=axAUo4f7C8Q"
-    },
-    {
-        "id": 74,
-        "city": "Paris, France",
-        "coords": [
-            48.8534951,
-            2.3483915
-        ],
-        "arrival": "2026-06-12",
-        "departure": "2026-06-13",
-        "desc": "PM Carney traveled to Paris, France on June 12–13, 2026, for a bilateral visit ahead of the 2026 G7 Leaders’ Summit, where he met with French President Emmanuel Macron at the Élysée Palace [2][6]. The leaders delivered joint statements, reaffirmed the strength of the Canada-France relationship, and agreed to deepen cooperation in trade, defence, artificial intelligence, quantum technologies, and critical minerals [2][4]. PM Carney also held a media availability addressing the upcoming G7 summit, the Gordie Howe International Bridge, and the war in Iran, before attending a working dinner hosted by President Macron [1][6]. He departed Paris the following morning for Dublin, Ireland to continue his European tour [2][6].\n\nSources:\n[1] https://www.youtube.com/watch?v=Q-oM_WtMiTk\n[2] https://www.pm.gc.ca/en/news/news-releases/2026/06/07/prime-minister-carney-travel-france-ireland-and-2026-g7-leaders\n[3] https://www.shutterstock.com/pl/editorial/video/clip-16924985a-shotlist-paris-france-june-12-2026-1\n[4] https://www.facebook.com/CanadianPM/posts/today-prime-minister-carney-met-with-the-president-of-france-emmanuel-macron-dur/122183776172875278/\n[5] https://www.ctvnews.ca/politics/article/pm-carney-travelling-to-ireland-and-france-for-g7-summit/\n[6] https://en.wikipedia.org/wiki/List_of_international_prime_ministerial_trips_made_by_Mark_Carney"
-    },
-    {
-        "id": 75,
-        "city": "Dublin, Ireland",
-        "coords": [
-            53.3493795,
-            -6.2605593
-        ],
-        "arrival": "2026-06-13",
-        "departure": "2026-06-13",
-        "desc": "PM Carney arrived in Dublin on June 13, 2026, for a bilateral visit where he met with Taoiseach Micheál Martin to announce a new cooperation partnership covering artificial intelligence, life sciences, climate action, and trade[1][8]. The two leaders held a joint media availability and unveiled a bilateral framework focusing on trade, research innovation, security, and defense, while also reaffirming support for peace in Ukraine and de-escalation in the Middle East[2][8]. PM Carney delivered remarks on transatlantic ties between Canada and Europe at a featured conversation and attended an official dinner at Dublin Castle where he honored the historic connection between Irish and Canadian peoples[2][3]. This trip marks the first visit to Ireland by a Canadian prime minister since 2017 and includes a planned journey to County Mayo to visit his grandparents' ancestral home[2][6].\n\nSources:\n[1] https://www.youtube.com/watch?v=6KuYCkxqdQU\n[2] https://www.bbc.com/news/articles/cx2xpv8v7v9o\n[3] https://www.youtube.com/watch?v=phVzQ6SNXng&vl=en\n[4] https://www.garda.ie/en/about-us/our-departments/office-of-corporate-communications/press-releases/2026/june/12-06-2026-visit-of-prime-minister-of-canada-mark-carney-dublin-13th-june-2026.html\n[5] https://www.gov.ie/en/department-of-the-taoiseach/press-releases/taoiseach-welcomes-canadian-prime-minister-carney-to-ireland/\n[6] https://www.gov.ie/en/department-of-the-taoiseach/press-releases/taoiseach-miche%C3%A1l-martin-to-meet-with-prime-minister-mark-carney-on-his-visit-to-ireland/\n[7] https://www.gov.ie/en/department-of-the-taoiseach/speeches/speech-by-taoiseach-miche%C3%A1l-martin-welcoming-pm-mark-carney-dublin-castle-13-june-2026/\n[8] https://www.pm.gc.ca/en/news/readouts/2026/06/13/prime-minister-carney-meets-taoiseach-ireland-micheal-martin\n[9] https://www.pm.gc.ca/fr/nouvelles/comptes-rendus/2026/06/13/premier-ministre-carney-rencontre-taoiseach-dirlande-micheal\n[10] https://halifax.citynews.ca/2026/06/13/pm-carney-in-ireland-to-meet-with-leaders-visit-familys-homeland/\n[11] https://www.cpac.ca/headline-politics/episode/pm-carney-delivers-remarks-on-canada-europe-ties--june-13-2026?id=49f41478-daa0-4439-ba2f-fc88dbda36d9\n[12] https://www.thejournal.ie/mark-carney-to-visit-ireland-for-first-time-as-canada-pm-and-meet-with-taoiseach-and-president-7063230-Jun2026/\n[13] https://www.youtube.com/watch?v=8vauDlGnydk&vl=en\n[14] https://ca.finance.yahoo.com/news/pm-carney-ireland-meet-leaders-084241402.html\n[15] https://www.facebook.com/61557621566206/posts/the-prime-minister-of-canada-mark-carney-will-visit-ireland-from-13th-15th-june-/122249650292254052/"
-    },
-    {
-        "id": 76,
-        "city": "County Mayo, Ireland",
-        "coords": [
-            53.9086522,
-            -9.2981258
-        ],
-        "arrival": "2026-06-14",
-        "departure": "2026-06-15",
-        "desc": "[2026-06-14]\n9:15 a.m. The Prime Minister will arrive in Charlestown, Ireland.\n10:20 a.m. The Prime Minister will meet with the President of Ireland, Catherine Connolly.\n12:30 p.m. The Prime Minister will participate in a tree planting with Aughagower Community Council.\n4:00 p.m. The Prime Minister will hold a media availability.\n5:30 p.m. The Prime Minister will attend and deliver remarks at a civic reception hosted by Mayo County Council.\n\n12:00 p.m. The Prime Minister will depart for Geneva, Switzerland."
-    },
-    {
-        "id": 77,
-        "city": "Geneva, Switzerland",
-        "coords": [
-            46.2017559,
-            6.1466014
-        ],
-        "arrival": "2026-06-15",
-        "departure": "2026-06-15",
-        "desc": "PM Carney arrived in Geneva, Switzerland on June 15, 2026, as a transit stop ahead of attending the 2026 G7 Leaders’ Summit in Évian, France [1][2]. Upon landing at Geneva Airport, he was officially welcomed on the tarmac by Swiss Federal President Guy Parmelin and the President of the Council of State of Geneva [1]. After arriving at the summit venue at 4:15 p.m., PM Carney held bilateral meetings with European Council President António Costa and European Commission President Ursula von der Leyen at 6:15 p.m. [2]. He subsequently attended the official G7 welcome and an informal working dinner that evening, marking the start of his participation in the summit [2].\n\nSources:\n[1] https://www.youtube.com/watch?v=qidx5qusXPE\n[2] https://www.pm.gc.ca/en/news/media-advisories/2026/06/14/monday-june-15-2026\n[3] https://www.politico.com/newsletters/canada-playbook/2026/06/15/after-ireland-visit-mark-carney-g7-france-00961857"
-    },
-    {
-        "id": 78,
-        "city": "Évian, France",
-        "coords": [
-            46.400979,
-            6.5897931
-        ],
-        "arrival": "2026-06-15",
-        "departure": "2026-06-17",
-        "desc": "PM Carney attended the **2026 G7 Leaders’ Summit** in Évian-les-Bains, France from June 15 to 17, 2026, where he secured **new partnerships in defence and critical minerals** while advancing Canada’s role in economic security and emerging technologies[1][5]. During the summit, he held key bilateral meetings with prominent leaders including **Ukrainian President Volodymyr Zelenskyy**, **Italian Prime Minister Giorgia Meloni**, **Indian Prime Minister Narendra Modi**, and **U.S. President Donald Trump**, addressing issues such as Ukraine peace efforts and the tentative U.S.-Iran peace agreement[1][3][8]. PM Carney also delivered remarks stating that the **post-Cold War order is breaking down** and participated in working sessions focused on **artificial intelligence** and clean energy alongside outreach countries[9][1]. He concluded the trip with a brief media availability on June 17 before departing for Geneva[3][12].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/06/17/prime-minister-carney-secures-new-partnerships-defence-and-critical\n[2] https://www.pm.gc.ca/en/news/media-advisories/2026/06/14/monday-june-15-2026\n[3] https://www.youtube.com/watch?v=ElkLu0IsBoo&vl=en\n[4] https://www.youtube.com/watch?v=ptPcbKPsG_w\n[5] https://www.pm.gc.ca/en/news/news-releases/2026/06/07/prime-minister-carney-travel-france-ireland-and-2026-g7-leaders\n[6] https://www.pm.gc.ca/fr/nouvelles/communiques/2026/06/07/premier-ministre-carney-se-rendra-france-et-irlande-et-participera\n[7] https://www.cbc.ca/news/politics/g7-leaders-carney-2026-9.7230802\n[8] https://cfjctoday.com/2026/06/16/carneys-itinerary-for-day-two-of-g7-summit-stacked-with-meetings-with-world-leaders/\n[9] https://easternherald.com/2026/06/14/carney-g7-summit-evian-les-bains-global-rupture-macron-canada-eu-2026/\n[10] https://www.youtube.com/watch?v=7nWZM-ir_qE\n[11] https://www.mofa.go.jp/ecm/ec/pageite_000001_01059.html\n[12] https://en.wikipedia.org/wiki/52nd_G7_summit\n[13] https://www.youtube.com/watch?v=1pjiYJqvehY\n[14] https://www.ctvnews.ca/politics/article/carneys-itinerary-for-day-2-of-g7-summit-stacked-with-meetings-with-world-leaders/\n[15] https://www.youtube.com/watch?v=54VyRvemybk"
-    },
-    {
-        "id": 79,
-        "city": "Geneva, Switzerland",
-        "coords": [
-            46.2017559,
-            6.1466014
-        ],
-        "arrival": "2026-06-17",
-        "departure": "2026-06-17",
-        "desc": "[2026-06-17]\n4:00 p.m. The Prime Minister will arrive in Geneva, Switzerland.\n4:15 p.m. The Prime Minister will depart for Ottawa, Canada."
-    },
-    {
-        "id": 80,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-06-17",
-        "departure": "2026-06-17",
-        "desc": "6:45 p.m. The Prime Minister will arrive in Ottawa, Canada."
-    },
-    {
-        "id": 81,
-        "city": "Vancouver, British Columbia",
-        "coords": [
-            49.2608724,
-            -123.113952
-        ],
-        "arrival": "2026-06-18",
-        "departure": "2026-06-20",
-        "desc": "PM Carney visited Vancouver on June 18, 2026, to announce a new 10-year federal-provincial partnership with Premier David Eby that will invest over $5 billion in British Columbia housing, transit, and community infrastructure through the Build Communities Strong Fund[1][2]. During the trip, he held a joint news conference and a private meeting with Premier Eby to accelerate homebuilding and lower costs, while federal Housing Minister Gregor Robertson and provincial Housing Minister Christine Boyle attended the announcement[1][2]. Later that afternoon, PM Carney attended the 2026 FIFA World Cup men’s soccer match between Canada and Qatar at BC Place, shortly after returning from the G7 Summit in France[3][4].\n\nSources:\n[1] https://www.youtube.com/watch?v=7t6sPZs53WU\n[2] https://www.youtube.com/watch?v=BCAagbzHs3k\n[3] https://islandsocialtrends.ca/prime-minister-in-vancouver-june-18-housing-infrastructure-fifa-at-bc-place/\n[4] https://medicinehatnews.com/news/national-news/2026/06/18/pm-carney-to-attend-canada-qatar-world-cup-game-in-vancouver/\n[5] https://toronto.citynews.ca/2026/06/18/pm-carney-to-attend-canada-qatar-world-cup-game-in-vancouver/\n[6] https://www.barchart.com/story/news/3100654/carney-to-meet-with-premier-eby-in-vancouver-as-smith-plans-pipeline-announcement\n[7] https://www.politico.com/newsletters/canada-playbook/2026/06/18/world-cup-meets-carney-curse-00966763\n[8] https://www.cbc.ca/player/play/video/9.7206385"
-    },
-    {
-        "id": 82,
-        "city": "Vancouver Island, British Columbia",
-        "coords": [
-            49.5929495,
-            -125.702557
-        ],
-        "arrival": "2026-06-21",
-        "departure": "2026-06-21",
-        "desc": "10:30 a.m. The Prime Minister will tour an exhibition to mark National Indigenous Peoples Day."
-    },
-    {
-        "id": 83,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-06-22",
-        "departure": "2026-06-22",
-        "desc": "On June 22, 2026, **PM Carney** welcomed **Croatian Prime Minister Andrej Plenković** to Parliament Hill in Ottawa for the **first-ever official visit** by a sitting Croatian Prime Minister to Canada[1][2]. During their bilateral meeting, the leaders underscored strong partnership ties, highlighted a **500% growth in bilateral trade** over the past decade, and welcomed a new commercial agreement between Canada’s Remote Robotic and Croatia’s Orqa to **expand drone manufacturing** in Canada[2]. They also discussed deepening partnerships in **critical minerals, energy, and commerce**, affirmed support for **Ukraine** through military and humanitarian assistance, and reviewed Canada’s efforts to establish the **Defence, Security and Resilience Bank**[2][4].\n\nSources:\n[1] https://www.youtube.com/watch?v=SEsdu3q48AM\n[2] https://www.pm.gc.ca/en/news/readouts/2026/06/22/prime-minister-carney-meets-prime-minister-croatia-andrej-plenkovic\n[3] https://www.newswire.ca/fr/news-releases/le-premier-ministre-carney-rencontre-le-premier-ministre-de-la-croatie-andrej-plenkovic-864385930.html\n[4] https://www.ctvnews.ca/video/2026/06/22/a-great-friend-of-canada-pm-carney-welcomes-first-ever-visit-from-a-croatian-prime-minister/"
-    },
-    {
-        "id": 84,
-        "city": "Outaouais, Québec",
-        "coords": [
-            46.6099678,
-            -76.7719628
-        ],
-        "arrival": "2026-06-23",
-        "departure": "2026-06-23",
-        "desc": "PM Carney traveled to Outaouais, Québec on June 23, 2026, to celebrate *la Fête nationale du Québec* (Saint-Jean-Baptiste Day) with local community engagements [1][4]. At 5:00 p.m., he visited a local business in the region to mark the occasion, followed by participation in a community festival at 5:50 p.m. [1][2]. During the festivities, the Prime Minister highlighted his signature on a new Canadian twenty-dollar note while attempting to purchase food from a food truck [3]. No treaties, bilateral meetings, or major policy announcements were made during this trip, which focused solely on cultural celebration and community presence [1][3].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/06/22/tuesday-june-23-2026\n[2] https://www.pm.gc.ca/fr/nouvelles/avis-aux-medias/2026/06/22/mardi-23-juin-2026\n[3] https://www.ctvnews.ca/ottawa/photos/2026/06/24/prime-minister-takes-part-in-saint-jean-baptiste-celebration/\n[4] https://www.politico.com/newsletters/canada-playbook/2026/06/23/mark-carney-canada-summer-priorities-00971211\n[5] https://www.ctvnews.ca/politics/article/pm-carney-to-deliver-speech-on-canadian-choices-and-values-in-quebec-city/\n[6] https://en.wikipedia.org/wiki/Premiership_of_Mark_Carney"
-    },
-    {
-        "id": 85,
-        "city": "Vancouver, British Columbia",
-        "coords": [
-            49.2608724,
-            -123.113952
-        ],
-        "arrival": "2026-06-24",
-        "departure": "2026-06-24",
-        "desc": "12:00 p.m. The Prime Minister will attend the 2026 FIFA World Cup Canada-Switzerland men’s soccer match."
-    },
-    {
-        "id": 86,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-06-25",
-        "departure": "2026-06-27",
-        "desc": "[2026-06-25]\n11:15 a.m. The Prime Minister will hold a press conference following the conclusion of the spring sitting of Parliament to outline the results delivered by Canada’s new government.\nRoom 325National Press Theatre180 Wellington Street.\n\n9:30 a.m. The Prime Minister will announce the government’s plan to restore 24 Sussex Drive."
-    },
-    {
-        "id": 87,
-        "city": "Toronto, Ontario",
-        "coords": [
-            43.6534817,
-            -79.3839347
-        ],
-        "arrival": "2026-06-28",
-        "departure": "2026-06-29",
-        "desc": "On June 28, 2026, PM Carney attended Toronto’s 45th Pride Parade in Ontario, joining Toronto Mayor Olivia Chow as a high-profile participant in the celebration [1][2]. During the event, he delivered remarks emphasizing LGBTQ+ rights with the message “Love who you want to love,” reinforcing federal support for equality [1]. The Prime Minister walked alongside the mayor and other attendees, marking a visible public announcement of solidarity with the LGBTQ+ community [2][4]. No treaties, bilateral meetings, or major policy announcements were made beyond this public participation and speech [3].\n\nSources:\n[1] https://www.youtube.com/watch?v=cRuzq7WJTPU\n[2] https://www.youtube.com/watch?v=7V80xR06JcM\n[3] https://www.newswire.ca/news-releases/sunday-june-28-2026-827342706.html\n[4] https://www.cp24.com/video/2026/06/29/torontos-pride-parade-2026-prime-minister-mark-carney-joins-celebration/"
-    },
-    {
-        "id": 88,
-        "city": "Kuujjuaq, Québec",
-        "coords": [
-            58.1066864,
-            -68.4038778
-        ],
-        "arrival": "2026-06-30",
-        "departure": "2026-06-30",
-        "desc": "PM Carney visited Kuujjuaq, Québec on June 30, 2026, to co-chair the Inuit-Crown Partnership Committee meeting with Inuit Tapiriit Kanatami President Natan Obed, marking the first visit by a sitting Canadian prime minister to the village in nearly 20 years[4]. During the meeting, he delivered opening remarks and addressed key agenda items including Arctic sovereignty, defence, housing, food security, the proposed Inuit university, and Inuit health and wellness[3]. The Prime Minister also held a brief media availability and participated in a community event and a family photo with committee leaders later that day[1][2]. Cabinet ministers handling energy, public safety, and defence files accompanied him to discuss these critical issues with Inuit leadership[3].\n\nSources:\n[1] https://www.youtube.com/watch?v=McIdP37kIe4\n[2] https://www.cpac.ca/headline-politics/episode/pm-carney-speaks-at-inuit-crown-partnership-meeting--june-30-2026?id=a217041e-48c9-406d-be9c-27d0ae054a6d\n[3] https://www.nationalobserver.com/2026/06/30/news/carney-inuit-leaders-meet-kuujjuaq-today-inuit-crown-partnership-committee\n[4] https://www.cbc.ca/news/politics/carney-kuujjuaq-icpc-meeting-9.7252693"
-    },
-    {
-        "id": 89,
-        "city": "Ottawa, Ontario",
-        "coords": [
-            45.4208777,
-            -75.6901106
-        ],
-        "arrival": "2026-07-01",
-        "departure": "2026-07-01",
-        "desc": "[2026-07-01]\n10:05 a.m. The Prime Minister will attend a local Canada Day community celebration.\n12:00 p.m. The Prime Minister will deliver remarks at the national Canada Day ceremony.\nLeBreton Flats Park."
-    },
-    {
-        "id": 90,
-        "city": "Edmonton, Alberta",
-        "coords": [
-            53.5462055,
-            -113.491241
-        ],
-        "arrival": "2026-07-01",
-        "departure": "2026-07-01",
-        "desc": "6:30 p.m. The Prime Minister will deliver remarks at a local Canada Day community celebration."
-    },
-    {
-        "id": 91,
         "city": "Vancouver, British Columbia",
         "coords": [
             49.2608724,
@@ -987,10 +37,19 @@
         ],
         "arrival": "2026-07-02",
         "departure": "2026-07-02",
-        "desc": "On July 2, 2026, in Vancouver, **PM Carney** announced the landmark **Canada–British Columbia Cooperative Prosperity Agreement** with Premier David Eby, committing billions in federal funding for infrastructure and resource development while maintaining the oil tanker ban on B.C.'s coast[1][3]. Later that day, he met with **Philippine President Ferdinand Marcos Jr.** to elevate bilateral relations to a **Strategic Partnership**, signing a joint declaration on energy and natural resource cooperation alongside memoranda for tourism and labor protection[5][6]. The visit concluded with a signing ceremony and joint media availability where both leaders emphasized deepening collaboration in trade, defense, and maritime security[5][9].\n\nSources:\n[1] https://www.youtube.com/watch?v=088aUxUjQ8c\n[2] https://vancouver.citynews.ca/2026/07/02/carney-premier-eby-vancouver-smith-pipeline-announcement/\n[3] https://www.youtube.com/watch?v=btDpcocI8qk\n[4] https://vancouver.citynews.ca/video/2026/07/02/carney-meets-with-philippines-president-in-vancouver/\n[5] https://www.youtube.com/watch?v=wP_cNGLYeHg\n[6] https://www.pm.gc.ca/en/news/statements/2026/07/02/joint-statement-prime-minister-canada-and-president-republic-philippines\n[7] https://www.pm.gc.ca/en/news/media-advisories/2026/07/02/update-thursday-july-2-2026\n[8] https://www.nytimes.com/2026/07/02/world/canada/carney-trade-oil-pipeline-alberta-british-columbia.html\n[9] https://www.pm.gc.ca/en/videos/2026/07/02/prime-minister-carney-announces-new-partnerships-philippines\n[10] https://www.ctvnews.ca/politics/article/carneys-itinerary-for-day-2-of-g7-summit-stacked-with-meetings-with-world-leaders/"
+        "desc": "On July 2nd in Vancouver, PM Carney and President Ferdinand Marcos Jr. of the Philippines announced a new Canada-Philippines strategic partnership focused on trade, energy, defence, tourism, and broader economic cooperation.[1][2] The leaders also oversaw the signing of bilateral understandings and declarations, including arrangements on energy and natural resources, labour and migration, tourism, and related cooperation measures.[1][3][4] Reporting on the visit said the two governments framed the agreements as a step toward deeper bilateral ties and stronger protections for workers, while also discussing closer military and security cooperation.[1][4] PM Carney also held a bilateral meeting, hosted a working luncheon, participated in a signing ceremony, and joined a joint media availability with President Marcos Jr. in Vancouver on the same day.[1][2][4]",
+        "summary": "On July 2nd in Vancouver, PM Carney hosted President Ferdinand Marcos Jr. to launch a new Canada-Philippines strategic partnership and sign cooperation agreements on trade, energy, labour, tourism, and security.[1][2][4]",
+        "citations": [
+            "https://www.youtube.com/watch?v=by7Adq4DBvg",
+            "https://www.youtube.com/watch?v=-2Jc6raaYAs",
+            "https://www.youtube.com/watch?v=fFbLLKCiWNI",
+            "https://globalnews.ca/news/11950810/carney-philippines-agreement-marcos-canada/",
+            "https://www.pm.gc.ca/en/news/readouts/2025/07/03/prime-minister-carney-speaks-president-philippines-ferdinand-marcos-jr",
+            "https://www.asiapacific.ca/publication/marcos-visit-indicates-carneys-middle-power-diplomacy-comes-home"
+        ]
     },
     {
-        "id": 92,
+        "id": 5,
         "city": "Calgary, Alberta",
         "coords": [
             51.0456064,
@@ -998,10 +57,18 @@
         ],
         "arrival": "2026-07-02",
         "departure": "2026-07-05",
-        "desc": "On July 2, 2026, PM Carney visited Calgary, Alberta, to announce a major federal-provincial energy agreement alongside Premier Danielle Smith, centered on a new oil pipeline from Alberta to the West Coast and the Pathways carbon capture project [1][2]. During a press conference in Calgary, PM Carney revealed that the proposed Bruderheim-to-Vancouver pipeline route has been referred to the Major Projects Office, with construction potentially commencing as early as September 1, 2027 [2][4]. The two leaders also signed a memorandum of understanding with the Oil Sands Alliance to advance emissions reduction, including a plan to raise Alberta’s effective industrial carbon price to $130 per tonne by 2040 [4][10]. This multibillion-dollar initiative aims to diversify Canadian exports to Asian markets and reduce economic reliance on the United States amid deteriorating trade ties [3].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/speeches/2026/07/02/prime-minister-carney-announces-west-coast-pipeline-project-proposal-and\n[2] https://boereport.com/2026/07/02/canadas-carney-announces-new-west-coast-pipeline-to-be-built-by-trans-mountain-corp/\n[3] https://www.nytimes.com/2026/07/02/world/canada/carney-trade-oil-pipeline-alberta-british-columbia.html\n[4] https://www.cpac.ca/headline-politics/episode/fed-and-alberta-govts-agreement-on-new-pipeline-carbon-capture--july-2-2026?id=3bb61221-b87f-4691-9018-5e5df50dab21\n[5] https://islandsocialtrends.ca/prime-minister-alberta-premier-proposed-new-energy-infrastructure/\n[6] https://www.theglobeandmail.com/canada/video-carney-smith-announce-pipeline/\n[7] https://boereport.com/2026/07/02/b-c-carney-ink-deal-to-retain-northern-tanker-ban-ahead-of-alberta-pipeline-update/amp/\n[8] https://www.cbc.ca/player/play/video/9.6994697\n[9] https://www.youtube.com/watch?v=77EeCfgZTIE\n[10] https://www.cbc.ca/news/politics/carney-smith-energy-announcement-mou-9.7200652\n[11] https://www.ctvnews.ca/calgary/article/pm-carney-smith-to-sign-new-energy-agreement-in-calgary/\n[12] https://www.youtube.com/watch?v=dAjxcTrrcyo\n[13] https://www.westernstandard.news/news/mixed-reactions-after-ottawa-and-alberta-announce-major-energy-agreement/73563\n[14] https://www.youtube.com/watch?v=jkZ7QQmuO28"
+        "desc": "On July 2nd in Calgary, PM Carney and Alberta Premier Danielle Smith announced a major energy agreement focused on new energy infrastructure and export diversification. Public reporting indicates the deal included a pathway for a proposed West Coast oil pipeline, with Alberta saying design and construction could begin as early as September 1st, 2027, subject to the required approvals and consultations. The agreement also set a framework for strengthening industrial carbon pricing in Alberta, with a plan to reach a headline price of $140 per tonne by 2040. Coverage and video of the announcement show the event was a formal joint news conference centered on energy policy and competitiveness.[1][2][3][5]",
+        "summary": "On July 2nd in Calgary, PM Carney and Premier Danielle Smith announced a joint energy deal covering a proposed West Coast pipeline and new carbon-pricing targets.[1][3][5]",
+        "citations": [
+            "https://www.youtube.com/watch?v=m0RBeaHcaGU&vl=en",
+            "https://www.youtube.com/watch?v=keLo3QyNkL0",
+            "https://www.cbc.ca/news/politics/carney-smith-energy-announcement-mou-9.7200652",
+            "https://www.youtube.com/watch?v=HKp05DSEBk4",
+            "https://globalnews.ca/news/11851090/mark-carney-danielle-smith-energy-deal/"
+        ]
     },
     {
-        "id": 93,
+        "id": 6,
         "city": "Ottawa, Ontario",
         "coords": [
             45.4208777,
@@ -1009,10 +76,20 @@
         ],
         "arrival": "2026-07-06",
         "departure": "2026-07-06",
-        "desc": "1:10 p.m. The Prime Minister will depart for Halifax, Nova Scotia."
+        "desc": "On July 6th, PM Carney was in Ottawa only in transit: the itinerary indicates he was scheduled to depart for Halifax at 1:10 p.m. before continuing on to attend the NATO Summit in Türkiye. Public coverage from the same period shows him in Halifax touring a military base and delivering remarks before departure, with reports focusing on Canada’s defence priorities and the upcoming summit. The official Prime Minister’s Office release also confirms that July 6th was the start of his travel to Ankara for the 2026 NATO Summit, followed by a bilateral visit to Saudi Arabia. No public record in the provided results indicates any separate Ottawa-based event on that date beyond the departure itself.[1][2][3][5]",
+        "summary": "On July 6th, PM Carney departed from Ottawa via Halifax en route to the NATO Summit in Türkiye, with coverage focused on a military-base visit and pre-departure remarks in Halifax.[1][2][3][5]",
+        "citations": [
+            "https://www.youtube.com/watch?v=CcsIcNHmIp4",
+            "https://halifax.citynews.ca/2026/07/05/carney-to-travel-to-turkey-where-nato-allies-will-focus-on-managing-trump/",
+            "https://www.youtube.com/watch?v=TACoynRTpbA",
+            "https://gentleseas.blogspot.com/2026/07/carney-set-to-announce-canadas-new.html",
+            "https://www.pm.gc.ca/en/news/news-releases/2026/06/30/prime-minister-carney-attend-nato-summit-turkiye-and-visit-saudi",
+            "https://halifax.citynews.ca/2026/06/07/pm-carney-travelling-to-ireland-and-france-for-g7-summit/",
+            "https://www.pm.gc.ca/en/news/speeches/2026/03/27/prime-minister-carney-delivers-remarks-halifax-chamber-commerce"
+        ]
     },
     {
-        "id": 94,
+        "id": 7,
         "city": "Halifax, Nova Scotia",
         "coords": [
             44.648618,
@@ -1020,10 +97,16 @@
         ],
         "arrival": "2026-07-06",
         "departure": "2026-07-06",
-        "desc": "On July 6, 2026, **PM Carney** toured **Canadian Forces Base Halifax** and announced that **Thyssenkrupp Marine Systems (TKMS)** is the preferred supplier to build Canada’s next fleet of **12 modern submarines** to replace the aging Victoria-class vessels[5]. This major announcement, part of the Canadian Patrol Submarine Project (CPSP), aims to enhance national security with the first four submarines delivered by 2034[5]. Following the announcement, **PM Carney** departed Halifax for **Ankara, Türkiye**, to attend the **2026 NATO Summit**, where he is scheduled to meet with leaders including the Presidents of Türkiye and Ukraine[1][6].\n\nSources:\n[1] https://www.youtube.com/watch?v=CcsIcNHmIp4\n[2] https://www.youtube.com/watch?v=mUs2qLnAd50\n[3] https://www.politico.com/newsletters/canada-playbook/2026/07/06/the-end-of-nice-00987516\n[4] https://www.uspa24.com/bericht-27007/prime-minister-mark-carney-in-halifax.html\n[5] https://www.pm.gc.ca/en/news/news-releases/2026/07/06/prime-minister-carney-announces-preferred-supplier-canadian-patrol\n[6] https://islandsocialtrends.ca/carney-heads-to-turkiye-for-2026-nato-conference/\n[7] https://www.youtube.com/watch?v=CO8aeuTPvwM\n[8] https://www.facebook.com/NovaScotiaBuzz/posts/prime-minister-mark-carney-will-be-in-halifax-on-monday-for-what-is-widely-expec/1610503591083169/\n[9] https://www.youtube.com/watch?v=knipyZyURs0&vl=en"
+        "desc": "On July 6th in Halifax, PM Carney toured a Canadian Armed Forces base and then delivered remarks announcing new measures aimed at making Canada more secure, resilient, and prosperous before departing for Ankara, Türkiye.[1] The available public coverage describes the Halifax stop as a military-focused visit tied to a broader security announcement and his subsequent travel to the NATO Summit.[1] No separate conflicting public record was surfaced in the provided search results, so the trip is best characterized as a brief Halifax base visit with an announcement and immediate onward departure.[1]",
+        "summary": "On July 6th, PM Carney toured a Halifax Canadian Armed Forces base, announced new security-related measures, and then departed for Ankara.[1]",
+        "citations": [
+            "https://www.youtube.com/watch?v=CcsIcNHmIp4",
+            "https://quinteist.com/much-more-than-an-air-force-base-prime-minister-carney-visits-cfb-trenton-to-announce-significant-military-pay-raise/",
+            "https://www.youtube.com/watch?v=s1FbVXcn2kw"
+        ]
     },
     {
-        "id": 95,
+        "id": 8,
         "city": "Ankara, Türkiye",
         "coords": [
             39.9207759,
@@ -1031,10 +114,21 @@
         ],
         "arrival": "2026-07-07",
         "departure": "2026-07-08",
-        "desc": "PM Carney attended the 2026 NATO Summit in Ankara, Türkiye, marking his first official visit to the country since taking office and the first by a Canadian Prime Minister in 11 years [1][9]. During the trip, he held bilateral meetings with President Recep Tayyip Erdoğan to launch negotiations for a comprehensive free trade agreement and with Ukrainian President Volodymyr Zelenskyy to discuss support for Ukraine [1][5]. The Prime Minister also participated in the official NATO family photo, attended the North Atlantic Council meeting, and addressed reporters on Canada's new defence spending targets and the proposed Defence, Security and Resilience Bank [2][5]. He departed Ankara on July 8 to begin a subsequent bilateral visit to Saudi Arabia [1].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/news-releases/2026/06/30/prime-minister-carney-attend-nato-summit-turkiye-and-visit-saudi\n[2] https://www.youtube.com/watch?v=TV80eIV3hWU\n[3] https://m.aa.com.tr/en/pg/photo-gallery/recep-tayyip-erdogan-mark-carney-meeting-in-ankara/164372\n[4] https://www.dailysabah.com/politics/diplomacy/erdogan-holds-talks-with-canadian-pm-ahead-of-nato-summit/amp\n[5] https://finance.yahoo.com/economy/policy/articles/readout-prime-minister-carney-meets-110700630.html\n[6] https://rdnewsnow.com/2026/07/05/carney-to-travel-to-turkey-where-nato-allies-will-focus-on-managing-trump/\n[7] https://www.cpac.ca/headline-politics/episode/pm-carney-speaks-with-reporters-in-ankara-turkiye--july-8-2026?id=acb4b0d8-aa21-4375-96f2-f98b3fb71f4b\n[8] https://www.youtube.com/watch?v=4IKr2qtq29k\n[9] https://www.youtube.com/watch?v=NOmA-OkCQzE\n[10] https://toronto.citynews.ca/2026/06/30/carney-to-travel-to-turkey-for-nato-summit-next-week-then-saudi-arabia/\n[11] https://www.dailysabah.com/politics/diplomacy/president-erdogan-invites-canadas-pm-carney-to-nato-summit-in-turkiye/amp\n[12] https://www.facebook.com/CanadianPM/posts/today-prime-minister-carney-met-with-the-president-of-t%C3%BCrkiye-recep-tayyip-erdo%C4%9F/122187268472875278/\n[13] https://www.instagram.com/p/DaOB6Yzkkau/\n[14] https://www.facebook.com/CanadianDefenceReview/posts/-prime-minister-mark-carney-announced-that-he-will-travel-to-ankara-t%C3%BCrkiye-from/1676449487816038/"
+        "desc": "PM Carney traveled to Ankara, Türkiye, from July 7th to July 8th to attend the 2026 NATO Summit, according to an official government release and contemporaneous reporting.[1][2] On July 7th, he arrived in Ankara and met with President Recep Tayyip Erdoğan on the margins of the summit, with reporting also placing him among leaders attending the two-day NATO gathering in the Turkish capital.[4][5][7] Public reports and official materials indicate that his Ankara stop was centered on summit diplomacy rather than a separate bilateral visit, before he departed later on July 8th for the next leg of his travel.[1][2][8]",
+        "summary": "PM Carney was in Ankara on July 7th and July 8th to attend the 2026 NATO Summit and meet with President Recep Tayyip Erdoğan.[1][7]",
+        "citations": [
+            "https://www.pm.gc.ca/en/news/news-releases/2026/06/30/prime-minister-carney-attend-nato-summit-turkiye-and-visit-saudi",
+            "https://www.theglobeandmail.com/canada/article-mark-carney-turkey-nato-summit/",
+            "https://www.dailysabah.com/politics/diplomacy/president-erdogan-invites-canadas-pm-carney-to-nato-summit-in-turkiye",
+            "https://www.dailysabah.com/politics/diplomacy/erdogan-holds-talks-with-canadian-pm-ahead-of-nato-summit/amp",
+            "https://www.youtube.com/watch?v=OC8wF-HA6c0",
+            "https://www.facebook.com/CanadianDefenceReview/posts/-prime-minister-mark-carney-announced-that-he-will-travel-to-ankara-t%C3%BCrkiye-from/1676449487816038/",
+            "https://www.pm.gc.ca/en/news/readouts/2026/07/07/prime-minister-carney-meets-president-turkiye-recep-tayyip-erdogan",
+            "https://www.youtube.com/watch?v=TV80eIV3hWU"
+        ]
     },
     {
-        "id": 96,
+        "id": 9,
         "city": "Jeddah, Saudi Arabia",
         "coords": [
             21.5504432,
@@ -1042,10 +136,21 @@
         ],
         "arrival": "2026-07-08",
         "departure": "2026-07-10",
-        "desc": "PM Carney made his first official visit to Saudi Arabia in 26 years, arriving in Jeddah on July 8, 2026, to meet Crown Prince Mohammed bin Salman and deepen bilateral ties after years of diplomatic strain [1][3]. During the visit, the leaders signed a memorandum of understanding to establish the Canada-Saudi Arabia Coordination Council and finalized two additional MOUs on energy and artificial intelligence, alongside 13 new agreements worth approximately $1 billion covering health, defence, mining, and clean energy [1][8]. PM Carney also delivered remarks at the Saudi Arabia-Canada Investment Forum, met with Saudi Energy Minister Prince Abdulaziz bin Salman and Industry Minister Bandar Alkhorayef, and confirmed Canada’s intent to participate in the 2030 Riyadh World Expo to showcase Canadian innovation [1][4][9]. The trip concluded with a media availability on July 9 before PM Carney departed for Ottawa on July 10 [1][2].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/readouts/2026/07/09/prime-minister-carney-meets-crown-prince-and-prime-minister-saudi-arabia\n[2] https://www.bignewsnetwork.com/news/279177945/saudi-arabia-jeddah-crown-prince-canada-pm-meeting\n[3] https://www.nationalobserver.com/2026/07/09/news/carneys-saudi-arabia-trip-high-water-mark-relations-business-leader\n[4] https://saudigazette.com.sa/article/662863/saudi-arabia/canadian-prime-minister-mark-carney-meets-saudi-energy-and-industry-ministers\n[5] https://www.youtube.com/watch?v=nhUxAKQGoZM\n[6] https://www.youtube.com/watch?v=Azb3D2xND2I\n[7] https://www.youtube.com/watch?v=mApt0GiLt2Y\n[8] https://www.aljazeera.com/economy/2026/7/9/canadian-pm-visits-saudi-arabia-to-strengthen-energy-mining-partnerships\n[9] https://www.youtube.com/watch?v=Me9yQIsFW90\n[10] https://www.youtube.com/watch?v=EyYrXTMjlyg\n[11] https://www.youtube.com/watch?v=XSoKjh3p6PI"
+        "desc": "PM Carney made an official visit to Jeddah, Saudi Arabia, from July 8th to July 10th, marking the first visit by a Canadian prime minister to the kingdom in 26 years.[3][5][8] On July 9th, he was greeted at the Royal Palace by Crown Prince and Prime Minister Mohammed bin Salman, held a bilateral meeting and lunch with him, and participated in a signing ceremony.[3] He also delivered remarks and took part in a Saudi Arabia-Canada Investment Forum event in Jeddah, where Canada and Saudi Arabia announced 13 new commercial agreements and MOUs worth over C$1 billion, covering areas including health technology, mining, infrastructure, and defence.[1][8] The two sides also announced work toward a Foreign Investment Promotion and Protection Agreement by the end of 2027, launched negotiations on a double-taxation agreement, and established a foreign minister-level Canada-Saudi Arabia Coordination Council.[8]",
+        "summary": "PM Carney visited Jeddah from July 8th to July 10th for a high-level meeting with Crown Prince Mohammed bin Salman, a signing ceremony, and the Saudi Arabia-Canada Investment Forum, where the two countries announced more than C$1 billion in new commercial agreements.",
+        "citations": [
+            "https://www.youtube.com/watch?v=Me9yQIsFW90",
+            "https://abcnews.com/International/wireStory/canadas-carney-visits-saudi-arabia-prime-minister-seeks-134599470",
+            "https://www.pm.gc.ca/en/news/statements/2026/07/09/prime-minister-canada-mark-carney-and-crown-prince-and-prime-minister",
+            "https://www.nationalobserver.com/2026/07/09/news/carneys-saudi-arabia-trip-high-water-mark-relations-business-leader",
+            "https://apnews.com/article/canada-carney-saudi-arabia-80744d672ef6548a9b5c0748f1d7cc18",
+            "https://www.youtube.com/watch?v=EyYrXTMjlyg",
+            "https://www.bloomberg.com/news/articles/2026-07-09/saudis-eye-canada-assets-as-pif-accepts-carney-invite-to-toronto",
+            "https://www.pm.gc.ca/en/news/news-releases/2026/07/09/prime-minister-carney-deepens-partnership-saudi-arabia-across-trade"
+        ]
     },
     {
-        "id": 97,
+        "id": 10,
         "city": "Ottawa, Ontario",
         "coords": [
             45.4208777,
@@ -1053,10 +158,16 @@
         ],
         "arrival": "2026-07-10",
         "departure": "2026-07-10",
-        "desc": "2:30 p.m. The Prime Minister will arrive in Ottawa, Canada."
+        "desc": "PM Carney’s July 10th stop in Ottawa was documented only by a media itinerary noting his arrival in the city at 2:30 p.m., but the search results do not show a matching public event, press release, or news report describing an Ottawa appearance that day. The available coverage instead points to other, unrelated Carney activity around that period, including a separate Ottawa housing announcement on another date and a cancelled Canada Day travel plan tied to weather. Based on the records provided, the only confirmed Ottawa activity on July 10th is his arrival in the capital.",
+        "summary": "PM Carney arrived in Ottawa on July 10th, but the available records do not show a public event or announcement tied to that stop.",
+        "citations": [
+            "https://www.youtube.com/watch?v=gT6Ewb4O3SM",
+            "https://www.nationalobserver.com/2026/07/02/news/thunderstorms-ottawa-keep-carney-delivering-his-canada-day-speech-edmonton",
+            "https://www.cbc.ca/news/politics/carney-arrives-australia-9.7112160"
+        ]
     },
     {
-        "id": 98,
+        "id": 11,
         "city": "Calgary, Alberta",
         "coords": [
             51.0456064,
@@ -1064,10 +175,14 @@
         ],
         "arrival": "2026-07-11",
         "departure": "2026-07-15",
-        "desc": "PM Carney traveled to Calgary, Alberta on July 11–12, 2026, to meet with representatives of Treaty 6, Treaty 7, and Treaty 8 First Nations and attend events at the Calgary Stampede[1][2]. The closed-door meeting on July 11 focused on energy cooperation and Indigenous rights, though no specific agreements or treaties were announced following the discussion[3][5]. On both days, PM Carney visited the Stampede grounds, touring vendor stalls and attending a breakfast on July 12 as part of the annual festivities[1][2]. The trip occurred amid broader political tensions regarding Alberta’s potential separatist vote and national energy policy, but no major public announcements were made during the visit[3][5].\n\nSources:\n[1] https://www.theepochtimes.com/world/carney-visits-calgary-stampede-meets-first-nations-leaders-6060563\n[2] https://www.pm.gc.ca/en/news/media-advisories/2026/07/10/saturday-july-11-2026\n[3] https://tawasulnews.com/en/story/carney-calgary-energy-indigenous-rights-alberta\n[4] https://info.fr/mark-carney-calgary-stampede-premieres-nations/\n[5] https://ground.news/article/carney-heading-to-alberta-for-calgary-stampede_96b346\n[6] https://www.facebook.com/groups/444475679092423/posts/3334177783455517/\n[7] https://www.ctvnews.ca/politics/article/pm-carney-pledges-to-listen-as-first-nations-say-one-meeting-wont-resolve-concerns-about-major-projects-law/\n[8] https://www.pm.gc.ca/en/news/news-releases/2025/07/17/prime-minister-carney-engages-first-nations-rights-holders-building\n[9] https://www.youtube.com/watch?v=92HDttcMIhI"
+        "desc": "PM Carney was in Calgary on July 11th and July 12th for a Calgary Stampede-related visit that included a meeting with representatives of Treaty 6, Treaty 7, and Treaty 8 First Nations, followed by appearances at the Calgary Stampede grounds on both evenings and the next morning. Media coverage indicates he also delivered remarks framed around Canadian unity during the Stampede period.[1] The itinerary provided for the visit aligns with these reported public appearances, but the available public record in the supplied results is limited to a CTV news report rather than a fuller set of official releases or multiple independent accounts.[1]",
+        "summary": "PM Carney visited Calgary on July 11th and July 12th for Stampede events, including a meeting with First Nations representatives and public appearances at the Calgary Stampede grounds.[1]",
+        "citations": [
+            "https://www.ctvnews.ca/video/2026/07/13/ctv-national-news-pm-mark-carney-addresses-canadian-unity-at-calgary-stampede/"
+        ]
     },
     {
-        "id": 99,
+        "id": 12,
         "city": "Southwestern Ontario",
         "coords": [
             43.5018597,
@@ -1075,32 +190,56 @@
         ],
         "arrival": "2026-07-16",
         "departure": "2026-07-16",
-        "desc": "On July 16, 2026, PM Carney visited Southwestern Ontario (specifically London) to tour a defence manufacturing facility and announce a **$2 billion partnership with General Dynamics** to build **190 new armoured combat vehicles** for the Canadian Armed Forces, expanding the fleet to 550 vehicles[2][3]. During a news conference joined by Defence Minister David McGuinty, he also **defended a deal with the US** to split toll profits from the upcoming **Gordie Howe International Bridge** for 15 years[3][4]. Later in the day, the Prime Minister met with families at a **child care centre** to discuss social support measures, while also addressing the federal government's limited role in assisting Ontario with **severe wildfires** burning across the province[1][5].\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/07/15/thursday-july-16-2026\n[2] https://www.youtube.com/watch?v=p-k1vFvDgIE\n[3] https://www.cpac.ca/headline-politics/episode/pm-mark-carney-partnership-to-build-new-armoured-vehicles--july-16-2026?id=ba4b310b-390a-4f01-903c-b95d7ca4d590\n[4] https://www.bloomberg.com/news/articles/2026-07-16/carney-defends-splitting-gordie-howe-bridge-profits-with-us-for-15-years\n[5] https://www.nytimes.com/2026/07/16/weather/carney-wildfire-ontario-government.html\n[6] https://www.cbc.ca/news/politics/carney-premiers-meeting-1.7489368\n[7] https://www.politico.com/newsletters/canada-playbook/2026/06/23/mark-carney-canada-summer-priorities-00971211\n[8] https://www.youtube.com/watch?v=ElkLu0IsBoo&vl=en"
+        "desc": "On July 16th in Southwestern Ontario, PM Carney toured General Dynamics Land Systems Canada in London and used the visit to unveil a nearly C$2 billion defence investment. The announcement was framed as a strategic partnership to procure 190 new armored combat support vehicles, expand the fleet to 550 vehicles, and strengthen Canada’s domestic defence manufacturing base. PM Carney said the plan would help create and sustain more than 6,000 high-paying Canadian jobs each year over the next eight years. The itinerary also included a later stop at a child care centre, where PM Carney met with families.",
+        "summary": "On July 16th in Southwestern Ontario, PM Carney toured a defence manufacturing facility in London, announced nearly C$2 billion in new defence investment, and later met with families at a child care centre.",
+        "citations": [
+            "https://www.youtube.com/watch?v=JcCd8pq-VPg",
+            "https://www.pm.gc.ca/en/videos/2026/02/17/prime-minister-carney-launches-canadas-first-defence-industrial-strategy",
+            "https://northeastnow.com/2025/08/08/pm-carney-to-make-military-announcement-tour-facility-in-trenton-today/"
+        ]
     },
     {
-        "id": 100,
+        "id": 13,
         "city": "Central Ontario",
         "coords": [
             44.9376036,
             -78.9925565
         ],
         "arrival": "2026-07-17",
-        "departure": "2026-07-20",
-        "desc": "PM Carney’s only publicly documented appearance in Central Ontario during this date range was a July 17 stop at the Dock 2026 (un)Conference in Muskoka, which was listed on the official itinerary as a 9:00 a.m. engagement.[1][2] The conference was closed to the media, and available reporting says officials did not publicly disclose the exact venue, the purpose of his participation, or the topics discussed.[2][4] No public record in the provided coverage shows a speech, treaty signing, bilateral meeting, or policy announcement tied to that visit.[2][4]\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/07/16/friday-july-17-2026\n[2] https://doppleronline.ca/huntsville/prime-minister-carney-attends-private-muskoka-conference/\n[3] https://www.cpac.ca/headline-politics/episode/pm-carney-and-philippines-pres-marcos-jr-hold-a-news-conference--july-2-2026?id=7e36f932-5a55-4a66-9a91-4d969bb3b9ce\n[4] https://www.politico.com/newsletters/canada-playbook/2026/07/17/ottawas-ai-fight-01002676\n[5] https://www.youtube.com/watch?v=TV80eIV3hWU\n[6] https://www.youtube.com/watch?v=wP_cNGLYeHg&vl=en\n[7] https://www.youtube.com/watch?v=ygmzxlNAGPI\n[8] https://islandsocialtrends.ca/carney-heads-to-turkiye-for-2026-nato-conference/\n[9] https://www.pm.gc.ca/en/news/news-releases/2026/06/30/prime-minister-carney-attend-nato-summit-turkiye-and-visit-saudi\n[10] https://www.facebook.com/CanadianPM/posts/canada-is-diversifying-its-international-partnerships-at-the-2026-g7-leaders-sum/122184547496875278/"
+        "departure": "2026-07-18",
+        "desc": "PM Carney was in Central Ontario on July 17th to attend the Dock 2026 (un)Conference in Muskoka, according to reporting that matched his official itinerary. The event was described as private and closed to the media, so publicly available coverage does not provide further details about remarks, meetings, or additional stops. No other public records in the provided search results indicate a broader public-facing trip or separate events in Central Ontario that day.[1]",
+        "summary": "PM Carney visited Muskoka on July 17th to attend the private Dock 2026 (un)Conference, which was closed to the media.[1]",
+        "citations": [
+            "https://southmuskoka.doppleronline.ca/prime-minister-carney-attends-private-muskoka-conference/",
+            "https://www.youtube.com/watch?v=sFBkNX1-cbg",
+            "https://en.wikipedia.org/wiki/List_of_international_prime_ministerial_trips_made_by_Mark_Carney",
+            "https://www.theglobeandmail.com/canada/article-carney-trade-travel-pmo-china-brazil-davos/"
+        ]
     },
     {
-        "id": 1,
+        "id": 14,
         "city": "East Rutherford, United States of America",
         "coords": [
             40.833989,
             -74.0970865
         ],
         "arrival": "2026-07-19",
-        "departure": "2026-07-19",
-        "desc": "PM Carney was in **East Rutherford, New Jersey** on **July 19, 2026** to attend the **2026 FIFA Men’s World Cup Final** at MetLife Stadium.[1][2][4] Public coverage indicates he was present at the match alongside U.S. President Donald Trump, with the event marking the conclusion of the tournament co-hosted by Canada, Mexico, and the United States.[2][4] The final was played between **Spain and Argentina**, and Spain won **1–0 after extra time**.[5][9] I found no evidence in the provided records of any bilateral meeting, treaty signing, or policy announcement tied to this stop beyond attendance at the final.[1][2][4]\n\nSources:\n[1] https://www.newswire.ca/news-releases/sunday-july-19-2026-841039081.html\n[2] https://montreal.citynews.ca/2026/07/19/carney-attends-world-cup-final-alongside-trump/\n[3] https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_final\n[4] https://www.facebook.com/CanadianPM/posts/today-prime-minister-carney-attended-the-fifaworldcup-final-marking-the-end-of-t/122189051552875278/\n[5] https://www.hellomagazine.com/us/913678/2026-fifa-world-cup-final-photo-updates/\n[6] https://www.espn.co.uk/football/story/_/id/47224100/fifa-2026-world-cup-match-schedule-final-kickoff-usa\n[7] https://www.pm.gc.ca/en/news/news-releases/2025/12/03/prime-minister-carney-attend-fifa-world-cup-26tm-final-draw\n[8] https://www.cbsnews.com/newyork/news/fifa-world-cup-2026-schedule-metlife-stadium-matches/\n[9] https://en.wikipedia.org/wiki/2026_FIFA_World_Cup"
+        "departure": "2026-07-20",
+        "desc": "On July 19th in East Rutherford, PM Carney attended the 2026 FIFA Men’s World Cup Final at MetLife Stadium, according to the Prime Minister’s office and contemporaneous media coverage.[1][2][6] Public reporting identified the match as the tournament’s finale and noted that the final was held in New Jersey as part of the first men’s World Cup co-hosted by Canada, Mexico, and the United States.[1][3][5][8] The available records do not indicate that PM Carney had any separate public engagements in East Rutherford beyond attending the final.[1][6]",
+        "summary": "On July 19th in East Rutherford, PM Carney attended the 2026 FIFA Men’s World Cup Final at MetLife Stadium.[1][6]",
+        "citations": [
+            "https://www.facebook.com/CanadianPM/posts/today-prime-minister-carney-attended-the-fifaworldcup-final-marking-the-end-of-t/122189051552875278/",
+            "https://www.si.com/soccer/canadian-prime-minister-carney-mexican-president-scheinbaum-join-trump-world-cup-final",
+            "https://www.hellomagazine.com/us/913678/2026-fifa-world-cup-final-photo-updates/",
+            "https://ca.news.yahoo.com/world-cup-2026-reaction-canada-is-cooking-this-team-is-unstoppable---fans-pm-mark-carney-celebrate-a-victory-that-will-go-down-in-history-020716314.html",
+            "https://www.theglobeandmail.com/sports/soccer/article-fifas-largest-ever-world-cup-comes-to-a-close/",
+            "https://newsroomamerica.com/a/TonD1kZiT92sBYRBzZZIunZeOdJ/prime_minister_mark_carney_will_attend_the_2026_fifa_men_s_world_cup_final_in_east_rutherford_usa_the_event_scheduled_for_3_00_p_m_local_time_highlights_canada_s_presence_at_major_global_sporting_events.html",
+            "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+            "https://inside.fifa.com/organisation/president/news/gianni-infantino-world-cup-2026-reaction-records"
+        ]
     },
     {
-        "id": 101,
+        "id": 15,
         "city": "Ottawa, Ontario",
         "coords": [
             45.4208777,
@@ -1108,21 +247,28 @@
         ],
         "arrival": "2026-07-21",
         "departure": "2026-07-21",
-        "desc": "PM Carney held a **virtual First Ministers’ Meeting** on July 21, 2026, from Ottawa, bringing together provincial and territorial premiers to discuss Canada’s response to newly announced U.S. tariff actions. According to the Prime Minister’s office, he emphasized Canada’s commitment to free and fair trade, the need to support workers and businesses, and the government’s ongoing efforts to strengthen domestic economic resilience through new economic and security partnerships.[1] Media coverage characterized the meeting as a show of federal-provincial unity amid trade pressure from Washington, with leaders signaling continued coordination ahead of further negotiations and an in-person follow-up later in the week.[2][4]\n\nSources:\n[1] https://www.pm.gc.ca/en/news/readouts/2026/07/21/prime-minister-carney-concludes-first-ministers-meeting\n[2] https://www.ctvnews.ca/politics/article/pm-carney-wraps-up-premiers-meeting-says-leaders-are-united-in-face-of-trump-tariff-threats/\n[3] https://www.nationalobserver.com/2026/07/21/news/prime-minister-mark-carney-meet-premiers-over-new-us-tariff-threats\n[4] https://www.theglobeandmail.com/canada/video-carney-calls-for-unity-ahead-of-premiers-meeting/\n[5] https://www.youtube.com/watch?v=ygmzxlNAGPI\n[6] https://islandsocialtrends.ca/carney-to-host-first-ministers-meeting-in-charlottetown-july-23/\n[7] https://www.youtube.com/watch?v=S4LMLFmT84s\n[8] https://www.youtube.com/watch?v=5eliywFoyPs&vl=en\n[9] https://finance.yahoo.com/news/readout-prime-minister-carney-concludes-022700940.html\n[10] https://www.theglobeandmail.com/politics/article-carney-to-hold-virtual-first-ministers-meeting-on-thursday/\n[11] https://en.wikipedia.org/wiki/First_Ministers'_conference"
+        "desc": "2:30 p.m. The Prime Minister will chair the First Ministers’ Meeting.\nVirtual meeting.",
+        "summary": "2:30 p.m. The Prime Minister will chair the First Ministers’ Meeting.\nVirtual meeting.",
+        "citations": []
     },
     {
-        "id": 102,
+        "id": 16,
         "city": "Dalvay-by-the-Sea National Historic Site, Prince Edward Island",
         "coords": [
-            46.4093716,
-            -63.0705192
+            0,
+            0
         ],
         "arrival": "2026-07-22",
         "departure": "2026-07-22",
-        "desc": "PM Carney attended a **Council of the Federation gala** at Dalvay-by-the-Sea National Historic Site in Prince Edward Island on July 22, 2026, according to the official prime ministerial media advisory.[1] The advisory describes the event as **closed to media**, and no additional official record in the provided results documents speeches, agreements, bilateral meetings, or policy announcements from that stop.[1] Based on the available public record here, the trip appears to have been a **single evening appearance** rather than a substantive policy visit.[1]\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/07/21/wednesday-july-22-2026\n[2] https://en.wikipedia.org/wiki/Mark_Carney's_Davos_speech"
+        "desc": "On July 22nd at Dalvay-by-the-Sea National Historic Site in Prince Edward Island, PM Carney was scheduled to attend a gala hosted by the Council of the Federation at 7:00 p.m., and the media advisory says the event was closed to media. The public record provided in the search results is limited to that official advisory, with no accompanying news report or press release describing additional activities or outcomes from the event. Based on the available record, the trip appears to have consisted of this single scheduled appearance in Prince Edward Island.",
+        "summary": "On July 22nd at Dalvay-by-the-Sea in Prince Edward Island, PM Carney attended a closed-to-media gala hosted by the Council of the Federation.",
+        "citations": [
+            "https://www.pm.gc.ca/en/news/media-advisories/2026/07/21/wednesday-july-22-2026",
+            "https://www.pm.gc.ca/en/news/speeches/2026/06/25/prime-minister-carney-delivers-remarks-following-conclusion-spring-sitting"
+        ]
     },
     {
-        "id": 103,
+        "id": 1,
         "city": "Charlottetown, Prince Edward Island",
         "coords": [
             46.2354187,
@@ -1130,6 +276,13 @@
         ],
         "arrival": "2026-07-23",
         "departure": "2026-07-23",
-        "desc": "PM Carney hosted a **First Ministers’ Meeting** in Charlottetown, Prince Edward Island, on July 23, 2026, with the provincial and territorial premiers.[1][2] The meeting’s joint statement says First Ministers focused on **Canada–U.S. relations**, **energy independence**, **internal trade and labour mobility barriers**, and making **carbon markets** more effective.[2] They also agreed to work toward an **agreement in principle by the end of 2026** on model mutual recognition legislation to create one Canadian market and support labour mobility.[2] PM Carney then held a **media availability** later that day, according to the official itinerary.[1]\n\nSources:\n[1] https://www.pm.gc.ca/en/news/media-advisories/2026/07/22/thursday-july-23-2026\n[2] https://www.pm.gc.ca/en/news/statements/2026/07/23/first-ministers-joint-statement\n[3] https://islandsocialtrends.ca/carney-to-host-first-ministers-meeting-in-charlottetown-july-23/\n[4] https://halifax.citynews.ca/video/2026/07/23/carney-emphasizes-team-canada-approach-at-premiers-meeting/\n[5] https://www.pm.gc.ca/en/news/readouts/2026/06/10/prime-minister-carney-concludes-first-ministers-meeting\n[6] https://www.gov.uk/government/news/pm-call-with-first-ministers-21-july-2026\n[7] https://en.wikipedia.org/wiki/First_Ministers'_conference"
+        "desc": "PM Carney was in Charlottetown, Prince Edward Island, on July 23rd for a First Ministers’ Meeting with Canada’s premiers, held amid ongoing tariff tensions with the United States.[1][2][3] Coverage ahead of the meeting described it as PM Carney’s first in-person face-to-face gathering with the premiers since their January meeting in Ottawa.[3] The day’s itinerary also included a media availability at 3:30 p.m., indicating that PM Carney publicly briefed reporters after the meeting.[1] Available reporting does not, in the provided results, include a detailed transcript or full account of the meeting’s outcomes, only that tariff response and related trade measures were a central subject.[1][3]",
+        "summary": "PM Carney met with premiers in Charlottetown on July 23rd for a First Ministers’ Meeting focused on tariff tensions and then held a media availability.[1][3]",
+        "citations": [
+            "https://www.youtube.com/watch?v=8L9FkCGQmUo",
+            "https://www.youtube.com/watch?v=ujJ74F_Wyns",
+            "https://www.ipolitics.ca/2026/07/19/pm-carney-set-to-meet-with-premiers-in-charlottetown-amid-ongoing-tariff-tensions/",
+            "https://www.cbc.ca/player/play/video/9.4236164"
+        ]
     }
 ]
