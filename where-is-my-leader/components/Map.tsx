@@ -64,8 +64,12 @@ export default function Map() {
     };
   }, [allTravelData]);
 
-  const effectiveTimelineFromDate = timelineFromDate || timelineBounds?.minDate || '';
-  const effectiveTimelineToDate = timelineToDate || timelineBounds?.maxDate || '';
+  const rawTimelineFromDate = timelineFromDate || timelineBounds?.minDate || '';
+  const rawTimelineToDate = timelineToDate || timelineBounds?.maxDate || '';
+  // Defensive normalization: the more recent date must always land on the "to" side.
+  const timelineInverted = rawTimelineFromDate > rawTimelineToDate;
+  const effectiveTimelineFromDate = timelineInverted ? rawTimelineToDate : rawTimelineFromDate;
+  const effectiveTimelineToDate = timelineInverted ? rawTimelineFromDate : rawTimelineToDate;
 
   const filteredTravelData = useMemo(() => {
     if (!effectiveTimelineFromDate && !effectiveTimelineToDate) return allTravelData;

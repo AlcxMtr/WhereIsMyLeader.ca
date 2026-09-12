@@ -116,6 +116,27 @@ export default function TimelineRange({
     [formatDateInput, onTimelineToDateChange, timelineModel]
   );
 
+  // Decides which handle a pointerdown should drag, so a collapsed range can always be
+  // expanded — dragging left grows "from" backward, dragging right grows "to" forward.
+  const resolveHandleForOffset = useCallback(
+    (offset: number): DragHandle => {
+      if (!timelineModel) return null;
+      if (timelineModel.fromDays !== timelineModel.toDays) {
+        const fromDistance = Math.abs(offset - timelineModel.fromDays);
+        const toDistance = Math.abs(offset - timelineModel.toDays);
+        return fromDistance <= toDistance ? 'from' : 'to';
+      }
+
+      if (offset < timelineModel.fromDays) return 'from';
+      if (offset > timelineModel.toDays) return 'to';
+
+      const distanceToStart = timelineModel.fromDays;
+      const distanceToEnd = timelineModel.totalDays - timelineModel.toDays;
+      return distanceToEnd <= distanceToStart ? 'from' : 'to';
+    },
+    [timelineModel]
+  );
+
   const clientXToOffset = useCallback(
     (clientX: number) => {
       if (!timelineModel || !timelineTrackRef.current) return null;
@@ -268,9 +289,10 @@ export default function TimelineRange({
                   event.preventDefault();
                   const offset = clientXToOffset(event.clientX);
                   if (offset === null) return;
-                  const fromDistance = Math.abs(offset - timelineModel.fromDays);
-                  const toDistance = Math.abs(offset - timelineModel.toDays);
-                  const handle = fromDistance <= toDistance ? 'from' : 'to';
+
+                  const handle = resolveHandleForOffset(offset);
+                  if (!handle) return;
+
                   setDragHandle(handle);
                   if (handle === 'from') updateFromByOffset(offset);
                   if (handle === 'to') updateToByOffset(offset);
@@ -366,7 +388,14 @@ export default function TimelineRange({
                         onPointerDown={event => {
                           event.preventDefault();
                           event.stopPropagation();
-                          setDragHandle(handle);
+                          // When both handles sit at the same collapsed spot, whichever nub is on
+                          // top would otherwise always win — resolve by intended drag direction instead.
+                          const offset = clientXToOffset(event.clientX);
+                          const resolvedHandle =
+                            offset !== null && timelineModel.fromDays === timelineModel.toDays
+                              ? resolveHandleForOffset(offset)
+                              : handle;
+                          setDragHandle(resolvedHandle ?? handle);
                         }}
                         style={{
                           position: 'absolute',

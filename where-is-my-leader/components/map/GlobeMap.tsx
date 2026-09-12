@@ -584,7 +584,9 @@ export default function GlobeMap({
     const today = new Date();
     const min = parseDate(timelineMinDate);
     const max = parseDate(timelineMaxDate);
-    const clamped = min && today < min ? min : max && today > max ? max : today;
+    const arrival = parseDate(target.arrival);
+    let clamped = min && today < min ? min : max && today > max ? max : today;
+    if (arrival && clamped < arrival) clamped = arrival;
 
     onTimelineFromDateChange(target.arrival);
     onTimelineToDateChange(formatDateKey(clamped));
@@ -607,8 +609,12 @@ export default function GlobeMap({
     const target = allTravelData[firstUsTripIndex];
     if (!target) return;
 
+    const arrival = parseDate(target.arrival);
+    const departure = parseDate(target.departure);
+    const safeTo = departure && arrival && departure >= arrival ? target.departure : target.arrival;
+
     onTimelineFromDateChange(target.arrival);
-    onTimelineToDateChange(target.departure || target.arrival);
+    onTimelineToDateChange(safeTo);
     onFlightNavigationStart(target);
     runPinFocus(target);
   }, [
