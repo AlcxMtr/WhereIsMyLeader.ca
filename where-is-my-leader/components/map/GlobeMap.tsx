@@ -389,17 +389,28 @@ export default function GlobeMap({
     [setActiveDetail, setGlowingCountryCode]
   );
 
-  // Idle "screensaver" tour: hops the camera between random trips (no popups) until the welcome bubble is dismissed.
+  // Idle "screensaver" tour: chronologically walks past international trips (no popups) from a random
+  // starting point, until the welcome bubble is dismissed.
   useEffect(() => {
-    if (welcomeDismissed || !allTravelData.length) return undefined;
+    if (welcomeDismissed) return undefined;
+
+    const now = new Date();
+    const demoTrips = allTravelData.filter(trip => {
+      const arrival = parseDate(trip.arrival);
+      if (!arrival || arrival > now) return false;
+      return getCountryInfo(trip.city).code !== 'ca';
+    });
+
+    if (!demoTrips.length) return undefined;
 
     let cancelled = false;
 
     const runDemoLoop = async () => {
-      let current = allTravelData[Math.floor(Math.random() * allTravelData.length)];
+      let index = Math.floor(Math.random() * demoTrips.length);
+      let current = demoTrips[index];
       while (!cancelled) {
-        const candidates = allTravelData.filter(t => t.id !== current.id);
-        const next = candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : current;
+        index = (index + 1) % demoTrips.length;
+        const next = demoTrips[index];
         await runFocusSequence(next, current, { revealDetail: false });
         if (cancelled) return;
         current = next;
