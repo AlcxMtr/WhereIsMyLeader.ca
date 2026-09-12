@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs';
 import { DateTime } from 'luxon';
 import { summarizeItinerary } from './aiService.js';
+import { hardCodeLocationNames } from './technicalDebt.js';
 
 // 1. Database Singleton Initialization
 const isDocker = process.env.NODE_ENV === 'production';
@@ -83,16 +84,10 @@ function cleanSummary(val) {
   return val;
 }
 
-function hardCodeFix(notProperCity) {
-    if (notProperCity.includes("Dalvay-by-the-Sea")){
-        return "Charlottetown";
-    }
-    return notProperCity;
-}
 
 export async function getCoordinates(locationString) {
   let primaryCity = getPrimaryCity(locationString);
-  primaryCity = hardCodeFix(primaryCity);
+  primaryCity = hardCodeLocationNames(primaryCity);
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
       params: { q: primaryCity, format: 'json', limit: 1 },
