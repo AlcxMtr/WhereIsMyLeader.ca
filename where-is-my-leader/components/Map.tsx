@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import GlobeMap from './map/GlobeMap';
 import Sidebar from './map/Sidebar';
 import { getThemeColors } from './map/theme';
-import { parseDate, tripOverlapsRange } from './map/tripUtils';
+import { formatDateKey, parseDate, tripOverlapsRange } from './map/tripUtils';
 import type { SelectionState, ThemeMode, TravelPoint } from './map/types';
 
 export default function Map() {
@@ -57,16 +57,9 @@ export default function Map() {
 
     if (!min || !max) return null;
 
-    const format = (d: Date) => {
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return `${yyyy}-${mm}-${dd}`;
-    };
-
     return {
-      minDate: format(min),
-      maxDate: format(max),
+      minDate: formatDateKey(min),
+      maxDate: formatDateKey(max),
     };
   }, [allTravelData]);
 
@@ -136,6 +129,7 @@ export default function Map() {
       <div style={{ flex: 1, position: 'relative' }}>
         <GlobeMap
           travelData={filteredTravelData}
+          allTravelData={allTravelData}
           theme={theme}
           selection={visibleSelection}
           sidebarVisible={sidebarVisible}

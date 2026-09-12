@@ -117,3 +117,33 @@ export function tripOverlapsRange(trip: TravelPoint, fromDate: string, toDate: s
 
   return true;
 }
+
+export function formatDateKey(d: Date): string {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// Trip whose stay window contains "now", else the most recent trip by arrival order.
+export function findMostRecentTripIndex(travelData: TravelPoint[]): number {
+  if (!travelData.length) return -1;
+
+  const now = new Date();
+  const currentIndex = travelData.findIndex(trip => {
+    const arrival = parseDateSafe(trip.arrival);
+    const departure = endOfDay(trip.departure || trip.arrival);
+    if (!arrival || !departure) return false;
+    return arrival <= now && now <= departure;
+  });
+
+  return currentIndex >= 0 ? currentIndex : travelData.length - 1;
+}
+
+// First trip whose city resolves to a USA country code, falling back to the first trip overall.
+export function findFirstUsTripIndex(travelData: TravelPoint[]): number {
+  if (!travelData.length) return -1;
+
+  const usIndex = travelData.findIndex(trip => getCountryInfo(trip.city).code === 'us');
+  return usIndex >= 0 ? usIndex : 0;
+}

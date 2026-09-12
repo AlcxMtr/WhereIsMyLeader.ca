@@ -31,6 +31,72 @@ function withLinkedCitations(html: string, citations: string[], linkColor: strin
   });
 }
 
+const PULSE_STYLE_ID = 'trip-bubble-pulse-style';
+
+function ensurePulseStyleInjected() {
+  if (document.getElementById(PULSE_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = PULSE_STYLE_ID;
+  style.textContent = `
+@keyframes tripBubblePulse {
+  0%, 100% { box-shadow: 0 0 4px 0 var(--pulse-color); opacity: 1; }
+  50% { box-shadow: 0 0 16px 5px var(--pulse-color); opacity: 0.8; }
+}`;
+  document.head.appendChild(style);
+}
+
+function createSeeTripPill({
+  label,
+  isPulsing,
+  colors,
+  onClick,
+}: {
+  label: string;
+  isPulsing: boolean;
+  colors: ThemeColors;
+  onClick: () => void;
+}) {
+  ensurePulseStyleInjected();
+
+  const pill = document.createElement('button');
+  pill.type = 'button';
+  pill.innerText = label;
+  pill.style.border = `1px solid ${colors.detailBorder}`;
+  pill.style.background = colors.detailBg;
+  pill.style.color = colors.detailText;
+  pill.style.borderRadius = '999px';
+  pill.style.padding = '4px 12px';
+  pill.style.fontSize = '10px';
+  pill.style.fontWeight = '700';
+  pill.style.cursor = 'pointer';
+  pill.style.whiteSpace = 'nowrap';
+  pill.style.pointerEvents = 'auto';
+  pill.style.setProperty('--pulse-color', colors.detailBorder);
+  pill.style.transition = 'opacity 0.15s ease, box-shadow 0.15s ease';
+
+  if (isPulsing) {
+    pill.style.opacity = '1';
+    pill.style.animation = 'tripBubblePulse 1.8s ease-in-out infinite';
+  } else {
+    pill.style.opacity = '0.45';
+    pill.onmouseenter = () => {
+      pill.style.opacity = '1';
+      pill.style.boxShadow = `0 0 10px 2px ${colors.detailBorder}`;
+    };
+    pill.onmouseleave = () => {
+      pill.style.opacity = '0.45';
+      pill.style.boxShadow = 'none';
+    };
+  }
+
+  pill.onclick = e => {
+    e.stopPropagation();
+    onClick();
+  };
+
+  return pill;
+}
+
 export function createTripDetailHtmlElement({
   trip,
   theme,
@@ -43,6 +109,12 @@ export function createTripDetailHtmlElement({
   onPrevious,
   onNext,
   onClose,
+  hasPastTrips,
+  hasFutureTrips,
+  isMostRecentTrip,
+  isFirstUsTrip,
+  onSeePast,
+  onSeeFuture,
 }: {
   trip: TravelPoint;
   theme: ThemeMode;
@@ -55,6 +127,12 @@ export function createTripDetailHtmlElement({
   onPrevious: () => void;
   onNext: () => void;
   onClose: () => void;
+  hasPastTrips: boolean;
+  hasFutureTrips: boolean;
+  isMostRecentTrip: boolean;
+  isFirstUsTrip: boolean;
+  onSeePast: () => void;
+  onSeeFuture: () => void;
 }) {
   const { name: countryName, code: countryCode } = getCountryInfo(trip.city);
   const flagUrl = countryCode ? `https://flagcdn.com/w80/${countryCode}.png` : null;
@@ -76,6 +154,38 @@ export function createTripDetailHtmlElement({
   wrapper.style.maxWidth = '360px';
   wrapper.style.pointerEvents = 'auto';
   wrapper.style.transform = 'translate(18px, calc(-56% + 14px + var(--detail-shift-y, 0px)))';
+
+  if (hasPastTrips || hasFutureTrips) {
+    const pillBar = document.createElement('div');
+    pillBar.style.display = 'flex';
+    pillBar.style.justifyContent = 'space-between';
+    pillBar.style.gap = '8px';
+    pillBar.style.marginBottom = '8px';
+
+    if (hasPastTrips) {
+      pillBar.appendChild(
+        createSeeTripPill({
+          label: '← Explore past trips',
+          isPulsing: isMostRecentTrip,
+          colors,
+          onClick: onSeePast,
+        })
+      );
+    }
+
+    if (hasFutureTrips) {
+      pillBar.appendChild(
+        createSeeTripPill({
+          label: 'Explore future trips →',
+          isPulsing: isFirstUsTrip,
+          colors,
+          onClick: onSeeFuture,
+        })
+      );
+    }
+
+    wrapper.appendChild(pillBar);
+  }
 
   const card = document.createElement('div');
   card.style.background = detailCardBg;

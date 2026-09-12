@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { WheelEvent } from 'react';
 
 import TimelineRange from './TimelineRange';
+import WelcomeBubble from './WelcomeBubble';
 import {
   buildDetailHtmlData,
   buildPointMap,
@@ -12,7 +13,13 @@ import {
 import { buildGreatCirclePath, getDistanceBasedMidAltitude, sleep } from './globeUtils';
 import { getThemeColors } from './theme';
 import { createTripDetailHtmlElement } from './tripDetailHtml';
-import { getCountryInfo } from './tripUtils';
+import {
+  findFirstUsTripIndex,
+  findMostRecentTripIndex,
+  formatDateKey,
+  getCountryInfo,
+  parseDate,
+} from './tripUtils';
 import { flagPrimaryColors } from './flagColors';
 import type {
   CountryPolygonDatum,
@@ -38,6 +45,8 @@ function hexBrightRgba(hex: string, boost: number, alpha: number): string {
 }
 const SIDE_TRANSPARENT = () => 'rgba(0,0,0,0)';
 
+
+
 // Natural Earth 110m has ISO_A2="-99" for a handful of countries; fall back to ADM0_A3 mapping.
 const ADM0_A3_FALLBACK: Record<string, string> = {
   FRA: 'fr',
@@ -47,6 +56,7 @@ const ADM0_A3_FALLBACK: Record<string, string> = {
 
 export default function GlobeMap({
   travelData,
+  allTravelData,
   theme,
   selection,
   activeDetail,
@@ -61,6 +71,7 @@ export default function GlobeMap({
   onTimelineToDateChange,
 }: {
   travelData: TravelPoint[];
+  allTravelData: TravelPoint[];
   theme: ThemeMode;
   selection: SelectionState;
   activeDetail: TravelPoint | null;
@@ -77,9 +88,12 @@ export default function GlobeMap({
   const colors = getThemeColors(theme);
   const globeRef = useRef<GlobeHandle | null>(null);
   const animationTokenRef = useRef(0);
+  const autoPlayTokenRef = useRef(0);
   const [dimensions, setDimensions] = useState({ width: 1000, height: 800 });
   const [expandedDetailTripId, setExpandedDetailTripId] = useState<number | null>(null);
   const [isDetailExpanded, setIsDetailExpanded] = useState(false);
+  const [welcomeDismissed, setWelcomeDismissed] = useState(false);
+  const [autoPlayActive, setAutoPlayActive] = useState(false);
 
   // ------------------------------------------------------------------
   // Country overlay — single 110m world GeoJSON fetch (once on mount)
@@ -197,7 +211,9 @@ export default function GlobeMap({
   );
 
   const detailHtmlData = useMemo(() => buildDetailHtmlData(activeDetail), [activeDetail]);
-  const currentStayTripId = travelData.length ? travelData[travelData.length - 1].id : null;
+  const currentStayTripId = allTravelData.length ? allTravelData[allTravelData.length - 1].id : null;
+  const mostRecentTripIndex = useMemo(() => findMostRecentTripIndex(allTravelData), [allTravelData]);
+  const firstUsTripIndex = useMemo(() => findFirstUsTripIndex(allTravelData), [allTravelData]);
 
   useEffect(() => {
     if (!startupTarget) return;
@@ -369,6 +385,77 @@ export default function GlobeMap({
     [setActiveDetail, setGlowingCountryCode]
   );
 
+  const stopAutoPlay = useCallback(() => {
+    autoPlayTokenRef.current += 1;
+    setAutoPlayActive(false);
+  }, []);
+
+  // Any user interaction during auto-play cancels it (and any in-flight camera hop).
+  useEffect(() => {
+    if (!autoPlayActive) return;
+
+    const cancel = () => {
+      animationTokenRef.current += 1;
+      stopAutoPlay();
+    };
+
+    window.addEventListener('pointerdown', cancel);
+    window.addEventListener('wheel', cancel, { passive: true });
+    window.addEventListener('keydown', cancel);
+    window.addEventListener('touchstart', cancel, { passive: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', cancel);
+      window.removeEventListener('wheel', cancel);
+      window.removeEventListener('keydown', cancel);
+      window.removeEventListener('touchstart', cancel);
+    };
+  }, [autoPlayActive, stopAutoPlay]);
+
+  const startAutoPlay = useCallback(
+    async (direction: 'past' | 'future', fromTrip: TravelPoint) => {
+      const token = autoPlayTokenRef.current + 1;
+      autoPlayTokenRef.current = token;
+      const isStillPlaying = () => autoPlayTokenRef.current === token;
+
+      setAutoPlayActive(true);
+
+      let currentTrip = fromTrip;
+
+      while (isStillPlaying()) {
+        const currentIndex = allTravelData.findIndex(t => t.id === currentTrip.id);
+        const nextIndex = direction === 'past' ? currentIndex - 1 : currentIndex + 1;
+        const nextTrip = allTravelData[nextIndex];
+        if (!nextTrip) break;
+
+        onFlightNavigationStart(nextTrip);
+
+        await runFocusSequence(nextTrip, currentTrip);
+
+        if (!isStillPlaying()) return;
+
+        // Range boundary jumps instantly once the hop's camera flight settles.
+        if (direction === 'past') {
+          onTimelineFromDateChange(nextTrip.arrival);
+        } else {
+          onTimelineToDateChange(nextTrip.departure || nextTrip.arrival);
+        }
+
+        currentTrip = nextTrip;
+        await sleep(3000);
+      }
+
+      if (isStillPlaying()) setAutoPlayActive(false);
+    },
+    [
+      allTravelData,
+      onFlightNavigationStart,
+      onTimelineFromDateChange,
+      onTimelineToDateChange,
+      runFocusSequence,
+    ]
+  );
+
   const renderDetailHtml = useCallback(
     (datum: object) => {
       const item = datum as HtmlDetailDatum;
@@ -378,6 +465,8 @@ export default function GlobeMap({
       const previousTrip = currentIndex > 0 ? travelData[currentIndex - 1] : null;
       const nextTrip =
         currentIndex >= 0 && currentIndex < travelData.length - 1 ? travelData[currentIndex + 1] : null;
+      // Past/future trip existence is checked against the full history, not just the currently filtered range.
+      const currentIndexAll = allTravelData.findIndex(trip => trip.id === item.trip.id);
 
       return createTripDetailHtmlElement({
         trip: item.trip,
@@ -407,17 +496,27 @@ export default function GlobeMap({
           setExpandedDetailTripId(null);
           setIsDetailExpanded(false);
         },
+        hasPastTrips: currentIndexAll > 0,
+        hasFutureTrips: currentIndexAll >= 0 && currentIndexAll < allTravelData.length - 1,
+        isMostRecentTrip: currentIndexAll === mostRecentTripIndex,
+        isFirstUsTrip: currentIndexAll === firstUsTripIndex,
+        onSeePast: () => startAutoPlay('past', item.trip),
+        onSeeFuture: () => startAutoPlay('future', item.trip),
       });
     },
     [
+      allTravelData,
       colors,
       currentStayTripId,
       expandedDetailTripId,
+      firstUsTripIndex,
       isDetailExpanded,
+      mostRecentTripIndex,
       onFlightNavigationStart,
       runFocusSequence,
       setActiveDetail,
       setGlowingCountryCode,
+      startAutoPlay,
       theme,
       travelData,
     ]
@@ -434,6 +533,53 @@ export default function GlobeMap({
       return () => clearTimeout(t);
     }
   }, [travelData, setActiveDetail, setGlowingCountryCode]);
+
+  const handleSelectToday = useCallback(() => {
+    setWelcomeDismissed(true);
+    const target = allTravelData[mostRecentTripIndex];
+    if (!target) return;
+
+    const today = new Date();
+    const min = parseDate(timelineMinDate);
+    const max = parseDate(timelineMaxDate);
+    const clamped = min && today < min ? min : max && today > max ? max : today;
+
+    onTimelineFromDateChange(target.arrival);
+    onTimelineToDateChange(formatDateKey(clamped));
+    onFlightNavigationStart(target);
+    runPinFocus(target);
+  }, [
+    allTravelData,
+    mostRecentTripIndex,
+    onFlightNavigationStart,
+    onTimelineFromDateChange,
+    onTimelineToDateChange,
+    runPinFocus,
+    timelineMaxDate,
+    timelineMinDate,
+  ]);
+
+  const handleSelectFirst = useCallback(() => {
+    setWelcomeDismissed(true);
+    const target = allTravelData[firstUsTripIndex];
+    if (!target) return;
+
+    onTimelineFromDateChange(target.arrival);
+    onTimelineToDateChange(target.departure || target.arrival);
+    onFlightNavigationStart(target);
+    runPinFocus(target);
+  }, [
+    allTravelData,
+    firstUsTripIndex,
+    onFlightNavigationStart,
+    onTimelineFromDateChange,
+    onTimelineToDateChange,
+    runPinFocus,
+  ]);
+
+  const handleSelectAll = useCallback(() => {
+    setWelcomeDismissed(true);
+  }, []);
 
   const handleManualWheelZoom = useCallback((event: WheelEvent<HTMLDivElement>) => {
     const globe = globeRef.current;
@@ -514,6 +660,15 @@ export default function GlobeMap({
           ☰
         </button>
       ) : null}
+
+      <WelcomeBubble
+        theme={theme}
+        colors={colors}
+        visible={!welcomeDismissed}
+        onSelectToday={handleSelectToday}
+        onSelectFirst={handleSelectFirst}
+        onSelectAll={handleSelectAll}
+      />
 
       <Globe
         ref={globeRef as never}
