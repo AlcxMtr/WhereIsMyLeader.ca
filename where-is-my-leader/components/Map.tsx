@@ -17,6 +17,7 @@ export default function Map() {
   const [timelineToDate, setTimelineToDate] = useState('');
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [welcomeDismissed, setWelcomeDismissed] = useState(false);
 
   useEffect(() => {
     const handleToggleSidebar = () => setSidebarVisible(prev => !prev);
@@ -109,7 +110,7 @@ export default function Map() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100%', background: colors.pageBg }}>
-      {sidebarVisible ? (
+      {sidebarVisible && welcomeDismissed ? (
         <Sidebar
           travelData={filteredTravelData}
           theme={theme}
@@ -133,6 +134,8 @@ export default function Map() {
           theme={theme}
           selection={visibleSelection}
           sidebarVisible={sidebarVisible}
+          welcomeDismissed={welcomeDismissed}
+          onDismissWelcome={() => setWelcomeDismissed(true)}
           activeDetail={visibleActiveDetail}
           setActiveDetail={setActiveDetail}
           onFlightNavigationStart={trip => setActiveSidebarId(trip.id)}

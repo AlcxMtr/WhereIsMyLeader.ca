@@ -63,6 +63,8 @@ export default function GlobeMap({
   setActiveDetail,
   onFlightNavigationStart,
   sidebarVisible,
+  welcomeDismissed,
+  onDismissWelcome,
   timelineFromDate,
   timelineToDate,
   timelineMinDate,
@@ -78,6 +80,8 @@ export default function GlobeMap({
   setActiveDetail: (trip: TravelPoint | null) => void;
   onFlightNavigationStart: (trip: TravelPoint) => void;
   sidebarVisible: boolean;
+  welcomeDismissed: boolean;
+  onDismissWelcome: () => void;
   timelineFromDate: string;
   timelineToDate: string;
   timelineMinDate: string;
@@ -92,7 +96,6 @@ export default function GlobeMap({
   const [dimensions, setDimensions] = useState({ width: 1000, height: 800 });
   const [expandedDetailTripId, setExpandedDetailTripId] = useState<number | null>(null);
   const [isDetailExpanded, setIsDetailExpanded] = useState(false);
-  const [welcomeDismissed, setWelcomeDismissed] = useState(false);
   const [autoPlayActive, setAutoPlayActive] = useState(false);
 
   // ------------------------------------------------------------------
@@ -186,7 +189,7 @@ export default function GlobeMap({
 
   useEffect(() => {
     const updateSize = () => {
-      const sidebarWidth = sidebarVisible ? 300 : 0;
+      const sidebarWidth = sidebarVisible && welcomeDismissed ? 300 : 0;
       setDimensions({
         width: Math.max(window.innerWidth - sidebarWidth, 320),
         height: window.innerHeight,
@@ -196,7 +199,7 @@ export default function GlobeMap({
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
-  }, [sidebarVisible]);
+  }, [sidebarVisible, welcomeDismissed]);
 
   const pointsData = useMemo(
     () => buildPointsData(travelData, colors.latestPoint, theme, colors.futureArc),
@@ -261,10 +264,11 @@ export default function GlobeMap({
   }, [startupTarget]);
 
   const runFocusSequence = useCallback(
-    async (target: TravelPoint, originOverride?: TravelPoint | null) => {
+    async (target: TravelPoint, originOverride?: TravelPoint | null, options?: { revealDetail?: boolean }) => {
       const globe = globeRef.current;
       if (!globe) return;
 
+      const revealDetail = options?.revealDetail ?? true;
       const token = animationTokenRef.current + 1;
       animationTokenRef.current = token;
 
@@ -290,7 +294,7 @@ export default function GlobeMap({
         );
         await sleep(1250);
         if (!isStillCurrent()) return;
-        setActiveDetail(target);
+        if (revealDetail) setActiveDetail(target);
         return;
       }
 
@@ -351,7 +355,7 @@ export default function GlobeMap({
       await sleep(1150);
       if (!isStillCurrent()) return;
 
-      setActiveDetail(target);
+      if (revealDetail) setActiveDetail(target);
     },
     [setActiveDetail, setGlowingCountryCode, travelData]
   );
@@ -384,6 +388,33 @@ export default function GlobeMap({
     },
     [setActiveDetail, setGlowingCountryCode]
   );
+
+  // Idle "screensaver" tour: hops the camera between random trips (no popups) until the welcome bubble is dismissed.
+  useEffect(() => {
+    if (welcomeDismissed || !allTravelData.length) return undefined;
+
+    let cancelled = false;
+
+    const runDemoLoop = async () => {
+      let current = allTravelData[Math.floor(Math.random() * allTravelData.length)];
+      while (!cancelled) {
+        const candidates = allTravelData.filter(t => t.id !== current.id);
+        const next = candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : current;
+        await runFocusSequence(next, current, { revealDetail: false });
+        if (cancelled) return;
+        current = next;
+        await sleep(1400);
+      }
+    };
+
+    runDemoLoop();
+
+    // Note: no need to bump animationTokenRef here — any real navigation (runPinFocus/
+    // runFocusSequence) already bumps it itself, which naturally stops this loop's in-flight hop.
+    return () => {
+      cancelled = true;
+    };
+  }, [welcomeDismissed, allTravelData, runFocusSequence]);
 
   const stopAutoPlay = useCallback(() => {
     autoPlayTokenRef.current += 1;
@@ -535,7 +566,7 @@ export default function GlobeMap({
   }, [travelData, setActiveDetail, setGlowingCountryCode]);
 
   const handleSelectToday = useCallback(() => {
-    setWelcomeDismissed(true);
+    onDismissWelcome();
     const target = allTravelData[mostRecentTripIndex];
     if (!target) return;
 
@@ -551,6 +582,7 @@ export default function GlobeMap({
   }, [
     allTravelData,
     mostRecentTripIndex,
+    onDismissWelcome,
     onFlightNavigationStart,
     onTimelineFromDateChange,
     onTimelineToDateChange,
@@ -560,7 +592,7 @@ export default function GlobeMap({
   ]);
 
   const handleSelectFirst = useCallback(() => {
-    setWelcomeDismissed(true);
+    onDismissWelcome();
     const target = allTravelData[firstUsTripIndex];
     if (!target) return;
 
@@ -571,6 +603,7 @@ export default function GlobeMap({
   }, [
     allTravelData,
     firstUsTripIndex,
+    onDismissWelcome,
     onFlightNavigationStart,
     onTimelineFromDateChange,
     onTimelineToDateChange,
@@ -578,12 +611,12 @@ export default function GlobeMap({
   ]);
 
   const handleSelectAll = useCallback(() => {
-    setWelcomeDismissed(true);
-  }, []);
+    onDismissWelcome();
+  }, [onDismissWelcome]);
 
   const handleManualWheelZoom = useCallback((event: WheelEvent<HTMLDivElement>) => {
     const globe = globeRef.current;
-    if (!globe) return;
+    if (!globe || !welcomeDismissed) return;
 
     const target = event.target as Element | null;
     if (target?.closest('[data-timeline-ui="true"]')) return;
@@ -606,7 +639,7 @@ export default function GlobeMap({
       },
       0
     );
-  }, []);
+  }, [welcomeDismissed]);
 
   if (!travelData.length) {
     return (
@@ -702,6 +735,7 @@ export default function GlobeMap({
         pointsMerge={false}
         pointsTransitionDuration={300}
         onPointClick={(datum: object) => {
+          if (!welcomeDismissed) return;
           const point = datum as PointDatum;
           const trip = pointMap.get(point.id);
           if (trip) runPinFocus(trip);
@@ -719,16 +753,18 @@ export default function GlobeMap({
         onPolygonHover={handlePolygonHover}
       />
 
-      <TimelineRange
-        theme={theme}
-        colors={colors}
-        timelineFromDate={timelineFromDate}
-        timelineToDate={timelineToDate}
-        timelineMinDate={timelineMinDate}
-        timelineMaxDate={timelineMaxDate}
-        onTimelineFromDateChange={onTimelineFromDateChange}
-        onTimelineToDateChange={onTimelineToDateChange}
-      />
+      {welcomeDismissed ? (
+        <TimelineRange
+          theme={theme}
+          colors={colors}
+          timelineFromDate={timelineFromDate}
+          timelineToDate={timelineToDate}
+          timelineMinDate={timelineMinDate}
+          timelineMaxDate={timelineMaxDate}
+          onTimelineFromDateChange={onTimelineFromDateChange}
+          onTimelineToDateChange={onTimelineToDateChange}
+        />
+      ) : null}
     </div>
   );
 }
