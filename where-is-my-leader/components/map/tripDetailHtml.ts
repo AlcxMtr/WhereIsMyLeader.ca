@@ -343,6 +343,7 @@ export function createTripDetailHtmlElement({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
+    transition: 'color 0.15s ease, border-color 0.15s ease',
   } as const;
 
   const previousBtn = document.createElement('button');
@@ -359,9 +360,18 @@ export function createTripDetailHtmlElement({
   previousBtn.style.overflow = navButtonBase.overflow;
   previousBtn.style.textOverflow = navButtonBase.textOverflow;
   previousBtn.style.whiteSpace = navButtonBase.whiteSpace;
+  previousBtn.style.transition = navButtonBase.transition;
   previousBtn.style.textAlign = 'left';
   previousBtn.style.visibility = previousTrip ? 'visible' : 'hidden';
   previousBtn.innerText = previousTrip ? `← ${previousTrip.city.split(',')[0]}` : '';
+  previousBtn.onmouseenter = () => {
+    previousBtn.style.color = colors.detailText;
+    previousBtn.style.borderColor = colors.detailText;
+  };
+  previousBtn.onmouseleave = () => {
+    previousBtn.style.color = colors.detailSub;
+    previousBtn.style.borderColor = colors.detailBorder;
+  };
   previousBtn.onclick = e => {
     e.stopPropagation();
     if (!previousTrip) return;
@@ -382,10 +392,19 @@ export function createTripDetailHtmlElement({
   nextBtn.style.overflow = navButtonBase.overflow;
   nextBtn.style.textOverflow = navButtonBase.textOverflow;
   nextBtn.style.whiteSpace = navButtonBase.whiteSpace;
+  nextBtn.style.transition = navButtonBase.transition;
   nextBtn.style.textAlign = 'right';
   nextBtn.style.marginLeft = 'auto';
   nextBtn.style.visibility = nextTrip ? 'visible' : 'hidden';
   nextBtn.innerText = nextTrip ? `${nextTrip.city.split(',')[0]} →` : '';
+  nextBtn.onmouseenter = () => {
+    nextBtn.style.color = colors.detailText;
+    nextBtn.style.borderColor = colors.detailText;
+  };
+  nextBtn.onmouseleave = () => {
+    nextBtn.style.color = colors.detailSub;
+    nextBtn.style.borderColor = colors.detailBorder;
+  };
   nextBtn.onclick = e => {
     e.stopPropagation();
     if (!nextTrip) return;

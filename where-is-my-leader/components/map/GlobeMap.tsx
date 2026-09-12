@@ -279,8 +279,8 @@ export default function GlobeMap({
 
       let departureTrip = originOverride ?? null;
       if (!departureTrip) {
-        const targetIndex = travelData.findIndex(t => t.id === target.id);
-        departureTrip = targetIndex > 0 ? travelData[targetIndex - 1] : null;
+        const targetIndex = allTravelData.findIndex(t => t.id === target.id);
+        departureTrip = targetIndex > 0 ? allTravelData[targetIndex - 1] : null;
       }
 
       if (!departureTrip) {
@@ -357,7 +357,7 @@ export default function GlobeMap({
 
       if (revealDetail) setActiveDetail(target);
     },
-    [setActiveDetail, setGlowingCountryCode, travelData]
+    [setActiveDetail, setGlowingCountryCode, allTravelData]
   );
 
   const runPinFocus = useCallback(
@@ -472,16 +472,17 @@ export default function GlobeMap({
 
         onFlightNavigationStart(nextTrip);
 
-        await runFocusSequence(nextTrip, currentTrip);
-
-        if (!isStillPlaying()) return;
-
-        // Range boundary jumps instantly once the hop's camera flight settles.
+        // Update timeline boundary as navigation starts so the destination is already
+        // visible in the dataset when the camera lands and reveals trip details on zoom-in.
         if (direction === 'past') {
           onTimelineFromDateChange(nextTrip.arrival);
         } else {
           onTimelineToDateChange(nextTrip.departure || nextTrip.arrival);
         }
+
+        await runFocusSequence(nextTrip, currentTrip);
+
+        if (!isStillPlaying()) return;
 
         currentTrip = nextTrip;
         await sleep(3000);
@@ -503,12 +504,12 @@ export default function GlobeMap({
       const item = datum as HtmlDetailDatum;
       const detailIsExpanded = expandedDetailTripId === item.trip.id && isDetailExpanded;
       const isCurrentStay = currentStayTripId != null && item.trip.id === currentStayTripId;
-      const currentIndex = travelData.findIndex(trip => trip.id === item.trip.id);
-      const previousTrip = currentIndex > 0 ? travelData[currentIndex - 1] : null;
-      const nextTrip =
-        currentIndex >= 0 && currentIndex < travelData.length - 1 ? travelData[currentIndex + 1] : null;
-      // Past/future trip existence is checked against the full history, not just the currently filtered range.
       const currentIndexAll = allTravelData.findIndex(trip => trip.id === item.trip.id);
+      const previousTrip = currentIndexAll > 0 ? allTravelData[currentIndexAll - 1] : null;
+      const nextTrip =
+        currentIndexAll >= 0 && currentIndexAll < allTravelData.length - 1
+          ? allTravelData[currentIndexAll + 1]
+          : null;
 
       return createTripDetailHtmlElement({
         trip: item.trip,
@@ -525,11 +526,24 @@ export default function GlobeMap({
         onPrevious: () => {
           if (!previousTrip) return;
           onFlightNavigationStart(previousTrip);
+          if (timelineFromDate && previousTrip.arrival < timelineFromDate) {
+            onTimelineFromDateChange(previousTrip.arrival);
+          }
+          if (timelineToDate && previousTrip.arrival > timelineToDate) {
+            onTimelineToDateChange(previousTrip.departure || previousTrip.arrival);
+          }
           runFocusSequence(previousTrip, item.trip);
         },
         onNext: () => {
           if (!nextTrip) return;
           onFlightNavigationStart(nextTrip);
+          const nextEnd = nextTrip.departure || nextTrip.arrival;
+          if (timelineToDate && nextEnd > timelineToDate) {
+            onTimelineToDateChange(nextEnd);
+          }
+          if (timelineFromDate && nextTrip.arrival < timelineFromDate) {
+            onTimelineFromDateChange(nextTrip.arrival);
+          }
           runFocusSequence(nextTrip, item.trip);
         },
         onClose: () => {
@@ -555,12 +569,15 @@ export default function GlobeMap({
       isDetailExpanded,
       mostRecentTripIndex,
       onFlightNavigationStart,
+      onTimelineFromDateChange,
+      onTimelineToDateChange,
       runFocusSequence,
       setActiveDetail,
       setGlowingCountryCode,
       startAutoPlay,
       theme,
-      travelData,
+      timelineFromDate,
+      timelineToDate,
     ]
   );
 
