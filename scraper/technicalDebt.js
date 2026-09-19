@@ -1,4 +1,4 @@
-function hardCodeLocationNames(notProperCity) {
+export function hardCodeLocationNames(notProperCity) {
     if (notProperCity.includes("Dalvay-by-the-Sea")) {
         return "Charlottetown";
     }
