@@ -14,7 +14,7 @@ export default function AndrewDengPage() {
         <main className="flex min-h-screen flex-col items-center justify-between">
             <div className="w-full h-screen">
                 {/* Pass the parameter directly into the component */}
-                <DynamicMap person="andrewdeng" />
+                <DynamicMap person="Andrew Deng" />
             </div>
         </main>
     );

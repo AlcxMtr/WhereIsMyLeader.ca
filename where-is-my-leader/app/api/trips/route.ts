@@ -26,7 +26,7 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const targetPerson = searchParams.get('person');
 
-        if (targetPerson === 'andrewdeng') {
+        if (targetPerson === 'Andrew Deng') {
             // Immediately return the static TypeScript object and skip the database entirely
             return NextResponse.json(andrewTrips);
         }
