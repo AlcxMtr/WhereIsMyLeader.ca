@@ -8,6 +8,7 @@ import type { ThemeMode, TravelPoint } from './types';
 export default function Sidebar({
   isMobile = false,
   subjectName = 'Mark Carney',
+  flashLatest = false,
   travelData,
   theme,
   setTheme,
@@ -17,6 +18,7 @@ export default function Sidebar({
 }: {
   isMobile?: boolean;
   subjectName?: string;
+  flashLatest?: boolean;
   travelData: TravelPoint[];
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
@@ -320,6 +322,7 @@ export default function Sidebar({
                     background: stayCardBg,
                     boxShadow: theme === 'dark' ? '0 8px 20px rgba(2,6,23,0.26)' : '0 8px 18px rgba(15,23,42,0.08)',
                     overflow: 'hidden',
+                    ...(isLatestStay && flashLatest ? { animation: 'wiml-flash 1.2s ease-in-out infinite' } : {}),
                   }}
                 >
                   <div

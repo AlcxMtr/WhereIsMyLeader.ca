@@ -57,6 +57,7 @@ export default function GlobeMap({
   isMobile = false,
   subjectName = 'Mark Carney',
   isDefaultSubject = true,
+  onSeeAllTrips,
   travelData,
   allTravelData,
   theme,
@@ -77,6 +78,7 @@ export default function GlobeMap({
   isMobile?: boolean;
   subjectName?: string;
   isDefaultSubject?: boolean;
+  onSeeAllTrips?: () => void;
   travelData: TravelPoint[];
   allTravelData: TravelPoint[];
   theme: ThemeMode;
@@ -687,7 +689,18 @@ export default function GlobeMap({
 
   const handleSelectAll = useCallback(() => {
     onDismissWelcome();
-  }, [onDismissWelcome]);
+    onSeeAllTrips?.();
+    // Invalidate any in-flight demo hop so the user isn't locked into an animation.
+    animationTokenRef.current += 1;
+    setActiveDetail(null);
+
+    const target = allTravelData[mostRecentTripIndex];
+    if (!target) return;
+    globeRef.current?.pointOfView(
+      { lat: target.coords[0], lng: target.coords[1], altitude: 2.2 },
+      1800
+    );
+  }, [allTravelData, mostRecentTripIndex, onDismissWelcome, onSeeAllTrips, setActiveDetail]);
 
   // Zoom only via pinch: touch pinch, or trackpad pinch (reported as ctrl+wheel). Plain wheel scroll does nothing.
   useEffect(() => {

@@ -27,6 +27,20 @@ export default function Map({ person }: MapProps) {
     const [welcomeDismissed, setWelcomeDismissed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [isLandscape, setIsLandscape] = useState(false);
+    const [seeAllPending, setSeeAllPending] = useState(false);
+    const [flashLatest, setFlashLatest] = useState(false);
+
+    // After "See all trips", nudge the latest entry if the user hasn't picked a trip within 3s.
+    useEffect(() => {
+        if (!seeAllPending) return undefined;
+        if (activeSidebarId != null || activeDetail) {
+            setSeeAllPending(false);
+            setFlashLatest(false);
+            return undefined;
+        }
+        const timer = setTimeout(() => setFlashLatest(true), 3000);
+        return () => clearTimeout(timer);
+    }, [seeAllPending, activeSidebarId, activeDetail]);
 
     useEffect(() => {
         const mq = window.matchMedia('(max-width: 768px), (max-height: 500px) and (pointer: coarse)');
@@ -149,6 +163,7 @@ export default function Map({ person }: MapProps) {
             {isMobile && welcomeDismissed ? (
                 <MobileTripStrip
                     landscape={isLandscape}
+                    flashLatest={flashLatest}
                     subjectName={subjectName}
                     travelData={filteredTravelData}
                     theme={theme}
@@ -164,6 +179,7 @@ export default function Map({ person }: MapProps) {
                 <Sidebar
                     isMobile={isMobile}
                     subjectName={subjectName}
+                    flashLatest={flashLatest}
                     travelData={filteredTravelData}
                     theme={theme}
                     setTheme={setTheme}
@@ -185,6 +201,7 @@ export default function Map({ person }: MapProps) {
                     isMobile={isMobile}
                     subjectName={subjectName}
                     isDefaultSubject={isDefaultSubject}
+                    onSeeAllTrips={() => setSeeAllPending(true)}
                     travelData={filteredTravelData}
                     allTravelData={allTravelData}
                     theme={theme}

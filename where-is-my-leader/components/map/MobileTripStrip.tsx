@@ -16,6 +16,7 @@ export default function MobileTripStrip({
   onSelect,
   landscape = false,
   subjectName = 'Mark Carney',
+  flashLatest = false,
 }: {
   travelData: TravelPoint[];
   theme: ThemeMode;
@@ -24,6 +25,7 @@ export default function MobileTripStrip({
   onSelect: (trip: TravelPoint) => void;
   landscape?: boolean;
   subjectName?: string;
+  flashLatest?: boolean;
 }) {
   const colors = getThemeColors(theme);
   const cardRefs = useRef<Record<number, HTMLButtonElement | null>>({});
@@ -40,6 +42,15 @@ export default function MobileTripStrip({
       block: landscape ? 'center' : 'nearest',
     });
   }, [activeId, latestId, landscape]);
+
+  useEffect(() => {
+    if (!flashLatest || latestId == null) return;
+    cardRefs.current[latestId]?.scrollIntoView({
+      behavior: 'smooth',
+      inline: landscape ? 'nearest' : 'center',
+      block: landscape ? 'center' : 'nearest',
+    });
+  }, [flashLatest, latestId, landscape]);
 
   const chevron = (rotation: number) => (
     <svg
@@ -87,6 +98,7 @@ export default function MobileTripStrip({
               : isNow
                 ? `linear-gradient(135deg, ${colors.panelNow}, ${colors.panelSoft})`
                 : colors.panelSoft,
+            ...(isNow && flashLatest ? { animation: 'wiml-flash 1.2s ease-in-out infinite' } : {}),
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
