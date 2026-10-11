@@ -9,185 +9,194 @@ import { getThemeColors } from './map/theme';
 import { formatDateKey, parseDate, tripOverlapsRange } from './map/tripUtils';
 import type { SelectionState, ThemeMode, TravelPoint } from './map/types';
 
-export default function Map() {
-  const [allTravelData, setAllTravelData] = useState<TravelPoint[]>([]);
-  const [selection, setSelection] = useState<SelectionState>(null);
-  const [activeDetail, setActiveDetail] = useState<TravelPoint | null>(null);
-  const [activeSidebarId, setActiveSidebarId] = useState<number | null>(null);
-  const [timelineFromDate, setTimelineFromDate] = useState('');
-  const [timelineToDate, setTimelineToDate] = useState('');
-  const [theme, setTheme] = useState<ThemeMode>('dark');
-  const [sidebarVisible, setSidebarVisible] = useState(true);
-  const [welcomeDismissed, setWelcomeDismissed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isLandscape, setIsLandscape] = useState(false);
+// 1. Define the props interface to accept the person parameter
+interface MapProps {
+    person?: string | null;
+}
 
-  useEffect(() => {
-    // Phones in landscape exceed 768px wide but are under ~500px tall.
-    const mq = window.matchMedia('(max-width: 768px), (max-height: 500px) and (pointer: coarse)');
-    const landscapeMq = window.matchMedia('(orientation: landscape)');
-    const apply = () => {
-      setIsMobile(mq.matches);
-      setIsLandscape(mq.matches && landscapeMq.matches && window.innerWidth > window.innerHeight);
-      if (mq.matches) setSidebarVisible(false);
-    };
-    apply();
-    mq.addEventListener('change', apply);
-    landscapeMq.addEventListener('change', apply);
-    return () => {
-      mq.removeEventListener('change', apply);
-      landscapeMq.removeEventListener('change', apply);
-    };
-  }, []);
+// 2. Destructure the person prop
+export default function Map({ person }: MapProps) {
+    const [allTravelData, setAllTravelData] = useState<TravelPoint[]>([]);
+    const [selection, setSelection] = useState<SelectionState>(null);
+    const [activeDetail, setActiveDetail] = useState<TravelPoint | null>(null);
+    const [activeSidebarId, setActiveSidebarId] = useState<number | null>(null);
+    const [timelineFromDate, setTimelineFromDate] = useState('');
+    const [timelineToDate, setTimelineToDate] = useState('');
+    const [theme, setTheme] = useState<ThemeMode>('dark');
+    const [sidebarVisible, setSidebarVisible] = useState(true);
+    const [welcomeDismissed, setWelcomeDismissed] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isLandscape, setIsLandscape] = useState(false);
 
-  useEffect(() => {
-    const handleToggleSidebar = () => setSidebarVisible(prev => !prev);
-    window.addEventListener('toggle-sidebar', handleToggleSidebar as EventListener);
-    return () => window.removeEventListener('toggle-sidebar', handleToggleSidebar as EventListener);
-  }, []);
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 768px), (max-height: 500px) and (pointer: coarse)');
+        const landscapeMq = window.matchMedia('(orientation: landscape)');
+        const apply = () => {
+            setIsMobile(mq.matches);
+            setIsLandscape(mq.matches && landscapeMq.matches && window.innerWidth > window.innerHeight);
+            if (mq.matches) setSidebarVisible(false);
+        };
+        apply();
+        mq.addEventListener('change', apply);
+        landscapeMq.addEventListener('change', apply);
+        return () => {
+            mq.removeEventListener('change', apply);
+            landscapeMq.removeEventListener('change', apply);
+        };
+    }, []);
 
-  useEffect(() => {
-    const loadMapData = async () => {
-      try {
-        const res = await fetch('/api/trips');
-        if (!res.ok) throw new Error(`API returned status ${res.status}`);
-        const data: TravelPoint[] = await res.json();
-        setAllTravelData(data);
-      } catch (apiError) {
-        console.warn('API failed, attempting to load static fallback:', apiError);
-      }
-    };
+    useEffect(() => {
+        const handleToggleSidebar = () => setSidebarVisible(prev => !prev);
+        window.addEventListener('toggle-sidebar', handleToggleSidebar as EventListener);
+        return () => window.removeEventListener('toggle-sidebar', handleToggleSidebar as EventListener);
+    }, []);
 
-    loadMapData();
-  }, []);
+    useEffect(() => {
+        const loadMapData = async () => {
+            try {
+                // 3. Inject the person parameter into the API call dynamically
+                const apiUrl = person ? `/api/trips?person=${person}` : '/api/trips';
 
-  const timelineBounds = useMemo(() => {
-    if (!allTravelData.length) return null;
+                const res = await fetch(apiUrl);
+                if (!res.ok) throw new Error(`API returned status ${res.status}`);
+                const data: TravelPoint[] = await res.json();
+                setAllTravelData(data);
+            } catch (apiError) {
+                console.warn('API failed, attempting to load static fallback:', apiError);
+            }
+        };
 
-    let min: Date | null = null;
-    let max: Date | null = null;
+        loadMapData();
+    }, [person]); // Re-fetch if the parameter changes
 
-    allTravelData.forEach(trip => {
-      const arrival = parseDate(trip.arrival);
-      const departure = parseDate(trip.departure);
-      const start = arrival ?? departure;
-      const end = departure ?? arrival;
+    const timelineBounds = useMemo(() => {
+        if (!allTravelData.length) return null;
 
-      if (start && (!min || start < min)) min = start;
-      if (end && (!max || end > max)) max = end;
-    });
+        let min: Date | null = null;
+        let max: Date | null = null;
 
-    if (!min || !max) return null;
+        allTravelData.forEach(trip => {
+            const arrival = parseDate(trip.arrival);
+            const departure = parseDate(trip.departure);
+            const start = arrival ?? departure;
+            const end = departure ?? arrival;
 
-    return {
-      minDate: formatDateKey(min),
-      maxDate: formatDateKey(max),
-    };
-  }, [allTravelData]);
+            if (start && (!min || start < min)) min = start;
+            if (end && (!max || end > max)) max = end;
+        });
 
-  const rawTimelineFromDate = timelineFromDate || timelineBounds?.minDate || '';
-  const rawTimelineToDate = timelineToDate || timelineBounds?.maxDate || '';
-  // Defensive normalization: the more recent date must always land on the "to" side.
-  const timelineInverted = rawTimelineFromDate > rawTimelineToDate;
-  const effectiveTimelineFromDate = timelineInverted ? rawTimelineToDate : rawTimelineFromDate;
-  const effectiveTimelineToDate = timelineInverted ? rawTimelineFromDate : rawTimelineToDate;
+        if (!min || !max) return null;
 
-  const filteredTravelData = useMemo(() => {
-    if (!effectiveTimelineFromDate && !effectiveTimelineToDate) return allTravelData;
-    return allTravelData.filter(trip => tripOverlapsRange(trip, effectiveTimelineFromDate, effectiveTimelineToDate));
-  }, [allTravelData, effectiveTimelineFromDate, effectiveTimelineToDate]);
+        return {
+            minDate: formatDateKey(min),
+            maxDate: formatDateKey(max),
+        };
+    }, [allTravelData]);
 
-  const visibleSelection = useMemo(() => {
-    if (!selection?.trip) return null;
-    return filteredTravelData.some(t => t.id === selection.trip.id) ? selection : null;
-  }, [filteredTravelData, selection]);
+    const rawTimelineFromDate = timelineFromDate || timelineBounds?.minDate || '';
+    const rawTimelineToDate = timelineToDate || timelineBounds?.maxDate || '';
+    const timelineInverted = rawTimelineFromDate > rawTimelineToDate;
+    const effectiveTimelineFromDate = timelineInverted ? rawTimelineToDate : rawTimelineFromDate;
+    const effectiveTimelineToDate = timelineInverted ? rawTimelineFromDate : rawTimelineToDate;
 
-  const visibleActiveDetail = useMemo(() => {
-    if (!activeDetail) return null;
-    return filteredTravelData.some(t => t.id === activeDetail.id) ? activeDetail : null;
-  }, [activeDetail, filteredTravelData]);
+    const filteredTravelData = useMemo(() => {
+        if (!effectiveTimelineFromDate && !effectiveTimelineToDate) return allTravelData;
+        return allTravelData.filter(trip => tripOverlapsRange(trip, effectiveTimelineFromDate, effectiveTimelineToDate));
+    }, [allTravelData, effectiveTimelineFromDate, effectiveTimelineToDate]);
 
-  const sidebarActiveId = useMemo(() => {
-    if (visibleActiveDetail) return visibleActiveDetail.id;
-    if (activeSidebarId == null) return null;
-    return filteredTravelData.some(t => t.id === activeSidebarId) ? activeSidebarId : null;
-  }, [activeSidebarId, filteredTravelData, visibleActiveDetail]);
+    const visibleSelection = useMemo(() => {
+        if (!selection?.trip) return null;
+        return filteredTravelData.some(t => t.id === selection.trip.id) ? selection : null;
+    }, [filteredTravelData, selection]);
 
-  const colors = getThemeColors(theme);
+    const visibleActiveDetail = useMemo(() => {
+        if (!activeDetail) return null;
+        return filteredTravelData.some(t => t.id === activeDetail.id) ? activeDetail : null;
+    }, [activeDetail, filteredTravelData]);
 
-  if (!allTravelData.length) {
+    const sidebarActiveId = useMemo(() => {
+        if (visibleActiveDetail) return visibleActiveDetail.id;
+        if (activeSidebarId == null) return null;
+        return filteredTravelData.some(t => t.id === activeSidebarId) ? activeSidebarId : null;
+    }, [activeSidebarId, filteredTravelData, visibleActiveDetail]);
+
+    const colors = getThemeColors(theme);
+
+    if (!allTravelData.length) {
+        // 4. Adapt the loading screen dynamically
+        const displayName = person === 'friend' ? 'Andrew Deng' : 'Mark Carney';
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100dvh',
+                    background: colors.pageBg,
+                    color: colors.text,
+                    fontSize: '15px',
+                }}
+            >
+                Loading {displayName}&apos;s travel globe...
+            </div>
+        );
+    }
+
     return (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100dvh',
-          background: colors.pageBg,
-          color: colors.text,
-          fontSize: '15px',
-        }}
-      >
-        Loading Mark Carney&apos;s travel globe...
-      </div>
+        <div style={{ display: 'flex', height: '100dvh', width: '100%', background: colors.pageBg, overflow: 'hidden' }}>
+            {isMobile && welcomeDismissed ? (
+                <MobileTripStrip
+                    landscape={isLandscape}
+                    travelData={filteredTravelData}
+                    theme={theme}
+                    setTheme={setTheme}
+                    activeId={sidebarActiveId}
+                    onSelect={trip => {
+                        setActiveSidebarId(trip.id);
+                        setSelection({ trip, key: Date.now() + Math.random() });
+                    }}
+                />
+            ) : null}
+            {!isMobile && sidebarVisible && welcomeDismissed ? (
+                <Sidebar
+                    isMobile={isMobile}
+                    travelData={filteredTravelData}
+                    theme={theme}
+                    setTheme={setTheme}
+                    activeId={sidebarActiveId}
+                    onToggleCollapsed={() => setSidebarVisible(false)}
+                    onSelect={trip => {
+                        if (isMobile) setSidebarVisible(false);
+                        setActiveSidebarId(trip.id);
+                        setSelection({
+                            trip,
+                            key: Date.now() + Math.random(),
+                        });
+                    }}
+                />
+            ) : null}
+
+            <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
+                <GlobeMap
+                    isMobile={isMobile}
+                    travelData={filteredTravelData}
+                    allTravelData={allTravelData}
+                    theme={theme}
+                    selection={visibleSelection}
+                    sidebarVisible={sidebarVisible}
+                    welcomeDismissed={welcomeDismissed}
+                    onDismissWelcome={() => setWelcomeDismissed(true)}
+                    activeDetail={visibleActiveDetail}
+                    setActiveDetail={setActiveDetail}
+                    onFlightNavigationStart={trip => setActiveSidebarId(trip.id)}
+                    timelineFromDate={effectiveTimelineFromDate}
+                    timelineToDate={effectiveTimelineToDate}
+                    timelineMinDate={timelineBounds?.minDate || ''}
+                    timelineMaxDate={timelineBounds?.maxDate || ''}
+                    onTimelineFromDateChange={setTimelineFromDate}
+                    onTimelineToDateChange={setTimelineToDate}
+                />
+            </div>
+        </div>
     );
-  }
-
-  return (
-    <div style={{ display: 'flex', height: '100dvh', width: '100%', background: colors.pageBg, overflow: 'hidden' }}>
-      {isMobile && welcomeDismissed ? (
-        <MobileTripStrip
-          landscape={isLandscape}
-          travelData={filteredTravelData}
-          theme={theme}
-          setTheme={setTheme}
-          activeId={sidebarActiveId}
-          onSelect={trip => {
-            setActiveSidebarId(trip.id);
-            setSelection({ trip, key: Date.now() + Math.random() });
-          }}
-        />
-      ) : null}
-      {!isMobile && sidebarVisible && welcomeDismissed ? (
-        <Sidebar
-          isMobile={isMobile}
-          travelData={filteredTravelData}
-          theme={theme}
-          setTheme={setTheme}
-          activeId={sidebarActiveId}
-          onToggleCollapsed={() => setSidebarVisible(false)}
-          onSelect={trip => {
-            if (isMobile) setSidebarVisible(false);
-            setActiveSidebarId(trip.id);
-            setSelection({
-              trip,
-              key: Date.now() + Math.random(),
-            });
-          }}
-        />
-      ) : null}
-
-      <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
-        <GlobeMap
-          isMobile={isMobile}
-          travelData={filteredTravelData}
-          allTravelData={allTravelData}
-          theme={theme}
-          selection={visibleSelection}
-          sidebarVisible={sidebarVisible}
-          welcomeDismissed={welcomeDismissed}
-          onDismissWelcome={() => setWelcomeDismissed(true)}
-          activeDetail={visibleActiveDetail}
-          setActiveDetail={setActiveDetail}
-          onFlightNavigationStart={trip => setActiveSidebarId(trip.id)}
-          timelineFromDate={effectiveTimelineFromDate}
-          timelineToDate={effectiveTimelineToDate}
-          timelineMinDate={timelineBounds?.minDate || ''}
-          timelineMaxDate={timelineBounds?.maxDate || ''}
-          onTimelineFromDateChange={setTimelineFromDate}
-          onTimelineToDateChange={setTimelineToDate}
-        />
-      </div>
-    </div>
-  );
 }
