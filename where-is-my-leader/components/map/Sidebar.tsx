@@ -322,7 +322,7 @@ export default function Sidebar({
                     background: stayCardBg,
                     boxShadow: theme === 'dark' ? '0 8px 20px rgba(2,6,23,0.26)' : '0 8px 18px rgba(15,23,42,0.08)',
                     overflow: 'hidden',
-                    ...(isLatestStay && flashLatest ? { animation: 'wiml-flash 1.2s ease-in-out infinite' } : {}),
+                    ...(isLatestStay && flashLatest ? { animation: 'wiml-flash 2.6s ease-in-out infinite' } : {}),
                   }}
                 >
                   <div

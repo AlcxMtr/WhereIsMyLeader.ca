@@ -98,7 +98,7 @@ export default function MobileTripStrip({
               : isNow
                 ? `linear-gradient(135deg, ${colors.panelNow}, ${colors.panelSoft})`
                 : colors.panelSoft,
-            ...(isNow && flashLatest ? { animation: 'wiml-flash 1.2s ease-in-out infinite' } : {}),
+            ...(isNow && flashLatest ? { animation: 'wiml-flash 2.6s ease-in-out infinite' } : {}),
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

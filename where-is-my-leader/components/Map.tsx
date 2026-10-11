@@ -28,19 +28,16 @@ export default function Map({ person }: MapProps) {
     const [isMobile, setIsMobile] = useState(false);
     const [isLandscape, setIsLandscape] = useState(false);
     const [seeAllPending, setSeeAllPending] = useState(false);
-    const [flashLatest, setFlashLatest] = useState(false);
+    const [idleElapsed, setIdleElapsed] = useState(false);
 
-    // After "See all trips", nudge the latest entry if the user hasn't picked a trip within 3s.
+    // After "See all trips", nudge the latest entry if the user hasn't picked a trip within 5s.
     useEffect(() => {
         if (!seeAllPending) return undefined;
-        if (activeSidebarId != null || activeDetail) {
-            setSeeAllPending(false);
-            setFlashLatest(false);
-            return undefined;
-        }
-        const timer = setTimeout(() => setFlashLatest(true), 3000);
+        const timer = setTimeout(() => setIdleElapsed(true), 5000);
         return () => clearTimeout(timer);
-    }, [seeAllPending, activeSidebarId, activeDetail]);
+    }, [seeAllPending]);
+
+    const flashLatest = seeAllPending && idleElapsed && activeSidebarId == null && !activeDetail;
 
     useEffect(() => {
         const mq = window.matchMedia('(max-width: 768px), (max-height: 500px) and (pointer: coarse)');
