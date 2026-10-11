@@ -990,9 +990,9 @@ export const trips: Trip[] = [
         summary: "Home",
         citations: []
     },
-    {
+    { 
         id: 99,
-        city: "Detroit, Michigan",
+        city: "Detroit, Michigan, United States",
         coords: [42.3314, -83.0458],
         arrival: "2026-07-14",
         departure: "2026-07-14",

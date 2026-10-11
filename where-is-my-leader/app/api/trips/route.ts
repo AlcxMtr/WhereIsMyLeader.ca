@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
+import { DateTime } from 'luxon';
 
 // Import your new static typescript object file here
 import { trips as andrewTrips } from '../../andrewdeng/AndrewTravelData';
@@ -19,16 +20,20 @@ interface Trip {
     citations: string[];
 }
 
-// FIX: Add the 'request' parameter to read URL queries
 export async function GET(request: Request) {
     try {
-        // 1. Check for the query parameter (e.g., /api/trips?person=friend)
+        // 1. Check for the query parameter (e.g., /api/trips?person=andrewdeng)
         const { searchParams } = new URL(request.url);
         const targetPerson = searchParams.get('person');
 
-        if (targetPerson === 'Andrew Deng') {
-            // Immediately return the static TypeScript object and skip the database entirely
-            return NextResponse.json(andrewTrips);
+        if (targetPerson) {
+            const userResponse = userData(targetPerson);
+            if (userResponse) {
+                return userResponse;
+            } else {
+                // Return a clean 404 if a person is queried but doesn't exist
+                return NextResponse.json({ error: "Person not found." }, { status: 404 });
+            }
         }
 
         // 2. Standard Database Logic for the Prime Minister
@@ -116,4 +121,23 @@ export async function GET(request: Request) {
             { status: 500 }
         );
     }
+}
+
+function userData(targetPerson: string) {
+    if (targetPerson === 'Andrew Deng') {
+        const dynamicTrips = [...andrewTrips];
+
+        if (dynamicTrips.length > 0) {
+            const lastIndex = dynamicTrips.length - 1;
+            const lastTrip = { ...dynamicTrips[lastIndex] };
+            const todayStr = DateTime.now().setZone('America/Toronto').toFormat('yyyy-MM-dd');
+
+            lastTrip.departure = todayStr;
+            dynamicTrips[lastIndex] = lastTrip;
+        }
+
+        return NextResponse.json(dynamicTrips);
+    }
+
+    return null;
 }
