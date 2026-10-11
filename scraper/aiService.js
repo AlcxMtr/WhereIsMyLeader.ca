@@ -119,3 +119,58 @@ export async function summarizeItinerary(arrivalDate, departureDate, location, i
     throw error;
   }
 }
+
+/**
+ * Uses Perplexity to resolve coordinates for obscure locations that Nominatim cannot find.
+ * @param {string} location - The complex or obscure location string
+ * @returns {Promise<{lat: number | null, lng: number | null}>}
+ */
+export async function geocodeLocationAI(location) {
+    const promptContent = `
+    You are a highly precise geographic coordinate resolver.
+    Find the exact latitude and longitude for the following location: "${location}".
+    
+    TASK:
+    Return the coordinates strictly in the following JSON format. You MUST return valid JSON matching this exact schema:
+    {
+      "lat": 46.4356,
+      "lng": -63.0761
+    }
+    
+    STRICT CONSTRAINTS:
+    - If the location is completely fictional or impossible to locate, return {"lat": null, "lng": null}.
+    - Do not include conversational filler, introductory text, or markdown formatting. Output ONLY the JSON object.
+    - Use decimal degrees.
+  `;
+
+    try {
+        const response = await perplexity.chat.completions.create({
+            model: "sonar",
+            messages: [
+                { role: "system", content: "You are a factual, precise geographic coordinate resolver. You output exclusively in JSON format." },
+                { role: "user", content: promptContent }
+            ],
+            temperature: 0.1,
+        });
+
+        const rawContent = response.choices[0].message.content.trim();
+        const jsonString = rawContent.replace(/^```(json)?\n?/, '').replace(/\n?```$/, '').trim();
+
+        let parsedData;
+        try {
+            parsedData = JSON.parse(jsonString);
+        } catch (parseError) {
+            console.error(`[AI Geocode Error] Failed to parse JSON for ${location}. Raw: ${rawContent}`);
+            return { lat: null, lng: null };
+        }
+
+        return {
+            lat: parsedData.lat ? parseFloat(parsedData.lat) : null,
+            lng: parsedData.lng ? parseFloat(parsedData.lng) : null
+        };
+
+    } catch (error) {
+        console.error(`[AI Geocode Error] Perplexity API failed for ${location}:`, error.message);
+        return { lat: null, lng: null };
+    }
+}

@@ -5,7 +5,6 @@ import path from 'path';
 import fs from 'fs';
 import { DateTime } from 'luxon';
 import { summarizeItinerary } from './aiService.js';
-import { hardCodeLocationNames } from './technicalDebt.js';
 
 // 1. Database Singleton Initialization
 const isDocker = process.env.NODE_ENV === 'production';
@@ -84,22 +83,34 @@ function cleanSummary(val) {
   return val;
 }
 
-
 export async function getCoordinates(locationString) {
-  let primaryCity = getPrimaryCity(locationString);
-  primaryCity = hardCodeLocationNames(primaryCity);
-  try {
-    const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-      params: { q: primaryCity, format: 'json', limit: 1 },
-      headers: { 'User-Agent': 'WhereIsMyLeader.ca - Scraper Bot (contact@alexmtr.com)' }
-    });
-    if (response.data && response.data.length > 0) {
-      return { lat: parseFloat(response.data[0].lat), lng: parseFloat(response.data[0].lon) };
+    let primaryCity = getPrimaryCity(locationString);
+
+    // Attempt 1: Standard OpenStreetMap (Nominatim) Resolution
+    try {
+        const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+            params: { q: primaryCity, format: 'json', limit: 1 },
+            headers: { 'User-Agent': 'WhereIsMyLeader.ca - Scraper Bot (contact@alexmtr.com)' }
+        });
+        if (response.data && response.data.length > 0) {
+            return { lat: parseFloat(response.data[0].lat), lng: parseFloat(response.data[0].lon) };
+        }
+    } catch (error) {
+        console.error(`Nominatim Geocoding failed for "${primaryCity}":`, error.message);
     }
-  } catch (error) {
-    console.error(`Geocoding failed for "${primaryCity}":`, error.message);
-  }
-  return { lat: null, lng: null };
+
+    // Attempt 2: AI Fallback Resolution for obscure landmarks
+    console.log(`[Geocoding Fallback] Nominatim failed for "${locationString}". Triggering AI resolution...`);
+    const aiCoords = await geocodeLocationAI(locationString);
+
+    if (aiCoords.lat !== null && aiCoords.lng !== null) {
+        console.log(` -> AI successfully resolved ${locationString} to [${aiCoords.lat}, ${aiCoords.lng}]`);
+        return aiCoords;
+    }
+
+    // Ultimate failure
+    console.warn(`[Geocoding Exhausted] Could not resolve coordinates for: ${locationString}`);
+    return { lat: null, lng: null };
 }
 
 // 3. String Compiler for the Detailed Frontend Description
