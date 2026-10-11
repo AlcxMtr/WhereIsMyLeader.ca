@@ -50,11 +50,13 @@ function createSeeTripPill({
   isPulsing,
   colors,
   onClick,
+  touch,
 }: {
   label: string;
   isPulsing: boolean;
   colors: ThemeColors;
   onClick: () => void;
+  touch: boolean;
 }) {
   ensurePulseStyleInjected();
 
@@ -65,8 +67,9 @@ function createSeeTripPill({
   pill.style.background = colors.detailBg;
   pill.style.color = colors.detailText;
   pill.style.borderRadius = '999px';
-  pill.style.padding = '4px 12px';
-  pill.style.fontSize = '10px';
+  pill.style.padding = touch ? '0 14px' : '4px 12px';
+  pill.style.minHeight = touch ? '40px' : '0';
+  pill.style.fontSize = touch ? '12px' : '10px';
   pill.style.fontWeight = '700';
   pill.style.cursor = 'pointer';
   pill.style.whiteSpace = 'nowrap';
@@ -115,6 +118,8 @@ export function createTripDetailHtmlElement({
   isFirstUsTrip,
   onSeePast,
   onSeeFuture,
+  onRecenter,
+  isMobile = false,
 }: {
   trip: TravelPoint;
   theme: ThemeMode;
@@ -133,6 +138,8 @@ export function createTripDetailHtmlElement({
   isFirstUsTrip: boolean;
   onSeePast: () => void;
   onSeeFuture: () => void;
+  onRecenter: () => void;
+  isMobile?: boolean;
 }) {
   const { name: countryName, code: countryCode } = getCountryInfo(trip.city);
   const flagUrl = countryCode ? `https://flagcdn.com/w80/${countryCode}.png` : null;
@@ -169,6 +176,7 @@ export function createTripDetailHtmlElement({
           isPulsing: isMostRecentTrip,
           colors,
           onClick: onSeePast,
+          touch: isMobile,
         })
       );
     }
@@ -180,6 +188,7 @@ export function createTripDetailHtmlElement({
           isPulsing: isFirstUsTrip,
           colors,
           onClick: onSeeFuture,
+          touch: isMobile,
         })
       );
     }
@@ -205,12 +214,16 @@ export function createTripDetailHtmlElement({
   const closeButton = document.createElement('button');
   closeButton.innerText = 'x';
   closeButton.style.position = 'absolute';
-  closeButton.style.top = '8px';
-  closeButton.style.right = '10px';
+  closeButton.style.top = isMobile ? '2px' : '8px';
+  closeButton.style.right = isMobile ? '2px' : '10px';
+  if (isMobile) {
+    closeButton.style.width = '44px';
+    closeButton.style.height = '44px';
+  }
   closeButton.style.border = 'none';
   closeButton.style.background = 'transparent';
   closeButton.style.color = colors.detailSub;
-  closeButton.style.fontSize = '18px';
+  closeButton.style.fontSize = isMobile ? '22px' : '18px';
   closeButton.style.cursor = 'pointer';
   closeButton.style.lineHeight = '1';
   closeButton.onclick = e => {
@@ -222,7 +235,7 @@ export function createTripDetailHtmlElement({
   header.style.display = 'flex';
   header.style.alignItems = 'center';
   header.style.gap = '10px';
-  header.style.paddingRight = '22px';
+  header.style.paddingRight = isMobile ? '34px' : '22px';
 
   if (flagUrl) {
     const flag = document.createElement('img');
@@ -307,8 +320,9 @@ export function createTripDetailHtmlElement({
     learnMoreButton.style.background = 'transparent';
     learnMoreButton.style.color = colors.detailSub;
     learnMoreButton.style.borderRadius = '8px';
-    learnMoreButton.style.padding = '5px 8px';
-    learnMoreButton.style.fontSize = '11px';
+    learnMoreButton.style.padding = isMobile ? '0 14px' : '5px 8px';
+    learnMoreButton.style.minHeight = isMobile ? '40px' : '0';
+    learnMoreButton.style.fontSize = isMobile ? '12px' : '11px';
     learnMoreButton.style.fontWeight = '700';
     learnMoreButton.style.cursor = 'pointer';
     learnMoreButton.style.whiteSpace = 'nowrap';
@@ -335,8 +349,9 @@ export function createTripDetailHtmlElement({
     background: 'transparent',
     color: colors.detailSub,
     borderRadius: '8px',
-    padding: '5px 8px',
-    fontSize: '11px',
+    padding: isMobile ? '0 12px' : '5px 8px',
+    minHeight: isMobile ? '40px' : '0',
+    fontSize: isMobile ? '12px' : '11px',
     fontWeight: '700',
     cursor: 'pointer',
     maxWidth: '48%',
@@ -353,6 +368,7 @@ export function createTripDetailHtmlElement({
   previousBtn.style.color = navButtonBase.color;
   previousBtn.style.borderRadius = navButtonBase.borderRadius;
   previousBtn.style.padding = navButtonBase.padding;
+  previousBtn.style.minHeight = navButtonBase.minHeight;
   previousBtn.style.fontSize = navButtonBase.fontSize;
   previousBtn.style.fontWeight = navButtonBase.fontWeight;
   previousBtn.style.cursor = navButtonBase.cursor;
@@ -385,6 +401,7 @@ export function createTripDetailHtmlElement({
   nextBtn.style.color = navButtonBase.color;
   nextBtn.style.borderRadius = navButtonBase.borderRadius;
   nextBtn.style.padding = navButtonBase.padding;
+  nextBtn.style.minHeight = navButtonBase.minHeight;
   nextBtn.style.fontSize = navButtonBase.fontSize;
   nextBtn.style.fontWeight = navButtonBase.fontWeight;
   nextBtn.style.cursor = navButtonBase.cursor;
@@ -433,6 +450,12 @@ export function createTripDetailHtmlElement({
   }
   card.appendChild(navWrap);
   card.appendChild(stem);
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', e => {
+    if ((e.target as Element).closest('button, a')) return;
+    if (window.getSelection()?.toString()) return;
+    onRecenter();
+  });
   wrapper.appendChild(card);
 
   const clampToViewport = () => {

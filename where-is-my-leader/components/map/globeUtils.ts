@@ -42,6 +42,29 @@ function sphericalDistance(a: [number, number], b: [number, number]) {
   return 2 * Math.atan2(Math.sqrt(hav), Math.sqrt(1 - hav));
 }
 
+export function haptic(ms = 10) {
+  if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(ms);
+}
+
+// Returns the item closest to the tapped spot, if within maxDegrees of arc.
+export function findNearestByCoords<T extends { coords: [number, number] }>(
+  items: T[],
+  lat: number,
+  lng: number,
+  maxDegrees: number
+): T | null {
+  let best: T | null = null;
+  let bestDeg = maxDegrees;
+  for (const item of items) {
+    const deg = (sphericalDistance([lat, lng], item.coords) * 180) / Math.PI;
+    if (deg <= bestDeg) {
+      bestDeg = deg;
+      best = item;
+    }
+  }
+  return best;
+}
+
 export function getDistanceBasedMidAltitude(from: [number, number], to: [number, number]) {
   const radians = sphericalDistance(from, to);
   const normalized = Math.min(radians / Math.PI, 1);

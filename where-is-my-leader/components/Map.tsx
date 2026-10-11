@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import GlobeMap from './map/GlobeMap';
+import MobileTripStrip from './map/MobileTripStrip';
 import Sidebar from './map/Sidebar';
 import { getThemeColors } from './map/theme';
 import { formatDateKey, parseDate, tripOverlapsRange } from './map/tripUtils';
@@ -18,6 +19,26 @@ export default function Map() {
   const [theme, setTheme] = useState<ThemeMode>('dark');
   const [sidebarVisible, setSidebarVisible] = useState(true);
   const [welcomeDismissed, setWelcomeDismissed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
+
+  useEffect(() => {
+    // Phones in landscape exceed 768px wide but are under ~500px tall.
+    const mq = window.matchMedia('(max-width: 768px), (max-height: 500px) and (pointer: coarse)');
+    const landscapeMq = window.matchMedia('(orientation: landscape)');
+    const apply = () => {
+      setIsMobile(mq.matches);
+      setIsLandscape(mq.matches && landscapeMq.matches && window.innerWidth > window.innerHeight);
+      if (mq.matches) setSidebarVisible(false);
+    };
+    apply();
+    mq.addEventListener('change', apply);
+    landscapeMq.addEventListener('change', apply);
+    return () => {
+      mq.removeEventListener('change', apply);
+      landscapeMq.removeEventListener('change', apply);
+    };
+  }, []);
 
   useEffect(() => {
     const handleToggleSidebar = () => setSidebarVisible(prev => !prev);
@@ -101,7 +122,7 @@ export default function Map() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          height: '100vh',
+          height: '100dvh',
           background: colors.pageBg,
           color: colors.text,
           fontSize: '15px',
@@ -113,15 +134,30 @@ export default function Map() {
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', width: '100%', background: colors.pageBg }}>
-      {sidebarVisible && welcomeDismissed ? (
+    <div style={{ display: 'flex', height: '100dvh', width: '100%', background: colors.pageBg, overflow: 'hidden' }}>
+      {isMobile && welcomeDismissed ? (
+        <MobileTripStrip
+          landscape={isLandscape}
+          travelData={filteredTravelData}
+          theme={theme}
+          setTheme={setTheme}
+          activeId={sidebarActiveId}
+          onSelect={trip => {
+            setActiveSidebarId(trip.id);
+            setSelection({ trip, key: Date.now() + Math.random() });
+          }}
+        />
+      ) : null}
+      {!isMobile && sidebarVisible && welcomeDismissed ? (
         <Sidebar
+          isMobile={isMobile}
           travelData={filteredTravelData}
           theme={theme}
           setTheme={setTheme}
           activeId={sidebarActiveId}
           onToggleCollapsed={() => setSidebarVisible(false)}
           onSelect={trip => {
+            if (isMobile) setSidebarVisible(false);
             setActiveSidebarId(trip.id);
             setSelection({
               trip,
@@ -131,8 +167,9 @@ export default function Map() {
         />
       ) : null}
 
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
         <GlobeMap
+          isMobile={isMobile}
           travelData={filteredTravelData}
           allTravelData={allTravelData}
           theme={theme}

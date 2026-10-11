@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { WheelEvent } from 'react';
 
 import TimelineRange from './TimelineRange';
 import WelcomeBubble from './WelcomeBubble';
@@ -10,7 +9,7 @@ import {
   buildPointsData,
   buildArcsData,
 } from './globeData';
-import { buildGreatCirclePath, getDistanceBasedMidAltitude, sleep } from './globeUtils';
+import { buildGreatCirclePath, findNearestByCoords, getDistanceBasedMidAltitude, haptic, sleep } from './globeUtils';
 import { getThemeColors } from './theme';
 import { createTripDetailHtmlElement } from './tripDetailHtml';
 import {
@@ -55,6 +54,7 @@ const ADM0_A3_FALLBACK: Record<string, string> = {
 };
 
 export default function GlobeMap({
+  isMobile = false,
   travelData,
   allTravelData,
   theme,
@@ -72,6 +72,7 @@ export default function GlobeMap({
   onTimelineFromDateChange,
   onTimelineToDateChange,
 }: {
+  isMobile?: boolean;
   travelData: TravelPoint[];
   allTravelData: TravelPoint[];
   theme: ThemeMode;
@@ -93,10 +94,26 @@ export default function GlobeMap({
   const globeRef = useRef<GlobeHandle | null>(null);
   const animationTokenRef = useRef(0);
   const autoPlayTokenRef = useRef(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 1000, height: 800 });
   const [expandedDetailTripId, setExpandedDetailTripId] = useState<number | null>(null);
   const [isDetailExpanded, setIsDetailExpanded] = useState(false);
   const [autoPlayActive, setAutoPlayActive] = useState(false);
+  const [showRecenterHint, setShowRecenterHint] = useState(false);
+
+  // One-time tip the first time a trip bubble opens.
+  useEffect(() => {
+    if (!activeDetail) return undefined;
+    try {
+      if (window.localStorage.getItem('wiml-recenter-hint')) return undefined;
+      window.localStorage.setItem('wiml-recenter-hint', '1');
+    } catch {
+      return undefined;
+    }
+    const show = window.setTimeout(() => setShowRecenterHint(true), 600);
+    window.setTimeout(() => setShowRecenterHint(false), 4600);
+    return () => window.clearTimeout(show);
+  }, [activeDetail]);
 
   // ------------------------------------------------------------------
   // Country overlay — single 110m world GeoJSON fetch (once on mount)
@@ -189,9 +206,9 @@ export default function GlobeMap({
 
   useEffect(() => {
     const updateSize = () => {
-      const sidebarWidth = sidebarVisible && welcomeDismissed ? 300 : 0;
+      const sidebarWidth = !isMobile && sidebarVisible && welcomeDismissed ? 300 : 0;
       setDimensions({
-        width: Math.max(window.innerWidth - sidebarWidth, 320),
+        width: Math.max(window.innerWidth - sidebarWidth, 200),
         height: window.innerHeight,
       });
     };
@@ -199,7 +216,7 @@ export default function GlobeMap({
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
-  }, [sidebarVisible, welcomeDismissed]);
+  }, [sidebarVisible, welcomeDismissed, isMobile]);
 
   const pointsData = useMemo(
     () => buildPointsData(travelData, colors.latestPoint, theme, colors.futureArc),
@@ -556,8 +573,16 @@ export default function GlobeMap({
         hasFutureTrips: currentIndexAll >= 0 && currentIndexAll < allTravelData.length - 1,
         isMostRecentTrip: currentIndexAll === mostRecentTripIndex,
         isFirstUsTrip: currentIndexAll === firstUsTripIndex,
+        isMobile,
         onSeePast: () => startAutoPlay('past', item.trip),
         onSeeFuture: () => startAutoPlay('future', item.trip),
+        onRecenter: () => {
+          haptic();
+          globeRef.current?.pointOfView(
+            { lat: item.trip.coords[0], lng: item.trip.coords[1], altitude: 0.58 },
+            700
+          );
+        },
       });
     },
     [
@@ -567,6 +592,7 @@ export default function GlobeMap({
       expandedDetailTripId,
       firstUsTripIndex,
       isDetailExpanded,
+      isMobile,
       mostRecentTripIndex,
       onFlightNavigationStart,
       onTimelineFromDateChange,
@@ -648,32 +674,87 @@ export default function GlobeMap({
     onDismissWelcome();
   }, [onDismissWelcome]);
 
-  const handleManualWheelZoom = useCallback((event: WheelEvent<HTMLDivElement>) => {
-    const globe = globeRef.current;
-    if (!globe || !welcomeDismissed) return;
+  // Zoom only via pinch: touch pinch, or trackpad pinch (reported as ctrl+wheel). Plain wheel scroll does nothing.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return undefined;
 
-    const target = event.target as Element | null;
-    if (target?.closest('[data-timeline-ui="true"]')) return;
-    if (target?.closest('[data-detail-scroll="true"]')) return;
+    const isExcluded = (target: EventTarget | null) => {
+      const node = target as Element | null;
+      return !!node?.closest?.('[data-timeline-ui="true"], [data-detail-scroll="true"]');
+    };
 
-    event.preventDefault();
-    event.stopPropagation();
+    const zoomBy = (factor: number, baseAltitude?: number) => {
+      const globe = globeRef.current;
+      if (!globe) return;
+      const pov = globe.pointOfView() || {};
+      const current = baseAltitude ?? (typeof pov.altitude === 'number' ? pov.altitude : 1.8);
+      const next = Math.max(0.35, Math.min(5.5, current * factor));
+      globe.pointOfView({ lat: pov.lat, lng: pov.lng, altitude: next }, 0);
+    };
 
-    const pov = globe.pointOfView() || {};
-    const currentAltitude = typeof pov.altitude === 'number' ? pov.altitude : 1.8;
+    const onWheel = (event: globalThis.WheelEvent) => {
+      if (!welcomeDismissed || isExcluded(event.target)) return;
+      event.preventDefault();
+      if (!event.ctrlKey) return;
+      zoomBy(Math.exp(event.deltaY * 0.01));
+    };
 
-    const zoomFactor = Math.exp(event.deltaY * 0.0045);
-    const nextAltitude = Math.max(0.35, Math.min(5.5, currentAltitude * zoomFactor));
+    let pinchStartDistance = 0;
+    let pinchStartAltitude = 1.8;
+    const touchDistance = (e: TouchEvent) =>
+      Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
 
-    globe.pointOfView(
-      {
-        lat: pov.lat,
-        lng: pov.lng,
-        altitude: nextAltitude,
-      },
-      0
-    );
-  }, [welcomeDismissed]);
+    const onTouchStart = (e: TouchEvent) => {
+      if (!welcomeDismissed || e.touches.length !== 2 || isExcluded(e.target)) {
+        pinchStartDistance = 0;
+        return;
+      }
+      const pov = globeRef.current?.pointOfView() || {};
+      pinchStartDistance = touchDistance(e);
+      pinchStartAltitude = typeof pov.altitude === 'number' ? pov.altitude : 1.8;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!pinchStartDistance || e.touches.length !== 2) return;
+      e.preventDefault();
+      const distance = touchDistance(e);
+      if (distance > 0) zoomBy(pinchStartDistance / distance, pinchStartAltitude);
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) pinchStartDistance = 0;
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
+    el.addEventListener('touchcancel', onTouchEnd, { passive: true });
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+      el.removeEventListener('touchcancel', onTouchEnd);
+    };
+  }, [welcomeDismissed, travelData.length]);
+
+  // Touch taps are imprecise, so snap to the nearest pin within a zoom-scaled radius.
+  const handleTapNearestPin = useCallback(
+    (...args: unknown[]) => {
+      if (!isMobile || !welcomeDismissed) return;
+      const coords = args[args.length - 1] as { lat?: number; lng?: number } | undefined;
+      if (!coords || typeof coords.lat !== 'number' || typeof coords.lng !== 'number') return;
+      const altitude = globeRef.current?.pointOfView()?.altitude ?? 1.8;
+      const trip = findNearestByCoords(travelData, coords.lat, coords.lng, 3 + altitude * 4);
+      if (trip) {
+        haptic();
+        runPinFocus(trip);
+      }
+    },
+    [isMobile, welcomeDismissed, travelData, runPinFocus]
+  );
 
   if (!travelData.length) {
     return (
@@ -696,10 +777,10 @@ export default function GlobeMap({
 
   return (
     <div
-      style={{ position: 'relative', width: '100%', height: '100%', background: colors.globeBg }}
-      onWheel={handleManualWheelZoom}
+      ref={containerRef}
+      style={{ position: 'relative', width: '100%', height: '100%', background: colors.globeBg, touchAction: 'none', overflow: 'hidden' }}
     >
-      {!sidebarVisible ? (
+      {!sidebarVisible && !isMobile ? (
         <button
           onClick={() => {
             const event = new CustomEvent('toggle-sidebar');
@@ -707,8 +788,8 @@ export default function GlobeMap({
           }}
           style={{
             position: 'absolute',
-            top: '18px',
-            left: '18px',
+            top: isMobile ? '62px' : '18px',
+            left: isMobile ? '10px' : '18px',
             zIndex: 30,
             width: '40px',
             height: '40px',
@@ -764,7 +845,7 @@ export default function GlobeMap({
         pointLng="lng"
         pointColor="color"
         pointAltitude={(d: object) => ((d as PointDatum).isLatest ? 0.2 : 0.15)}
-        pointRadius={(d: object) => ((d as PointDatum).isLatest ? 0.38 : 0.3)}
+        pointRadius={(d: object) => ((d as PointDatum).isLatest ? 0.38 : 0.3) * (isMobile ? 1.5 : 1)}
         pointResolution={24}
         pointsMerge={false}
         pointsTransitionDuration={300}
@@ -772,7 +853,10 @@ export default function GlobeMap({
           if (!welcomeDismissed) return;
           const point = datum as PointDatum;
           const trip = pointMap.get(point.id);
-          if (trip) runPinFocus(trip);
+          if (trip) {
+            haptic();
+            runPinFocus(trip);
+          }
         }}
         htmlElementsData={detailHtmlData}
         htmlLat={(d: object) => (d as HtmlDetailDatum).lat}
@@ -785,10 +869,37 @@ export default function GlobeMap({
         polygonSideColor={SIDE_TRANSPARENT}
         polygonsTransitionDuration={300}
         onPolygonHover={handlePolygonHover}
+        onGlobeClick={handleTapNearestPin}
+        onPolygonClick={handleTapNearestPin}
       />
+
+      {showRecenterHint ? (
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bottom: isMobile ? 'calc(150px + env(safe-area-inset-bottom))' : '28px',
+            zIndex: 35,
+            padding: '8px 14px',
+            borderRadius: '999px',
+            fontSize: '12px',
+            fontWeight: 700,
+            whiteSpace: 'nowrap',
+            pointerEvents: 'none',
+            color: colors.detailText,
+            background: colors.detailBg,
+            border: `1px solid ${colors.detailBorder}`,
+            backdropFilter: 'blur(10px)',
+          }}
+        >
+          Tip: tap the card to re-centre it
+        </div>
+      ) : null}
 
       {welcomeDismissed ? (
         <TimelineRange
+          compact={isMobile}
           theme={theme}
           colors={colors}
           timelineFromDate={timelineFromDate}

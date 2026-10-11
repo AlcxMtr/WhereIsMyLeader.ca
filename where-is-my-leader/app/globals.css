@@ -1,5 +1,12 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 .leaflet-marker-icon.red-pin {
   filter: hue-rotate(0deg) saturate(4) brightness(0.9);
 }

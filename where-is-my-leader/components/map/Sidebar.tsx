@@ -6,6 +6,7 @@ import { formatTripDateRange, getCountryInfo } from './tripUtils';
 import type { ThemeMode, TravelPoint } from './types';
 
 export default function Sidebar({
+  isMobile = false,
   travelData,
   theme,
   setTheme,
@@ -13,6 +14,7 @@ export default function Sidebar({
   activeId,
   onToggleCollapsed,
 }: {
+  isMobile?: boolean;
   travelData: TravelPoint[];
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
@@ -211,16 +213,17 @@ export default function Sidebar({
       data-scrolling={isScrolling ? 'true' : 'false'}
       onScroll={handleScrollActivity}
       style={{
-        width: '300px',
-        minWidth: '300px',
-        height: '100vh',
+        width: isMobile ? 'min(320px, 86vw)' : '300px',
+        minWidth: isMobile ? undefined : '300px',
+        height: '100dvh',
+        ...(isMobile ? { position: 'fixed' as const, top: 0, left: 0, zIndex: 50 } : {}),
         overflowY: 'auto',
         background: glassBg,
         borderRight: `1px solid ${glassBorder}`,
         backdropFilter: 'blur(4px)',
         display: 'flex',
         flexDirection: 'column',
-        zIndex: 20,
+        ...(isMobile ? {} : { zIndex: 20 }),
       }}
     >
       <div style={{ padding: '16px', borderBottom: `1px solid ${glassBorder}` }}>

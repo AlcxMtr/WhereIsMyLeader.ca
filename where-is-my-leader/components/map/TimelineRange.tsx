@@ -46,6 +46,7 @@ export default function TimelineRange({
   timelineMaxDate,
   onTimelineFromDateChange,
   onTimelineToDateChange,
+  compact = false,
 }: {
   theme: ThemeMode;
   colors: ThemeColors;
@@ -55,10 +56,11 @@ export default function TimelineRange({
   timelineMaxDate: string;
   onTimelineFromDateChange: (value: string) => void;
   onTimelineToDateChange: (value: string) => void;
+  compact?: boolean;
 }) {
   const timelineTrackRef = useRef<HTMLDivElement | null>(null);
   const [dragHandle, setDragHandle] = useState<DragHandle>(null);
-  const [timelineHidden, setTimelineHidden] = useState(false);
+  const [timelineHidden, setTimelineHidden] = useState(compact);
 
   const timelineModel = useMemo(() => {
     const min = new Date(`${timelineMinDate}T00:00:00`);
@@ -174,18 +176,45 @@ export default function TimelineRange({
   const fromRatio = timelineModel.fromDays / timelineModel.totalDays;
   const toRatio = timelineModel.toDays / timelineModel.totalDays;
   const labelsTooClose = toRatio - fromRatio < 0.12;
+  const labelFontSize = compact ? '11px' : '9px';
+  const labelStyle = {
+    fontSize: labelFontSize,
+    lineHeight: 1,
+    fontWeight: 600,
+    color: colors.detailText,
+    background: colors.panelBg,
+    border: `1px solid ${colors.detailBorder}`,
+    borderRadius: '999px',
+    padding: compact ? '3px 7px' : '1px 5px',
+    whiteSpace: 'nowrap',
+    pointerEvents: 'none',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
+    opacity: 0.96,
+  } as const;
+  const fromLabel = formatTimelineLabel(timelineFromDate);
+  const toLabel = formatTimelineLabel(timelineToDate);
+  // When handles are close, show one merged label so the two never collide or appear swapped.
+  const mergedLabel = fromLabel === toLabel ? fromLabel : `${fromLabel} \u2013 ${toLabel}`;
+  const midRatio = (fromRatio + toRatio) / 2;
+  const mergedTransform =
+    midRatio < 0.12 ? 'translateX(0)' : midRatio > 0.88 ? 'translateX(-100%)' : 'translateX(-50%)';
+  const trackH = compact ? 28 : 18;
+  const handleSize = compact ? 26 : 14;
+  const iconBtn = compact ? 36 : 24;
+  const barTop = (trackH - 4) / 2;
 
   return (
     <div
       data-timeline-ui="true"
       style={{
         position: 'absolute',
-        top: '10px',
+        top: compact ? 'calc(10px + env(safe-area-inset-top))' : '10px',
         left: timelineHidden ? 'auto' : '50%',
-        right: timelineHidden ? '18px' : 'auto',
+        right: timelineHidden ? (compact ? '12px' : '18px') : 'auto',
         transform: timelineHidden ? 'none' : 'translateX(-50%)',
-        width: timelineHidden ? 'auto' : 'min(860px, calc(100% - 48px))',
-        padding: timelineHidden ? '4px 8px' : '5px 10px 7px 10px',
+        width: timelineHidden ? 'auto' : `min(860px, calc(100% - ${compact ? 24 : 48}px))`,
+        padding: timelineHidden ? '4px 8px' : compact ? '8px 12px 10px' : '5px 10px 7px 10px',
         borderRadius: '10px',
         background: colors.panelBg,
         color: colors.detailText,
@@ -206,8 +235,8 @@ export default function TimelineRange({
             background: 'transparent',
             color: colors.buttonText,
             borderRadius: '999px',
-            width: '26px',
-            height: '26px',
+            width: compact ? '38px' : '26px',
+            height: compact ? '38px' : '26px',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -222,10 +251,20 @@ export default function TimelineRange({
       ) : (
         <>
           <div
+            style={
+              compact
+                ? { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '10px' }
+                : { display: 'contents' }
+            }
+          >
+          {compact ? (
+            <div style={{ fontSize: '13px', fontWeight: 700, color: colors.detailText, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {mergedLabel}
+            </div>
+          ) : null}
+          <div
             style={{
-              position: 'absolute',
-              top: '6px',
-              right: '8px',
+              ...(compact ? { position: 'static' as const, flexShrink: 0 } : { position: 'absolute' as const, top: '6px', right: '8px' }),
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
@@ -244,8 +283,8 @@ export default function TimelineRange({
                 background: colors.buttonBg,
                 color: colors.buttonText,
                 borderRadius: '999px',
-                width: '24px',
-                height: '24px',
+                width: `${iconBtn}px`,
+                height: `${iconBtn}px`,
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -266,8 +305,8 @@ export default function TimelineRange({
                 background: colors.buttonBg,
                 color: colors.buttonText,
                 borderRadius: '999px',
-                width: '24px',
-                height: '24px',
+                width: `${iconBtn}px`,
+                height: `${iconBtn}px`,
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -280,8 +319,9 @@ export default function TimelineRange({
               <EyeIcon closed={false} color={colors.buttonText} />
             </button>
           </div>
+          </div>
 
-          <div style={{ position: 'relative', padding: '2px 64px 20px 0' }}>
+          <div style={{ position: 'relative', padding: compact ? '0 13px' : `2px 64px ${trackH + 4}px 0` }}>
             <div>
               <div
                 ref={timelineTrackRef}
@@ -299,7 +339,7 @@ export default function TimelineRange({
                 }}
                 style={{
                   position: 'relative',
-                  height: '18px',
+                  height: `${trackH}px`,
                   cursor: 'ew-resize',
                   touchAction: 'none',
                 }}
@@ -309,7 +349,7 @@ export default function TimelineRange({
                     position: 'absolute',
                     left: 0,
                     right: 0,
-                    top: '7px',
+                    top: `${barTop}px`,
                     height: '4px',
                     borderRadius: '999px',
                     background: colors.panelSoft,
@@ -330,7 +370,7 @@ export default function TimelineRange({
                 <div
                   style={{
                     position: 'absolute',
-                    top: '7px',
+                    top: `${barTop}px`,
                     left: `${(timelineModel.fromDays / timelineModel.totalDays) * 100}%`,
                     width: `${((timelineModel.toDays - timelineModel.fromDays) / timelineModel.totalDays) * 100}%`,
                     height: '4px',
@@ -345,39 +385,20 @@ export default function TimelineRange({
                   const offset = handle === 'from' ? timelineModel.fromDays : timelineModel.toDays;
                   const left = `${(offset / timelineModel.totalDays) * 100}%`;
                   const ratio = offset / timelineModel.totalDays;
-                  const label = handle === 'from' ? formatTimelineLabel(timelineFromDate) : formatTimelineLabel(timelineToDate);
-                  const labelTransform = labelsTooClose
-                    ? handle === 'from'
-                      ? 'translateX(0)'
-                      : 'translateX(-100%)'
-                    : ratio < 0.06
-                      ? 'translateX(0)'
-                      : ratio > 0.94
-                        ? 'translateX(-100%)'
-                        : 'translateX(-50%)';
+                  const label = handle === 'from' ? fromLabel : toLabel;
+                  const labelTransform =
+                    ratio < 0.06 ? 'translateX(0)' : ratio > 0.94 ? 'translateX(-100%)' : 'translateX(-50%)';
 
                   return (
                     <div key={handle} style={{ position: 'absolute', left }}>
                       <div
                         style={{
+                          ...labelStyle,
                           position: 'absolute',
-                          top: '20px',
+                          top: `${trackH + 2}px`,
                           left: 0,
                           transform: labelTransform,
-                          fontSize: '9px',
-                          lineHeight: 1,
-                          fontWeight: 600,
-                          color: colors.detailText,
-                          background: colors.panelBg,
-                          border: `1px solid ${colors.detailBorder}`,
-                          borderRadius: '999px',
-                          padding: '1px 5px',
-                          whiteSpace: 'nowrap',
-                          pointerEvents: 'none',
-                          userSelect: 'none',
-                          WebkitUserSelect: 'none',
-                          boxShadow: 'none',
-                          opacity: 0.96,
+                          display: compact || labelsTooClose ? 'none' : 'block',
                           transition: 'left 70ms linear, transform 70ms linear',
                           willChange: 'left, transform',
                         }}
@@ -400,9 +421,9 @@ export default function TimelineRange({
                         style={{
                           position: 'absolute',
                           left: 0,
-                          top: '1px',
-                          width: '14px',
-                          height: '14px',
+                          top: `${(trackH - handleSize) / 2}px`,
+                          width: `${handleSize}px`,
+                          height: `${handleSize}px`,
                           transform: 'translateX(-50%)',
                           borderRadius: '999px',
                           background: colors.panelBg,
@@ -429,6 +450,20 @@ export default function TimelineRange({
                     </div>
                   );
                 })}
+
+                {labelsTooClose && !compact ? (
+                  <div
+                    style={{
+                      ...labelStyle,
+                      position: 'absolute',
+                      top: `${trackH + 2}px`,
+                      left: `${midRatio * 100}%`,
+                      transform: mergedTransform,
+                    }}
+                  >
+                    {mergedLabel}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
