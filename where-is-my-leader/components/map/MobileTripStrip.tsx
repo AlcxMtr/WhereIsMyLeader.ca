@@ -15,6 +15,7 @@ export default function MobileTripStrip({
   activeId,
   onSelect,
   landscape = false,
+  subjectName = 'Mark Carney',
 }: {
   travelData: TravelPoint[];
   theme: ThemeMode;
@@ -22,6 +23,7 @@ export default function MobileTripStrip({
   activeId: number | null;
   onSelect: (trip: TravelPoint) => void;
   landscape?: boolean;
+  subjectName?: string;
 }) {
   const colors = getThemeColors(theme);
   const cardRefs = useRef<Record<number, HTMLButtonElement | null>>({});
@@ -135,7 +137,7 @@ export default function MobileTripStrip({
 
   const title = (
     <div style={{ fontWeight: 800, fontSize: '13px', color: colors.text }}>
-      Mark Carney <span style={{ fontWeight: 500, color: colors.textSoft }}>· Travel Log</span>
+      {subjectName} <span style={{ fontWeight: 500, color: colors.textSoft }}>· Travel Log</span>
     </div>
   );
 

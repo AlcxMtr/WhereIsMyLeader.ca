@@ -7,6 +7,7 @@ import type { ThemeMode, TravelPoint } from './types';
 
 export default function Sidebar({
   isMobile = false,
+  subjectName = 'Mark Carney',
   travelData,
   theme,
   setTheme,
@@ -15,6 +16,7 @@ export default function Sidebar({
   onToggleCollapsed,
 }: {
   isMobile?: boolean;
+  subjectName?: string;
   travelData: TravelPoint[];
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
@@ -229,7 +231,7 @@ export default function Sidebar({
       <div style={{ padding: '16px', borderBottom: `1px solid ${glassBorder}` }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
           <div>
-            <div style={{ fontWeight: 800, fontSize: '15px', color: colors.text }}>Mark Carney</div>
+            <div style={{ fontWeight: 800, fontSize: '15px', color: colors.text }}>{subjectName}</div>
             <div style={{ fontSize: '12px', color: colors.textSoft, marginTop: '2px' }}>Travel Log</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

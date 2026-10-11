@@ -51,6 +51,8 @@ export default function WelcomeBubble({
   onSelectToday,
   onSelectFirst,
   onSelectAll,
+  subjectName,
+  isDefaultSubject,
 }: {
   theme: ThemeMode;
   colors: ThemeColors;
@@ -58,8 +60,12 @@ export default function WelcomeBubble({
   onSelectToday: () => void;
   onSelectFirst: () => void;
   onSelectAll: () => void;
+  subjectName: string;
+  isDefaultSubject: boolean;
 }) {
   if (!visible) return null;
+
+  const firstName = subjectName.split(' ')[0];
 
   const gradientTopLeft = theme === 'dark' ? 'rgba(8, 145, 178, 0.4)' : 'rgba(37, 99, 235, 0.26)';
   const gradientBottomRight = theme === 'dark' ? 'rgba(9, 18, 42, 0.94)' : 'rgba(228, 236, 250, 0.96)';
@@ -87,27 +93,33 @@ export default function WelcomeBubble({
           backdropFilter: 'blur(12px)',
         }}
       >
-        <div style={{ fontWeight: 800, fontSize: '16px', marginBottom: '4px' }}>Mark Carney&apos;s Travels</div>
+        <div style={{ fontWeight: 800, fontSize: '16px', marginBottom: '4px' }}>{subjectName}&apos;s Travels</div>
         <div style={{ fontSize: '12px', color: colors.detailSub, marginBottom: '14px' }}>
-          Pick a starting point to see the PM&apos;s travels.
+          {isDefaultSubject
+            ? 'Pick a starting point to see the PM\u2019s travels.'
+            : `Pick a starting point to explore ${firstName}\u2019s travels.`}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <WelcomeOption
-            label="Where is Mark Carney today?"
-            description="Jump to the PM's current stop"
+            label={`Where is ${isDefaultSubject ? subjectName : firstName} today?`}
+            description={isDefaultSubject ? "Jump to the PM's current stop" : 'Jump to their current stop'}
             colors={colors}
             onClick={onSelectToday}
           />
           <WelcomeOption
-            label="Mark Carney's first trip"
-            description="Start from the PM's first foreign visit following the 2025 Canadian federal election"
+            label={`${isDefaultSubject ? subjectName : firstName}'s first trip`}
+            description={
+              isDefaultSubject
+                ? "Start from the PM's first foreign visit following the 2025 Canadian federal election"
+                : 'Start from their earliest logged trip'
+            }
             colors={colors}
             onClick={onSelectFirst}
           />
           <WelcomeOption
             label="See all trips"
-            description="Show the PM's full travel history simultaneously"
+            description={isDefaultSubject ? "Show the PM's full travel history simultaneously" : 'Show their full travel history simultaneously'}
             colors={colors}
             onClick={onSelectAll}
           />

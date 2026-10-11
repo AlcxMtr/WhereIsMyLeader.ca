@@ -55,6 +55,8 @@ const ADM0_A3_FALLBACK: Record<string, string> = {
 
 export default function GlobeMap({
   isMobile = false,
+  subjectName = 'Mark Carney',
+  isDefaultSubject = true,
   travelData,
   allTravelData,
   theme,
@@ -73,6 +75,8 @@ export default function GlobeMap({
   onTimelineToDateChange,
 }: {
   isMobile?: boolean;
+  subjectName?: string;
+  isDefaultSubject?: boolean;
   travelData: TravelPoint[];
   allTravelData: TravelPoint[];
   theme: ThemeMode;
@@ -233,7 +237,10 @@ export default function GlobeMap({
   const detailHtmlData = useMemo(() => buildDetailHtmlData(activeDetail), [activeDetail]);
   const currentStayTripId = allTravelData.length ? allTravelData[allTravelData.length - 1].id : null;
   const mostRecentTripIndex = useMemo(() => findMostRecentTripIndex(allTravelData), [allTravelData]);
-  const firstUsTripIndex = useMemo(() => findFirstUsTripIndex(allTravelData), [allTravelData]);
+  const firstUsTripIndex = useMemo(
+    () => (isDefaultSubject ? findFirstUsTripIndex(allTravelData) : allTravelData.length ? 0 : -1),
+    [allTravelData, isDefaultSubject]
+  );
 
   useEffect(() => {
     if (!startupTarget) return;
@@ -542,6 +549,7 @@ export default function GlobeMap({
         nextTrip,
         onPrevious: () => {
           if (!previousTrip) return;
+          haptic();
           onFlightNavigationStart(previousTrip);
           if (timelineFromDate && previousTrip.arrival < timelineFromDate) {
             onTimelineFromDateChange(previousTrip.arrival);
@@ -553,6 +561,7 @@ export default function GlobeMap({
         },
         onNext: () => {
           if (!nextTrip) return;
+          haptic();
           onFlightNavigationStart(nextTrip);
           const nextEnd = nextTrip.departure || nextTrip.arrival;
           if (timelineToDate && nextEnd > timelineToDate) {
@@ -574,8 +583,14 @@ export default function GlobeMap({
         isMostRecentTrip: currentIndexAll === mostRecentTripIndex,
         isFirstUsTrip: currentIndexAll === firstUsTripIndex,
         isMobile,
-        onSeePast: () => startAutoPlay('past', item.trip),
-        onSeeFuture: () => startAutoPlay('future', item.trip),
+        onSeePast: () => {
+          haptic();
+          startAutoPlay('past', item.trip);
+        },
+        onSeeFuture: () => {
+          haptic();
+          startAutoPlay('future', item.trip);
+        },
         onRecenter: () => {
           haptic();
           globeRef.current?.pointOfView(
@@ -816,6 +831,8 @@ export default function GlobeMap({
         onSelectToday={handleSelectToday}
         onSelectFirst={handleSelectFirst}
         onSelectAll={handleSelectAll}
+        subjectName={subjectName}
+        isDefaultSubject={isDefaultSubject}
       />
 
       <Globe

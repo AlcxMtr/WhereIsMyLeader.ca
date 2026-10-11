@@ -55,7 +55,7 @@ export default function Map({ person }: MapProps) {
         const loadMapData = async () => {
             try {
                 // 3. Inject the person parameter into the API call dynamically
-                const apiUrl = person ? `/api/trips?person=${person}` : '/api/trips';
+                const apiUrl = person ? `/api/trips?person=${encodeURIComponent(person)}` : '/api/trips';
 
                 const res = await fetch(apiUrl);
                 if (!res.ok) throw new Error(`API returned status ${res.status}`);
@@ -121,10 +121,12 @@ export default function Map({ person }: MapProps) {
     }, [activeSidebarId, filteredTravelData, visibleActiveDetail]);
 
     const colors = getThemeColors(theme);
+    const subjectName = person?.trim() || 'Mark Carney';
+    const isDefaultSubject = subjectName === 'Mark Carney';
 
     if (!allTravelData.length) {
         // 4. Adapt the loading screen dynamically
-        const displayName = person === 'friend' ? 'Andrew Deng' : 'Mark Carney';
+        const displayName = subjectName;
         return (
             <div
                 style={{
@@ -147,6 +149,7 @@ export default function Map({ person }: MapProps) {
             {isMobile && welcomeDismissed ? (
                 <MobileTripStrip
                     landscape={isLandscape}
+                    subjectName={subjectName}
                     travelData={filteredTravelData}
                     theme={theme}
                     setTheme={setTheme}
@@ -160,6 +163,7 @@ export default function Map({ person }: MapProps) {
             {!isMobile && sidebarVisible && welcomeDismissed ? (
                 <Sidebar
                     isMobile={isMobile}
+                    subjectName={subjectName}
                     travelData={filteredTravelData}
                     theme={theme}
                     setTheme={setTheme}
@@ -179,6 +183,8 @@ export default function Map({ person }: MapProps) {
             <div style={{ flex: 1, position: 'relative', minWidth: 0 }}>
                 <GlobeMap
                     isMobile={isMobile}
+                    subjectName={subjectName}
+                    isDefaultSubject={isDefaultSubject}
                     travelData={filteredTravelData}
                     allTravelData={allTravelData}
                     theme={theme}
