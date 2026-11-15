@@ -2,14 +2,8 @@ import { flagPrimaryColors } from '../flagColors';
 import type { CountryPolygonDatum } from '../types';
 import { hexBrightRgba, hexToRgba } from './colors';
 
-export type RawCountryFeature = { properties: Record<string, unknown>; geometry: object };
-
-// Natural Earth 110m has ISO_A2="-99" for a handful of countries; fall back to ADM0_A3 mapping.
-const ADM0_A3_FALLBACK: Record<string, string> = {
-  FRA: 'fr',
-  NOR: 'no',
-  CYN: 'cy',
-};
+/** A feature of public/geojson/world.geojson (built by scripts/build-country-data.mjs). */
+export type RawCountryFeature = { properties: { code: string; name: string }; geometry: object };
 
 const DEFAULT_COUNTRY_HEX = '#ffffff';
 
@@ -18,18 +12,12 @@ export interface CountryHighlight {
   hoveredCode: string | null;
 }
 
-function resolveCountryCode(feature: RawCountryFeature): string | undefined {
-  const raw = feature.properties.ISO_A2 as string | undefined;
-  if (raw && raw !== '-99') return raw.toLowerCase();
-  return ADM0_A3_FALLBACK[(feature.properties.ADM0_A3 as string | undefined) ?? ''];
-}
-
 /** Keeps only the world features for countries that have been visited. */
 export function buildCountryPolygons(features: RawCountryFeature[], visitedCodes: Set<string>): CountryPolygonDatum[] {
   const polygons: CountryPolygonDatum[] = [];
   for (const feature of features) {
-    const code = resolveCountryCode(feature);
-    if (code && visitedCodes.has(code)) {
+    const { code } = feature.properties;
+    if (visitedCodes.has(code)) {
       polygons.push({ type: 'Feature', countryCode: code, geometry: feature.geometry, properties: feature.properties });
     }
   }

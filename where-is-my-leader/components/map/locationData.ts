@@ -112,6 +112,7 @@ export const countryNameToCode: Record<string, string> = {
   Latvia: 'lv',
   Lithuania: 'lt',
   Moldova: 'md',
+  Transnistria: 'md', // Internationally recognised as part of Moldova; drawn within it on the map.
   Belarus: 'by',
   Russia: 'ru',
   Morocco: 'ma',

@@ -34,6 +34,19 @@ In production (`NODE_ENV=production`) both are read from `/app/data`, which dock
 | `components/map/tripUtils.ts` | Trip date logic (date ranges, bounds, current/most recent trip) |
 | `components/map/theme.ts` | Light/dark palettes, exposed to CSS as `--wiml-*` variables |
 
+## Country data
+
+Flags and country highlights need a country code for every place. These files come from
+[Natural Earth](https://www.naturalearthdata.com/downloads/10m-cultural-vectors/) (admin-0 map subunits):
+
+- `public/geojson/world.geojson`: a simplified shape for every country and territory
+- `components/map/countryNames.generated.ts`: every known name for each country, mapped to its ISO code
+
+To regenerate them, run `node scripts/build-country-data.mjs <natural-earth.geojson>`. Hand-written names
+(provinces, short forms such as "UAE") live in `components/map/locationData.ts` and take precedence.
+`components/map/flagColors.ts` holds one highlight colour per country. `countryCoverage.test.ts` fails if any
+country is missing a shape, a colour or a resolvable name.
+
 ## Adding a person
 
 Add a data file next to `lib/server/people/andrewDengTrips.ts`, register it in `lib/server/people/index.ts`,

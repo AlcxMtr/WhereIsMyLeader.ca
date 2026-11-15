@@ -1,3 +1,4 @@
+import { generatedCountryNameToCode } from './countryNames.generated';
 import { cityNameToCode, countryNameToCode } from './locationData';
 
 export interface CountryInfo {
@@ -7,22 +8,33 @@ export interface CountryInfo {
   code: string | null;
 }
 
-/** Lowercases and strips accents and punctuation so place names compare loosely. */
+/**
+ * Lowercases and strips accents, punctuation and a leading "the" so place names compare loosely
+ * ("the Netherlands" ~ "Netherlands", "Antigua & Barbuda" ~ "Antigua and Barbuda").
+ */
 export function normalizePlaceName(value: string) {
   return value
     .toLowerCase()
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
+    .replace(/&/g, ' and ')
     .replace(/[().,'’]/g, '')
     .replace(/\s+/g, ' ')
-    .trim();
+    .trim()
+    .replace(/^the /, '');
 }
 
-function buildNormalizedLookup(source: Record<string, string>): Map<string, string> {
+/** Hand-maintained names (provinces, short forms) take precedence over the generated, complete list. */
+const allCountryNames: Record<string, string> = { ...generatedCountryNameToCode, ...countryNameToCode };
+
+/** Normalized name -> code; earlier sources win when two names normalize to the same key. */
+function buildNormalizedLookup(...sources: Array<Record<string, string>>): Map<string, string> {
   const lookup = new Map<string, string>();
-  for (const [name, code] of Object.entries(source)) {
-    const key = normalizePlaceName(name);
-    if (!lookup.has(key)) lookup.set(key, code);
+  for (const source of sources) {
+    for (const [name, code] of Object.entries(source)) {
+      const key = normalizePlaceName(name);
+      if (!lookup.has(key)) lookup.set(key, code);
+    }
   }
   return lookup;
 }
@@ -41,11 +53,11 @@ function resolveCountryInfo(city: string): CountryInfo {
   const cityPart = parts[0] ?? '';
   const rawCountry = parts[parts.length - 1] ?? '';
 
-  let code: string | null = countryNameToCode[rawCountry] ?? cityNameToCode[cityPart] ?? null;
+  let code: string | null = allCountryNames[rawCountry] ?? cityNameToCode[cityPart] ?? null;
 
   const normalizedCountry = normalizePlaceName(rawCountry);
   if (!code && normalizedCountry) {
-    normalizedCountries ??= buildNormalizedLookup(countryNameToCode);
+    normalizedCountries ??= buildNormalizedLookup(countryNameToCode, generatedCountryNameToCode);
     code = normalizedCountries.get(normalizedCountry) ?? null;
   }
 

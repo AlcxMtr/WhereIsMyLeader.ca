@@ -22,7 +22,7 @@ export function useCountryOverlay(travelData: TravelPoint[]) {
 
   useEffect(() => {
     let cancelled = false;
-    fetch('/geojson/world-110m.geojson')
+    fetch('/geojson/world.geojson')
       .then(r => r.json())
       .then((d: { features?: RawCountryFeature[] }) => {
         if (!cancelled) setWorldFeatures(d.features ?? []);
