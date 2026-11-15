@@ -1,0 +1,237 @@
+.root {
+  --track-h: 18px;
+  --handle-size: 14px;
+  --bar-top: calc((var(--track-h) - 4px) / 2);
+
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  z-index: 25;
+  width: min(860px, calc(100% - 48px));
+  padding: 5px 10px 7px 10px;
+  color: var(--wiml-detail-text);
+  background: var(--wiml-panel-bg);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  transform: translateX(-50%);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.root.compact {
+  --track-h: 28px;
+  --handle-size: 26px;
+
+  top: calc(10px + env(safe-area-inset-top));
+  width: min(860px, calc(100% - 24px));
+  padding: 8px 12px 10px;
+}
+
+.root.collapsed {
+  left: auto;
+  right: 18px;
+  width: auto;
+  padding: 4px 8px;
+  transform: none;
+}
+
+.root.collapsed.compact {
+  right: 12px;
+}
+
+.header {
+  display: contents;
+}
+
+.compact .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.compactLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--wiml-detail-text);
+}
+
+.actions {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compact .actions {
+  position: static;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* Out-ranks the [data-theme] rules of .cyber-icon-btn in globals.css (see Sidebar.module.css). */
+button.iconButton[data-theme] {
+  color: var(--wiml-button-text);
+  border: 1px solid var(--wiml-input-border);
+}
+
+button.actionButton[data-theme] {
+  background: var(--wiml-button-bg);
+}
+
+button.showButton[data-theme] {
+  background: transparent;
+}
+
+.actionButton {
+  width: 24px;
+  height: 24px;
+}
+
+.compact .actionButton {
+  width: 36px;
+  height: 36px;
+}
+
+.showButton {
+  width: 26px;
+  height: 26px;
+}
+
+.compact .showButton {
+  width: 38px;
+  height: 38px;
+}
+
+.trackArea {
+  position: relative;
+  padding: 2px 64px calc(var(--track-h) + 4px) 0;
+}
+
+.compact .trackArea {
+  padding: 0 13px;
+}
+
+.track {
+  position: relative;
+  height: var(--track-h);
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+.bar {
+  position: absolute;
+  top: var(--bar-top);
+  left: 0;
+  right: 0;
+  height: 4px;
+  overflow: hidden;
+  background: var(--wiml-panel-soft);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 999px;
+}
+
+.ticks {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent 10px,
+    rgba(56, 189, 248, 0.18) 10px,
+    rgba(56, 189, 248, 0.18) 11px
+  );
+}
+
+.selection {
+  position: absolute;
+  top: var(--bar-top);
+  height: 4px;
+  background: var(--wiml-toggle-on);
+  border: 1px solid var(--wiml-atmosphere);
+  border-radius: 999px;
+  opacity: 0.45;
+}
+
+.handleAnchor {
+  position: absolute;
+}
+
+.label {
+  position: absolute;
+  top: calc(var(--track-h) + 2px);
+  left: 0;
+  padding: 1px 5px;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--wiml-detail-text);
+  background: var(--wiml-panel-bg);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 999px;
+  opacity: 0.96;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: left 70ms linear, transform 70ms linear;
+  will-change: left, transform;
+}
+
+.compact .label {
+  padding: 3px 7px;
+  font-size: 11px;
+}
+
+.labelHidden {
+  display: none;
+}
+
+/* Positioned by an inline `left`, so it shouldn't animate along with the handle labels. */
+.mergedLabel {
+  transition: none;
+  will-change: auto;
+}
+
+.handle {
+  position: absolute;
+  top: calc((var(--track-h) - var(--handle-size)) / 2);
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--handle-size);
+  height: var(--handle-size);
+  background: var(--wiml-panel-bg);
+  border: 1px solid var(--wiml-input-border);
+  border-radius: 999px;
+  box-shadow: var(--wiml-handle-shadow);
+  cursor: ew-resize;
+  touch-action: none;
+  transform: translateX(-50%);
+}
+
+.grip {
+  width: 6px;
+  height: 8px;
+  border-left: 1px solid var(--wiml-text-soft);
+  border-right: 1px solid var(--wiml-text-soft);
+  opacity: 0.85;
+}

@@ -1,0 +1,231 @@
+@keyframes tripBubblePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 4px 0 var(--wiml-detail-border);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 16px 5px var(--wiml-detail-border);
+    opacity: 0.8;
+  }
+}
+
+.wrapper {
+  width: min(360px, calc(100vw - 28px));
+  max-width: 360px;
+  pointer-events: auto;
+  transform: translate(18px, calc(-56% + 14px + var(--detail-shift-y, 0px)));
+}
+
+.pillBar {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pill {
+  border: 1px solid var(--wiml-detail-border);
+  background: var(--wiml-detail-bg);
+  color: var(--wiml-detail-text);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  pointer-events: auto;
+  opacity: 0.45;
+  transition: opacity 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pill:hover {
+  opacity: 1;
+  box-shadow: 0 0 10px 2px var(--wiml-detail-border);
+}
+
+.pill.pulsing {
+  opacity: 1;
+  animation: tripBubblePulse 1.8s ease-in-out infinite;
+}
+
+.card {
+  --card-gradient-start: var(--wiml-welcome-gradient-start);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: min(64vh, 520px);
+  overflow: hidden;
+  padding: 14px;
+  cursor: pointer;
+  color: var(--wiml-detail-text);
+  background: linear-gradient(135deg, var(--card-gradient-start) 0%, var(--wiml-gradient-end) 72%);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 14px;
+  box-shadow: var(--wiml-card-shadow);
+  backdrop-filter: blur(12px);
+}
+
+.card.current {
+  --card-gradient-start: var(--wiml-current-gradient-start);
+}
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: var(--wiml-detail-sub);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 22px;
+}
+
+.flag {
+  width: 30px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.titleWrap {
+  min-width: 0;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--wiml-detail-text);
+}
+
+.subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wiml-detail-subtitle);
+}
+
+.body {
+  flex: 1;
+  margin-top: 12px;
+  padding-right: 4px;
+  overflow-y: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--wiml-detail-text);
+  word-break: break-word;
+}
+
+.citation {
+  color: var(--wiml-detail-text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 1px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.ghostButton,
+.navButton {
+  border: 1px solid var(--wiml-detail-border);
+  background: transparent;
+  color: var(--wiml-detail-sub);
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: 12px;
+}
+
+.navButton {
+  max-width: 48%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.navButton:hover {
+  color: var(--wiml-detail-text);
+  border-color: var(--wiml-detail-text);
+}
+
+.navPrevious {
+  text-align: left;
+}
+
+.navNext {
+  margin-left: auto;
+  text-align: right;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.stem {
+  position: absolute;
+  left: 18px;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, var(--card-gradient-start) 0%, var(--wiml-gradient-end) 72%);
+  border-right: 1px solid var(--wiml-detail-border);
+  border-bottom: 1px solid var(--wiml-detail-border);
+  transform: rotate(45deg);
+}
+
+/* Larger tap targets on touch layouts. */
+.touch .pill {
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+.touch .close {
+  top: 2px;
+  right: 2px;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+}
+
+.touch .header {
+  padding-right: 34px;
+}
+
+.touch .ghostButton {
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+.touch .navButton {
+  min-height: 40px;
+  padding: 0 12px;
+  font-size: 12px;
+}

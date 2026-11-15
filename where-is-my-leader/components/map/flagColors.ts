@@ -117,6 +117,7 @@ export const flagPrimaryColors: Record<string, string> = {
   za: '#007A4D', // South Africa – green
 
   // Americas
+  ag: '#CE1126', // Antigua and Barbuda – red
   br: '#009C3B', // Brazil – green
   ar: '#74ACDF', // Argentina – light blue
   cl: '#D52B1E', // Chile – red

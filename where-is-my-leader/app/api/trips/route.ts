@@ -1,143 +1,32 @@
 import { NextResponse } from 'next/server';
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
-import { DateTime } from 'luxon';
 
-// Import your new static typescript object file here
-import { trips as andrewTrips } from '../../andrewdeng/AndrewTravelData';
+import { getPersonTrips } from '@/lib/server/people';
+import { loadPrimeMinisterTrips } from '@/lib/server/primeMinisterTrips';
 
 export const dynamic = 'force-dynamic';
 
-interface Trip {
-    id: number;
-    city: string;
-    coords: [number, number];
-    arrival: string;
-    departure: string;
-    desc: string;
-    summary: string;
-    citations: string[];
-}
-
+/** GET /api/trips            -> the Prime Minister's trips
+ *  GET /api/trips?person=... -> that person's trips (404 if unknown) */
 export async function GET(request: Request) {
-    try {
-        // 1. Check for the query parameter (e.g., /api/trips?person=andrewdeng)
-        const { searchParams } = new URL(request.url);
-        const targetPerson = searchParams.get('person');
+  try {
+    const person = new URL(request.url).searchParams.get('person');
 
-        if (targetPerson) {
-            const userResponse = userData(targetPerson);
-            if (userResponse) {
-                return userResponse;
-            } else {
-                // Return a clean 404 if a person is queried but doesn't exist
-                return NextResponse.json({ error: "Person not found." }, { status: 404 });
-            }
-        }
-
-        // 2. Standard Database Logic for the Prime Minister
-        const isDocker = process.env.NODE_ENV === 'production';
-
-        const dbPath = isDocker
-            ? path.join('/app/data', 'trips.db')
-            : path.resolve('../shared-data/trips.db');
-
-        const jsonPath = isDocker
-            ? path.join('/app/data', 'trips_fallback.json')
-            : path.resolve('../shared-data/trips_fallback.json');
-
-        if (!fs.existsSync(dbPath)) {
-            console.warn("Database not found. Executing JSON fallback.");
-
-            if (!fs.existsSync(jsonPath)) {
-                return NextResponse.json(
-                    { error: "Fatal: Database and fallback JSON are both missing." },
-                    { status: 404 }
-                );
-            }
-
-            const fallbackData = fs.readFileSync(jsonPath, 'utf8');
-            return NextResponse.json(JSON.parse(fallbackData));
-        }
-
-        const db = new Database(dbPath, { readonly: true });
-
-        const rows = db.prepare(`
-      SELECT id, city, lat, lng, arrival, departure, short_summary, long_summary, citations, desc 
-      FROM aggregated_trips 
-      ORDER BY arrival ASC
-    `).all() as {
-            id: number;
-            city: string;
-            lat: number | null;
-            lng: number | null;
-            arrival: string;
-            departure: string;
-            short_summary: string | null;
-            long_summary: string | null;
-            citations: string | null;
-            desc: string | null;
-        }[];
-
-        db.close();
-
-        if (rows.length === 0) {
-            return NextResponse.json([]);
-        }
-
-        const aggregatedTrips: Trip[] = rows.map(row => {
-            let parsedCitations: string[] = [];
-            if (row.citations) {
-                try {
-                    parsedCitations = JSON.parse(row.citations);
-                } catch {
-                    parsedCitations = [];
-                }
-            }
-
-            const finalDesc = row.long_summary ? row.long_summary.trim() : (row.desc ? row.desc.trim() : "No data available.");
-            const finalSummary = row.short_summary ? row.short_summary.trim() : (row.desc ? row.desc.trim() : "No data available.");
-
-            return {
-                id: row.id,
-                city: row.city,
-                coords: [row.lat || 0, row.lng || 0],
-                arrival: row.arrival,
-                departure: row.departure,
-                desc: finalDesc,
-                summary: finalSummary,
-                citations: parsedCitations,
-            };
-        });
-
-        return NextResponse.json(aggregatedTrips);
-
-    } catch (error: unknown) {
-        console.error("Database Error:", error);
-        const errorMessage = error instanceof Error ? error.message : "Unknown database error";
-        return NextResponse.json(
-            { error: "Failed to fetch trips data", details: errorMessage },
-            { status: 500 }
-        );
-    }
-}
-
-function userData(targetPerson: string) {
-    if (targetPerson === 'Andrew Deng') {
-        const dynamicTrips = [...andrewTrips];
-
-        if (dynamicTrips.length > 0) {
-            const lastIndex = dynamicTrips.length - 1;
-            const lastTrip = { ...dynamicTrips[lastIndex] };
-            const todayStr = DateTime.now().setZone('America/Toronto').toFormat('yyyy-MM-dd');
-
-            lastTrip.departure = todayStr;
-            dynamicTrips[lastIndex] = lastTrip;
-        }
-
-        return NextResponse.json(dynamicTrips);
+    if (person) {
+      const trips = getPersonTrips(person);
+      return trips ? NextResponse.json(trips) : NextResponse.json({ error: 'Person not found.' }, { status: 404 });
     }
 
-    return null;
+    const trips = loadPrimeMinisterTrips();
+    if (!trips) {
+      return NextResponse.json(
+        { error: 'Fatal: Database and fallback JSON are both missing.' },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(trips);
+  } catch (error: unknown) {
+    console.error('Database Error:', error);
+    const details = error instanceof Error ? error.message : 'Unknown database error';
+    return NextResponse.json({ error: 'Failed to fetch trips data', details }, { status: 500 });
+  }
 }

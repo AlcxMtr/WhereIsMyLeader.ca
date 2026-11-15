@@ -1,0 +1,66 @@
+.positioner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 40;
+  width: min(340px, calc(100vw - 32px));
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.card {
+  padding: 18px;
+  color: var(--wiml-detail-text);
+  background: linear-gradient(135deg, var(--wiml-welcome-gradient-start) 0%, var(--wiml-gradient-end) 72%);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 14px;
+  box-shadow: var(--wiml-card-shadow);
+  backdrop-filter: blur(12px);
+}
+
+.title {
+  margin-bottom: 4px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.intro {
+  margin-bottom: 14px;
+  font-size: 12px;
+  color: var(--wiml-detail-sub);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.option {
+  width: 100%;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--wiml-detail-text);
+  background: transparent;
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.option:hover {
+  background: var(--wiml-panel-hover);
+  border-color: var(--wiml-detail-text);
+}
+
+.optionLabel {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.optionDescription {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--wiml-detail-sub);
+}

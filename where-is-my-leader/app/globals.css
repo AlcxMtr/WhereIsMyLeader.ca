@@ -12,6 +12,10 @@ body {
   50% { box-shadow: 0 0 16px 4px rgba(56, 189, 248, 0.85); border-color: rgba(56, 189, 248, 1); }
 }
 
+.wiml-flashing {
+  animation: wiml-flash 2.6s ease-in-out infinite;
+}
+
 .leaflet-marker-icon.red-pin {
   filter: hue-rotate(0deg) saturate(4) brightness(0.9);
 }

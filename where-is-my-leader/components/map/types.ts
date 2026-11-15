@@ -1,13 +1,6 @@
-export interface TravelPoint {
-  id: number;
-  city: string;
-  coords: [number, number];
-  desc: string;
-  arrival: string;
-  departure: string;
-  summary: string;
-  citations: string[];
-}
+import type { TravelPoint } from '@/lib/types';
+
+export type { TravelPoint };
 
 export interface PointDatum {
   id: number;
@@ -48,6 +41,22 @@ export type SelectionState = {
   trip: TravelPoint;
   key: number;
 } | null;
+
+/** Who the map is about. */
+export interface Subject {
+  name: string;
+  isDefault: boolean;
+}
+
+/** The visible date window plus the full extent it can be moved within (all `YYYY-MM-DD`). */
+export interface TimelineState {
+  from: string;
+  to: string;
+  min: string;
+  max: string;
+  onFromChange: (value: string) => void;
+  onToChange: (value: string) => void;
+}
 
 export type GlobeHandle = {
   pointOfView: {

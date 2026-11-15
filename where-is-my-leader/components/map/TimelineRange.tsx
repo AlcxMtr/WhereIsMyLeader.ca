@@ -1,470 +1,135 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 
-import type { ThemeColors } from './theme';
-import { formatTimelineLabel } from './tripUtils';
-import type { ThemeMode } from './types';
+import { formatTimelineLabel } from '@/lib/dates';
 
-type DragHandle = 'from' | 'to' | null;
+import { useTimelineDrag } from './hooks/useTimelineDrag';
+import { buildTimelineModel } from './timeline';
+import styles from './TimelineRange.module.css';
+import type { ThemeMode, TimelineState } from './types';
+import { EyeIcon, ResetIcon } from './ui/TimelineIcons';
 
-function EyeIcon({ closed, color }: { closed: boolean; color: string }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M2 12C3.8 8 7.2 5.5 12 5.5C16.8 5.5 20.2 8 22 12C20.2 16 16.8 18.5 12 18.5C7.2 18.5 3.8 16 2 12Z"
-        stroke={color}
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="12" cy="12" r="3.2" stroke={color} strokeWidth="1.7" />
-      {closed ? <path d="M4 20L20 4" stroke={color} strokeWidth="1.9" strokeLinecap="round" /> : null}
-    </svg>
-  );
-}
+const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
 
-function ResetIcon({ color }: { color: string }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M20 12A8 8 0 1 1 17.7 6.3"
-        stroke={color}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path d="M20 4V9H15" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+/** Shifts a label so it stays inside the track when its anchor is near either end. */
+function labelShift(ratio: number, edge: number): CSSProperties['transform'] {
+  if (ratio < edge) return 'translateX(0)';
+  if (ratio > 1 - edge) return 'translateX(-100%)';
+  return 'translateX(-50%)';
 }
 
 export default function TimelineRange({
   theme,
-  colors,
-  timelineFromDate,
-  timelineToDate,
-  timelineMinDate,
-  timelineMaxDate,
-  onTimelineFromDateChange,
-  onTimelineToDateChange,
+  timeline,
   compact = false,
 }: {
   theme: ThemeMode;
-  colors: ThemeColors;
-  timelineFromDate: string;
-  timelineToDate: string;
-  timelineMinDate: string;
-  timelineMaxDate: string;
-  onTimelineFromDateChange: (value: string) => void;
-  onTimelineToDateChange: (value: string) => void;
+  timeline: TimelineState;
   compact?: boolean;
 }) {
-  const timelineTrackRef = useRef<HTMLDivElement | null>(null);
-  const [dragHandle, setDragHandle] = useState<DragHandle>(null);
-  const [timelineHidden, setTimelineHidden] = useState(compact);
+  const { from, to, min, max, onFromChange, onToChange } = timeline;
+  const [hidden, setHidden] = useState(compact);
 
-  const timelineModel = useMemo(() => {
-    const min = new Date(`${timelineMinDate}T00:00:00`);
-    const max = new Date(`${timelineMaxDate}T00:00:00`);
-    const from = new Date(`${timelineFromDate}T00:00:00`);
-    const to = new Date(`${timelineToDate}T00:00:00`);
+  const model = useMemo(() => buildTimelineModel(from, to, min, max), [from, to, min, max]);
+  const { trackRef, onTrackPointerDown, onHandlePointerDown } = useTimelineDrag(model, onFromChange, onToChange);
 
-    if (
-      Number.isNaN(min.getTime()) ||
-      Number.isNaN(max.getTime()) ||
-      Number.isNaN(from.getTime()) ||
-      Number.isNaN(to.getTime())
-    ) {
-      return null;
-    }
+  if (!model) return null;
 
-    const dayMs = 24 * 60 * 60 * 1000;
-    const totalDays = Math.max(1, Math.round((max.getTime() - min.getTime()) / dayMs));
-    const fromDays = Math.max(0, Math.min(totalDays, Math.round((from.getTime() - min.getTime()) / dayMs)));
-    const toDays = Math.max(0, Math.min(totalDays, Math.round((to.getTime() - min.getTime()) / dayMs)));
-
-    return {
-      min,
-      totalDays,
-      fromDays,
-      toDays,
-      dayMs,
-    };
-  }, [timelineFromDate, timelineMaxDate, timelineMinDate, timelineToDate]);
-
-  const formatDateInput = useCallback((date: Date) => {
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const dd = String(date.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-  }, []);
-
-  const updateFromByOffset = useCallback(
-    (offset: number) => {
-      if (!timelineModel) return;
-      const clamped = Math.max(0, Math.min(offset, timelineModel.toDays));
-      const next = new Date(timelineModel.min.getTime() + clamped * timelineModel.dayMs);
-      onTimelineFromDateChange(formatDateInput(next));
-    },
-    [formatDateInput, onTimelineFromDateChange, timelineModel]
-  );
-
-  const updateToByOffset = useCallback(
-    (offset: number) => {
-      if (!timelineModel) return;
-      const clamped = Math.min(timelineModel.totalDays, Math.max(offset, timelineModel.fromDays));
-      const next = new Date(timelineModel.min.getTime() + clamped * timelineModel.dayMs);
-      onTimelineToDateChange(formatDateInput(next));
-    },
-    [formatDateInput, onTimelineToDateChange, timelineModel]
-  );
-
-  // Decides which handle a pointerdown should drag, so a collapsed range can always be
-  // expanded — dragging left grows "from" backward, dragging right grows "to" forward.
-  const resolveHandleForOffset = useCallback(
-    (offset: number): DragHandle => {
-      if (!timelineModel) return null;
-      if (timelineModel.fromDays !== timelineModel.toDays) {
-        const fromDistance = Math.abs(offset - timelineModel.fromDays);
-        const toDistance = Math.abs(offset - timelineModel.toDays);
-        return fromDistance <= toDistance ? 'from' : 'to';
-      }
-
-      if (offset < timelineModel.fromDays) return 'from';
-      if (offset > timelineModel.toDays) return 'to';
-
-      const distanceToStart = timelineModel.fromDays;
-      const distanceToEnd = timelineModel.totalDays - timelineModel.toDays;
-      return distanceToEnd <= distanceToStart ? 'from' : 'to';
-    },
-    [timelineModel]
-  );
-
-  const clientXToOffset = useCallback(
-    (clientX: number) => {
-      if (!timelineModel || !timelineTrackRef.current) return null;
-      const rect = timelineTrackRef.current.getBoundingClientRect();
-      if (!rect.width) return null;
-      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-      return Math.round(ratio * timelineModel.totalDays);
-    },
-    [timelineModel]
-  );
-
-  useEffect(() => {
-    if (!dragHandle) return;
-
-    const handleMove = (event: PointerEvent) => {
-      const offset = clientXToOffset(event.clientX);
-      if (offset === null) return;
-      if (dragHandle === 'from') updateFromByOffset(offset);
-      if (dragHandle === 'to') updateToByOffset(offset);
-    };
-
-    const handleUp = () => setDragHandle(null);
-
-    window.addEventListener('pointermove', handleMove);
-    window.addEventListener('pointerup', handleUp);
-
-    return () => {
-      window.removeEventListener('pointermove', handleMove);
-      window.removeEventListener('pointerup', handleUp);
-    };
-  }, [clientXToOffset, dragHandle, updateFromByOffset, updateToByOffset]);
-
-  if (!timelineModel) return null;
-
-  const fromRatio = timelineModel.fromDays / timelineModel.totalDays;
-  const toRatio = timelineModel.toDays / timelineModel.totalDays;
+  const fromRatio = model.fromDays / model.totalDays;
+  const toRatio = model.toDays / model.totalDays;
+  const midRatio = (fromRatio + toRatio) / 2;
   const labelsTooClose = toRatio - fromRatio < 0.12;
-  const labelFontSize = compact ? '11px' : '9px';
-  const labelStyle = {
-    fontSize: labelFontSize,
-    lineHeight: 1,
-    fontWeight: 600,
-    color: colors.detailText,
-    background: colors.panelBg,
-    border: `1px solid ${colors.detailBorder}`,
-    borderRadius: '999px',
-    padding: compact ? '3px 7px' : '1px 5px',
-    whiteSpace: 'nowrap',
-    pointerEvents: 'none',
-    userSelect: 'none',
-    WebkitUserSelect: 'none',
-    opacity: 0.96,
-  } as const;
-  const fromLabel = formatTimelineLabel(timelineFromDate);
-  const toLabel = formatTimelineLabel(timelineToDate);
+  const fromLabel = formatTimelineLabel(from);
+  const toLabel = formatTimelineLabel(to);
   // When handles are close, show one merged label so the two never collide or appear swapped.
   const mergedLabel = fromLabel === toLabel ? fromLabel : `${fromLabel} \u2013 ${toLabel}`;
-  const midRatio = (fromRatio + toRatio) / 2;
-  const mergedTransform =
-    midRatio < 0.12 ? 'translateX(0)' : midRatio > 0.88 ? 'translateX(-100%)' : 'translateX(-50%)';
-  const trackH = compact ? 28 : 18;
-  const handleSize = compact ? 26 : 14;
-  const iconBtn = compact ? 36 : 24;
-  const barTop = (trackH - 4) / 2;
+
+  const toggleHidden = () => setHidden(value => !value);
+  const reset = () => {
+    onFromChange(min);
+    onToChange(max);
+  };
 
   return (
     <div
       data-timeline-ui="true"
-      style={{
-        position: 'absolute',
-        top: compact ? 'calc(10px + env(safe-area-inset-top))' : '10px',
-        left: timelineHidden ? 'auto' : '50%',
-        right: timelineHidden ? (compact ? '12px' : '18px') : 'auto',
-        transform: timelineHidden ? 'none' : 'translateX(-50%)',
-        width: timelineHidden ? 'auto' : `min(860px, calc(100% - ${compact ? 24 : 48}px))`,
-        padding: timelineHidden ? '4px 8px' : compact ? '8px 12px 10px' : '5px 10px 7px 10px',
-        borderRadius: '10px',
-        background: colors.panelBg,
-        color: colors.detailText,
-        border: `1px solid ${colors.detailBorder}`,
-        backdropFilter: 'blur(4px)',
-        zIndex: 25,
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-      }}
+      className={cx(styles.root, compact && styles.compact, hidden && styles.collapsed)}
     >
-      {timelineHidden ? (
+      {hidden ? (
         <button
-          className="cyber-icon-btn"
+          className={cx('cyber-icon-btn', styles.iconButton, styles.showButton)}
           data-theme={theme}
-          onClick={() => setTimelineHidden(hidden => !hidden)}
-          style={{
-            border: `1px solid ${colors.inputBorder}`,
-            background: 'transparent',
-            color: colors.buttonText,
-            borderRadius: '999px',
-            width: compact ? '38px' : '26px',
-            height: compact ? '38px' : '26px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 0,
-            cursor: 'pointer',
-          }}
+          onClick={toggleHidden}
           aria-label="Show timeline"
           title="Show timeline"
         >
-          <EyeIcon closed color={colors.buttonText} />
+          <EyeIcon closed />
         </button>
       ) : (
         <>
-          <div
-            style={
-              compact
-                ? { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '10px' }
-                : { display: 'contents' }
-            }
-          >
-          {compact ? (
-            <div style={{ fontSize: '13px', fontWeight: 700, color: colors.detailText, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {mergedLabel}
-            </div>
-          ) : null}
-          <div
-            style={{
-              ...(compact ? { position: 'static' as const, flexShrink: 0 } : { position: 'absolute' as const, top: '6px', right: '8px' }),
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              zIndex: 2,
-            }}
-          >
-            <button
-              className="cyber-icon-btn"
-              data-theme={theme}
-              onClick={() => {
-                onTimelineFromDateChange(timelineMinDate);
-                onTimelineToDateChange(timelineMaxDate);
-              }}
-              style={{
-                border: `1px solid ${colors.inputBorder}`,
-                background: colors.buttonBg,
-                color: colors.buttonText,
-                borderRadius: '999px',
-                width: `${iconBtn}px`,
-                height: `${iconBtn}px`,
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 0,
-                cursor: 'pointer',
-              }}
-              aria-label="Reset timeline range"
-              title="Reset timeline range"
-            >
-              <ResetIcon color={colors.buttonText} />
-            </button>
-            <button
-              className="cyber-icon-btn"
-              data-theme={theme}
-              onClick={() => setTimelineHidden(hidden => !hidden)}
-              style={{
-                border: `1px solid ${colors.inputBorder}`,
-                background: colors.buttonBg,
-                color: colors.buttonText,
-                borderRadius: '999px',
-                width: `${iconBtn}px`,
-                height: `${iconBtn}px`,
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 0,
-                cursor: 'pointer',
-              }}
-              aria-label="Hide timeline"
-              title="Hide timeline"
-            >
-              <EyeIcon closed={false} color={colors.buttonText} />
-            </button>
-          </div>
-          </div>
-
-          <div style={{ position: 'relative', padding: compact ? '0 13px' : `2px 64px ${trackH + 4}px 0` }}>
-            <div>
-              <div
-                ref={timelineTrackRef}
-                onPointerDown={event => {
-                  event.preventDefault();
-                  const offset = clientXToOffset(event.clientX);
-                  if (offset === null) return;
-
-                  const handle = resolveHandleForOffset(offset);
-                  if (!handle) return;
-
-                  setDragHandle(handle);
-                  if (handle === 'from') updateFromByOffset(offset);
-                  if (handle === 'to') updateToByOffset(offset);
-                }}
-                style={{
-                  position: 'relative',
-                  height: `${trackH}px`,
-                  cursor: 'ew-resize',
-                  touchAction: 'none',
-                }}
+          <div className={styles.header}>
+            {compact ? <div className={styles.compactLabel}>{mergedLabel}</div> : null}
+            <div className={styles.actions}>
+              <button
+                className={cx('cyber-icon-btn', styles.iconButton, styles.actionButton)}
+                data-theme={theme}
+                onClick={reset}
+                aria-label="Reset timeline range"
+                title="Reset timeline range"
               >
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: `${barTop}px`,
-                    height: '4px',
-                    borderRadius: '999px',
-                    background: colors.panelSoft,
-                    border: `1px solid ${colors.detailBorder}`,
-                    overflow: 'hidden',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background:
-                        'repeating-linear-gradient(to right, transparent 0, transparent 10px, rgba(56, 189, 248, 0.18) 10px, rgba(56, 189, 248, 0.18) 11px)',
-                    }}
-                  />
-                </div>
+                <ResetIcon />
+              </button>
+              <button
+                className={cx('cyber-icon-btn', styles.iconButton, styles.actionButton)}
+                data-theme={theme}
+                onClick={toggleHidden}
+                aria-label="Hide timeline"
+                title="Hide timeline"
+              >
+                <EyeIcon closed={false} />
+              </button>
+            </div>
+          </div>
 
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: `${barTop}px`,
-                    left: `${(timelineModel.fromDays / timelineModel.totalDays) * 100}%`,
-                    width: `${((timelineModel.toDays - timelineModel.fromDays) / timelineModel.totalDays) * 100}%`,
-                    height: '4px',
-                    borderRadius: '999px',
-                    background: colors.toggleOn,
-                    border: `1px solid ${colors.atmosphere}`,
-                    opacity: 0.45,
-                  }}
-                />
-
-                {(['from', 'to'] as const).map(handle => {
-                  const offset = handle === 'from' ? timelineModel.fromDays : timelineModel.toDays;
-                  const left = `${(offset / timelineModel.totalDays) * 100}%`;
-                  const ratio = offset / timelineModel.totalDays;
-                  const label = handle === 'from' ? fromLabel : toLabel;
-                  const labelTransform =
-                    ratio < 0.06 ? 'translateX(0)' : ratio > 0.94 ? 'translateX(-100%)' : 'translateX(-50%)';
-
-                  return (
-                    <div key={handle} style={{ position: 'absolute', left }}>
-                      <div
-                        style={{
-                          ...labelStyle,
-                          position: 'absolute',
-                          top: `${trackH + 2}px`,
-                          left: 0,
-                          transform: labelTransform,
-                          display: compact || labelsTooClose ? 'none' : 'block',
-                          transition: 'left 70ms linear, transform 70ms linear',
-                          willChange: 'left, transform',
-                        }}
-                      >
-                        {label}
-                      </div>
-                      <div
-                        onPointerDown={event => {
-                          event.preventDefault();
-                          event.stopPropagation();
-                          // When both handles sit at the same collapsed spot, whichever nub is on
-                          // top would otherwise always win — resolve by intended drag direction instead.
-                          const offset = clientXToOffset(event.clientX);
-                          const resolvedHandle =
-                            offset !== null && timelineModel.fromDays === timelineModel.toDays
-                              ? resolveHandleForOffset(offset)
-                              : handle;
-                          setDragHandle(resolvedHandle ?? handle);
-                        }}
-                        style={{
-                          position: 'absolute',
-                          left: 0,
-                          top: `${(trackH - handleSize) / 2}px`,
-                          width: `${handleSize}px`,
-                          height: `${handleSize}px`,
-                          transform: 'translateX(-50%)',
-                          borderRadius: '999px',
-                          background: colors.panelBg,
-                          border: `1px solid ${colors.inputBorder}`,
-                          boxShadow: theme === 'dark' ? '0 1px 7px rgba(2,6,23,0.44)' : '0 1px 7px rgba(15,23,42,0.12)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          cursor: 'ew-resize',
-                          touchAction: 'none',
-                        }}
-                        aria-label={handle === 'from' ? 'Drag from date handle' : 'Drag to date handle'}
-                      >
-                        <div
-                          style={{
-                            width: '6px',
-                            height: '8px',
-                            borderLeft: `1px solid ${colors.textSoft}`,
-                            borderRight: `1px solid ${colors.textSoft}`,
-                            opacity: 0.85,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {labelsTooClose && !compact ? (
-                  <div
-                    style={{
-                      ...labelStyle,
-                      position: 'absolute',
-                      top: `${trackH + 2}px`,
-                      left: `${midRatio * 100}%`,
-                      transform: mergedTransform,
-                    }}
-                  >
-                    {mergedLabel}
-                  </div>
-                ) : null}
+          <div className={styles.trackArea}>
+            <div ref={trackRef} onPointerDown={onTrackPointerDown} className={styles.track}>
+              <div className={styles.bar}>
+                <div className={styles.ticks} />
               </div>
+
+              <div
+                className={styles.selection}
+                style={{ left: `${fromRatio * 100}%`, width: `${(toRatio - fromRatio) * 100}%` }}
+              />
+
+              {(['from', 'to'] as const).map(handle => {
+                const ratio = handle === 'from' ? fromRatio : toRatio;
+                return (
+                  <div key={handle} className={styles.handleAnchor} style={{ left: `${ratio * 100}%` }}>
+                    <div
+                      className={cx(styles.label, (compact || labelsTooClose) && styles.labelHidden)}
+                      style={{ transform: labelShift(ratio, 0.06) }}
+                    >
+                      {handle === 'from' ? fromLabel : toLabel}
+                    </div>
+                    <div
+                      className={styles.handle}
+                      onPointerDown={onHandlePointerDown(handle)}
+                      aria-label={handle === 'from' ? 'Drag from date handle' : 'Drag to date handle'}
+                    >
+                      <div className={styles.grip} />
+                    </div>
+                  </div>
+                );
+              })}
+
+              {labelsTooClose && !compact ? (
+                <div
+                  className={cx(styles.label, styles.mergedLabel)}
+                  style={{ left: `${midRatio * 100}%`, transform: labelShift(midRatio, 0.12) }}
+                >
+                  {mergedLabel}
+                </div>
+              ) : null}
             </div>
           </div>
         </>

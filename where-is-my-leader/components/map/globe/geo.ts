@@ -1,9 +1,3 @@
-import type { ThemeMode } from './types';
-
-export function sleep(ms: number) {
-  return new Promise(resolve => window.setTimeout(resolve, ms));
-}
-
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
@@ -40,10 +34,6 @@ function sphericalDistance(a: [number, number], b: [number, number]) {
     Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
 
   return 2 * Math.atan2(Math.sqrt(hav), Math.sqrt(1 - hav));
-}
-
-export function haptic(ms = 10) {
-  if (typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function') navigator.vibrate(ms);
 }
 
 // Returns the item closest to the tapped spot, if within maxDegrees of arc.
@@ -129,40 +119,4 @@ export function buildGreatCirclePath(from: [number, number], to: [number, number
     const ease = 0.5 - Math.cos(Math.PI * t) / 2;
     return slerpLatLng(from, to, ease);
   });
-}
-
-export function getPastGradientColor(index: number, total: number, theme: ThemeMode): string {
-  const stopsDark: [number, number, number][] = [
-    [220, 38, 38],
-    [234, 88, 12],
-    [202, 138, 4],
-    [22, 163, 74],
-  ];
-
-  const stopsLight: [number, number, number][] = [
-    [185, 28, 28],
-    [194, 65, 12],
-    [161, 98, 7],
-    [21, 128, 61],
-  ];
-
-  const stops = theme === 'dark' ? stopsDark : stopsLight;
-
-  if (total <= 1) {
-    const [r, g, b] = stops[stops.length - 1];
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-
-  const t = index / (total - 1);
-  const scaled = t * (stops.length - 1);
-  const lo = Math.floor(scaled);
-  const hi = Math.min(lo + 1, stops.length - 1);
-  const frac = scaled - lo;
-
-  const [r1, g1, b1] = stops[lo];
-  const [r2, g2, b2] = stops[hi];
-
-  return `rgb(${Math.round(r1 + (r2 - r1) * frac)}, ${Math.round(g1 + (g2 - g1) * frac)}, ${Math.round(
-    b1 + (b2 - b1) * frac
-  )})`;
 }

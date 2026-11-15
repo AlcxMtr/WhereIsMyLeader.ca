@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  color: var(--wiml-text);
+  background: var(--wiml-page-bg);
+}
+
+.status {
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.globePane {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}

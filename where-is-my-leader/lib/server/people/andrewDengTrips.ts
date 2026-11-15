@@ -1,15 +1,6 @@
-export interface Trip {
-    id: number;
-    city: string;
-    coords: [number, number];
-    arrival: string;
-    departure: string;
-    desc: string;
-    summary: string;
-    citations: string[];
-}
+import type { TravelPoint } from '@/lib/types';
 
-export const trips: Trip[] = [
+export const trips: TravelPoint[] = [
     {
         id: 1,
         city: "Toronto, Ontario, Canada",

@@ -128,6 +128,7 @@ export const countryNameToCode: Record<string, string> = {
   Ghana: 'gh',
   Senegal: 'sn',
   'South Africa': 'za',
+  'Antigua and Barbuda': 'ag',
   Mexico: 'mx',
   Brazil: 'br',
   Argentina: 'ar',

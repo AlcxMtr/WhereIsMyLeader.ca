@@ -1,12 +1,73 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { ThemeToggle } from './MapControls';
-import { haptic } from './globeUtils';
-import { getThemeColors } from './theme';
-import { formatTripDateRange, getCountryInfo } from './tripUtils';
+import { formatTripDateRange, cityLabel, getCountryInfo } from './tripUtils';
+import { haptic } from './globe/browser';
+import styles from './MobileTripStrip.module.css';
 import type { ThemeMode, TravelPoint } from './types';
+import Flag from './ui/Flag';
+import ThemeToggle from './ui/ThemeToggle';
 
-const EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
+const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
+
+function Chevron({ rotation }: { rotation: number }) {
+  return (
+    <svg
+      className={styles.chevron}
+      width="14"
+      height="14"
+      viewBox="0 0 12 12"
+      fill="none"
+      aria-hidden="true"
+      style={{ transform: `rotate(${rotation}deg)` }}
+    >
+      <path d="M2.2 4.2L6 8l3.8-3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TripCard({
+  trip,
+  isActive,
+  isNow,
+  flash,
+  landscape,
+  cardRef,
+  onSelect,
+}: {
+  trip: TravelPoint;
+  isActive: boolean;
+  isNow: boolean;
+  flash: boolean;
+  landscape: boolean;
+  cardRef: (el: HTMLButtonElement | null) => void;
+  onSelect: () => void;
+}) {
+  const { code } = getCountryInfo(trip.city);
+
+  return (
+    <button
+      ref={cardRef}
+      onClick={() => {
+        haptic();
+        onSelect();
+      }}
+      className={cx(
+        styles.card,
+        landscape && styles.cardFullWidth,
+        isNow && styles.cardNow,
+        isActive && styles.cardActive,
+        flash && 'wiml-flashing'
+      )}
+    >
+      <div className={styles.cardTop}>
+        {code ? <Flag code={code} width={20} height={14} className={styles.flag} /> : null}
+        <span className={styles.city}>{cityLabel(trip.city)}</span>
+        {isNow ? <span className={styles.nowBadge}>NOW</span> : null}
+      </div>
+      <div className={styles.dates}>{formatTripDateRange(trip.arrival, trip.departure, ' - ')}</div>
+    </button>
+  );
+}
 
 export default function MobileTripStrip({
   travelData,
@@ -15,7 +76,7 @@ export default function MobileTripStrip({
   activeId,
   onSelect,
   landscape = false,
-  subjectName = 'Mark Carney',
+  subjectName,
   flashLatest = false,
 }: {
   travelData: TravelPoint[];
@@ -24,209 +85,78 @@ export default function MobileTripStrip({
   activeId: number | null;
   onSelect: (trip: TravelPoint) => void;
   landscape?: boolean;
-  subjectName?: string;
+  subjectName: string;
   flashLatest?: boolean;
 }) {
-  const colors = getThemeColors(theme);
   const cardRefs = useRef<Record<number, HTMLButtonElement | null>>({});
   const [open, setOpen] = useState(true);
-  const trips = travelData;
-  const latestId = trips[trips.length - 1]?.id ?? null;
+  const latestId = travelData[travelData.length - 1]?.id ?? null;
+
+  const scrollToCard = useCallback(
+    (id: number) => {
+      cardRefs.current[id]?.scrollIntoView({
+        behavior: 'smooth',
+        inline: landscape ? 'nearest' : 'center',
+        block: landscape ? 'center' : 'nearest',
+      });
+    },
+    [landscape]
+  );
 
   useEffect(() => {
     const target = activeId ?? latestId;
-    if (target == null) return;
-    cardRefs.current[target]?.scrollIntoView({
-      behavior: 'smooth',
-      inline: landscape ? 'nearest' : 'center',
-      block: landscape ? 'center' : 'nearest',
-    });
-  }, [activeId, latestId, landscape]);
+    if (target != null) scrollToCard(target);
+  }, [activeId, latestId, scrollToCard]);
 
   useEffect(() => {
-    if (!flashLatest || latestId == null) return;
-    cardRefs.current[latestId]?.scrollIntoView({
-      behavior: 'smooth',
-      inline: landscape ? 'nearest' : 'center',
-      block: landscape ? 'center' : 'nearest',
-    });
-  }, [flashLatest, latestId, landscape]);
+    if (flashLatest && latestId != null) scrollToCard(latestId);
+  }, [flashLatest, latestId, scrollToCard]);
 
-  const chevron = (rotation: number) => (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 12 12"
-      fill="none"
-      aria-hidden="true"
-      style={{ transition: `transform 0.35s ${EASE}`, transform: `rotate(${rotation}deg)` }}
-    >
-      <path d="M2.2 4.2L6 8l3.8-3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
-  const cards = trips.length === 0 ? (
-    <div style={{ color: colors.textSoft, fontSize: '13px', padding: '8px 0' }}>No trips in this date range.</div>
-  ) : (
-    trips.map(trip => {
-      const info = getCountryInfo(trip.city);
-      const isActive = trip.id === activeId;
-      const isNow = trip.id === latestId;
-      return (
-        <button
+  const cards =
+    travelData.length === 0 ? (
+      <div className={styles.empty}>No trips in this date range.</div>
+    ) : (
+      travelData.map(trip => (
+        <TripCard
           key={trip.id}
-          ref={el => {
+          trip={trip}
+          isActive={trip.id === activeId}
+          isNow={trip.id === latestId}
+          flash={trip.id === latestId && flashLatest}
+          landscape={landscape}
+          cardRef={el => {
             cardRefs.current[trip.id] = el;
           }}
-          onClick={() => {
-            haptic();
-            onSelect(trip);
-          }}
-          style={{
-            flex: '0 0 auto',
-            width: landscape ? '100%' : '150px',
-            minHeight: '56px',
-            textAlign: 'left',
-            scrollSnapAlign: 'center',
-            padding: '10px 12px',
-            borderRadius: '14px',
-            cursor: 'pointer',
-            color: colors.detailText,
-            border: `1px solid ${isActive ? colors.detailText : colors.detailBorder}`,
-            background: isActive
-              ? `linear-gradient(135deg, ${colors.panelSelected}, ${colors.panelSoft})`
-              : isNow
-                ? `linear-gradient(135deg, ${colors.panelNow}, ${colors.panelSoft})`
-                : colors.panelSoft,
-            ...(isNow && flashLatest ? { animation: 'wiml-flash 2.6s ease-in-out infinite' } : {}),
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            {info.code ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={`https://flagcdn.com/w40/${info.code}.png`}
-                alt=""
-                width={20}
-                height={14}
-                style={{ borderRadius: '2px', flexShrink: 0 }}
-              />
-            ) : null}
-            <span
-              style={{
-                fontWeight: 800,
-                fontSize: '13px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                flex: 1,
-              }}
-            >
-              {trip.city.split(',')[0]?.trim() || trip.city}
-            </span>
-            {isNow ? (
-              <span
-                style={{
-                  fontSize: '9px',
-                  fontWeight: 800,
-                  padding: '1px 5px',
-                  borderRadius: '5px',
-                  background: '#4ca64c',
-                  color: '#fff',
-                }}
-              >
-                NOW
-              </span>
-            ) : null}
-          </div>
-          <div style={{ fontSize: '11px', color: colors.detailSub, marginTop: '4px' }}>
-            {formatTripDateRange(trip.arrival, trip.departure, ' - ')}
-          </div>
-        </button>
-      );
-    })
-  );
+          onSelect={() => onSelect(trip)}
+        />
+      ))
+    );
 
   const title = (
-    <div style={{ fontWeight: 800, fontSize: '13px', color: colors.text }}>
-      {subjectName} <span style={{ fontWeight: 500, color: colors.textSoft }}>· Travel Log</span>
+    <div className={styles.title}>
+      {subjectName} <span className={styles.titleSuffix}>· Travel Log</span>
     </div>
   );
 
   if (landscape) {
     return (
-      <div
-        data-theme={theme}
-        style={{
-          position: 'fixed',
-          top: 0,
-          bottom: 0,
-          left: 0,
-          width: 'min(240px, 38vw)',
-          zIndex: 30,
-          display: 'flex',
-          flexDirection: 'column',
-          background: colors.panelBg,
-          borderRight: `1px solid ${colors.detailBorder}`,
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          paddingLeft: 'env(safe-area-inset-left)',
-          transform: open ? 'translateX(0)' : 'translateX(-100%)',
-          transition: `transform 0.35s ${EASE}`,
-        }}
-      >
+      <div data-theme={theme} className={cx(styles.side, !open && styles.sideClosed)}>
         <button
           type="button"
           onClick={() => setOpen(o => !o)}
           aria-label={open ? 'Hide trips' : 'Show trips'}
           aria-expanded={open}
-          style={{
-            position: 'absolute',
-            left: '100%',
-            top: '50%',
-            marginTop: '-28px',
-            width: '30px',
-            height: '56px',
-            borderRadius: '0 12px 12px 0',
-            border: `1px solid ${colors.detailBorder}`,
-            borderLeft: 'none',
-            background: colors.panelBg,
-            color: colors.detailText,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-          }}
+          className={styles.sideHandle}
         >
-          {chevron(open ? 90 : -90)}
+          <Chevron rotation={open ? 90 : -90} />
         </button>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '8px',
-            padding: '10px 12px 6px',
-          }}
-        >
+        <div className={styles.sideHeader}>
           {title}
-          <ThemeToggle theme={theme} onToggle={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
         </div>
-        <div
-          className="cyber-scrollbar"
-          data-theme={theme}
-          style={{
-            flex: 1,
-            minHeight: 0,
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            padding: '6px 10px calc(12px + env(safe-area-inset-bottom))',
-          }}
-        >
+        <div className={cx('cyber-scrollbar', styles.sideList)} data-theme={theme}>
           {cards}
         </div>
       </div>
@@ -234,79 +164,26 @@ export default function MobileTripStrip({
   }
 
   return (
-    <div
-      data-theme={theme}
-      style={{
-        position: 'fixed',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 30,
-        background: colors.panelBg,
-        borderTop: `1px solid ${colors.detailBorder}`,
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        touchAction: 'pan-x',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '8px 14px 2px',
-        }}
-      >
+    <div data-theme={theme} className={styles.bottom}>
+      <div className={styles.bottomHeader}>
         {title}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <ThemeToggle theme={theme} onToggle={() => setTheme(theme === 'dark' ? 'light' : 'dark')} />
+        <div className={styles.bottomControls}>
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <button
             type="button"
             onClick={() => setOpen(o => !o)}
             aria-label={open ? 'Hide trips' : 'Show trips'}
             aria-expanded={open}
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '12px',
-              border: `1px solid ${colors.detailBorder}`,
-              background: 'transparent',
-              color: colors.detailText,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
+            className={styles.bottomToggle}
           >
-            {chevron(open ? 0 : 180)}
+            <Chevron rotation={open ? 0 : 180} />
           </button>
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateRows: open ? '1fr' : '0fr',
-          opacity: open ? 1 : 0,
-          transition: `grid-template-rows 0.35s ${EASE}, opacity 0.25s ease`,
-        }}
-      >
-        <div style={{ minHeight: 0, overflow: 'hidden' }}>
-          <div
-            className="cyber-scrollbar"
-            data-theme={theme}
-            style={{
-              display: 'flex',
-              gap: '10px',
-              overflowX: 'auto',
-              overflowY: 'hidden',
-              padding: '8px 14px 12px',
-              scrollSnapType: 'x proximity',
-              scrollbarWidth: 'none',
-              WebkitOverflowScrolling: 'touch',
-            }}
-          >
+      <div className={cx(styles.collapsible, open && styles.collapsibleOpen)}>
+        <div className={styles.collapsibleInner}>
+          <div className={cx('cyber-scrollbar', styles.strip)} data-theme={theme}>
             {cards}
           </div>
         </div>

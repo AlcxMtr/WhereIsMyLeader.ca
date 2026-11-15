@@ -1,0 +1,295 @@
+.sidebar {
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  min-width: 300px;
+  height: 100dvh;
+  overflow-y: auto;
+  background: var(--wiml-panel-bg);
+  border-right: 1px solid var(--wiml-detail-border);
+  backdrop-filter: blur(4px);
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid var(--wiml-detail-border);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--wiml-text);
+}
+
+.subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--wiml-text-soft);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hideButton {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/*
+ * The cyber-* button classes in globals.css set theme-specific colours with [data-theme] selectors.
+ * The `button.x[data-theme]` selectors below out-rank them so the palette variables win.
+ */
+button.hideButton[data-theme] {
+  color: var(--wiml-button-text);
+}
+
+.expandRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+/* Disabled styling comes from .cyber-expand-toggle:disabled in globals.css. */
+.expandAll {
+  cursor: pointer;
+  opacity: 0.95;
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty {
+  padding: 16px;
+  font-size: 13px;
+  color: var(--wiml-text-soft);
+}
+
+.stayWrap {
+  padding: 8px 10px;
+}
+
+.stay {
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--wiml-panel-bg), var(--wiml-panel-soft));
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 14px;
+  box-shadow: var(--wiml-stay-shadow);
+}
+
+.stayLatest {
+  background: linear-gradient(135deg, var(--wiml-panel-now), var(--wiml-panel-soft));
+}
+
+/* After .stayLatest so a selected stay wins over the "now" tint. */
+.stayActive {
+  background: linear-gradient(135deg, var(--wiml-panel-selected), var(--wiml-panel-soft));
+}
+
+.stayHead {
+  position: relative;
+  padding: 11px 12px 2px 16px;
+}
+
+.stayHeadExpanded {
+  padding: 12px 12px 12px 16px;
+  border-bottom: 1px solid var(--wiml-detail-border);
+}
+
+.stayMain {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.stayMain[data-theme] {
+  color: var(--wiml-text);
+  background: transparent;
+}
+
+.stayText {
+  flex: 1;
+  min-width: 0;
+  padding-top: 1px;
+}
+
+.stayTextExpanded {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.countryRow {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.countryName {
+  max-width: calc(100% - 42px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--wiml-text);
+}
+
+.flag {
+  flex-shrink: 0;
+  width: 16px;
+  height: 12px;
+  margin-left: 8px;
+  object-fit: cover;
+  background: var(--wiml-flag-placeholder-bg);
+  border-radius: 2px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.22);
+}
+
+.endpoints {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.25;
+  color: var(--wiml-text-soft);
+  opacity: 0.9;
+  overflow-wrap: break-word;
+}
+
+.dates {
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--wiml-text-soft);
+}
+
+.chevronWrap {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  transform: rotate(-90deg);
+  transition: transform 0.22s ease, background 0.2s ease;
+}
+
+button.chevron[data-theme] {
+  color: var(--wiml-text-soft);
+}
+
+.chevronOpen {
+  transform: rotate(0deg);
+}
+
+.trips {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+  transition: grid-template-rows 0.24s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tripsExpanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.tripsInner {
+  min-height: 0;
+  padding: 8px 8px 10px 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 18px;
+  background: var(--wiml-row-bg);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s ease;
+}
+
+.row + .row {
+  margin-top: 8px;
+}
+
+.rowLatest {
+  padding: 10px 18px 10px 24px;
+}
+
+.row:hover {
+  background: linear-gradient(135deg, var(--wiml-panel-hover), var(--wiml-panel-soft));
+}
+
+/* After :hover so the selected row keeps its colour under the cursor. */
+.rowActive,
+.rowActive:hover {
+  background: linear-gradient(135deg, var(--wiml-panel-selected), var(--wiml-panel-soft));
+}
+
+.rowText {
+  min-width: 0;
+}
+
+.rowCity {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wiml-text);
+}
+
+.nowBadge {
+  margin-left: 6px;
+  padding: 1px 4px;
+  font-size: 9px;
+  color: #fff;
+  vertical-align: middle;
+  background: var(--wiml-now-badge-bg);
+  border-radius: 4px;
+}
+
+.rowDates {
+  margin-top: 1px;
+  font-size: 11px;
+  color: var(--wiml-text-soft);
+}

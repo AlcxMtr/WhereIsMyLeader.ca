@@ -1,0 +1,214 @@
+.side,
+.bottom {
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  position: fixed;
+  z-index: 30;
+  background: var(--wiml-panel-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Landscape phones: a sliding panel along the left edge. */
+.side {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(240px, 38vw);
+  padding-left: env(safe-area-inset-left);
+  border-right: 1px solid var(--wiml-detail-border);
+  transform: translateX(0);
+  transition: transform 0.35s var(--ease);
+}
+
+.sideClosed {
+  transform: translateX(-100%);
+}
+
+.sideHandle {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 56px;
+  margin-top: -28px;
+  color: var(--wiml-detail-text);
+  background: var(--wiml-panel-bg);
+  border: 1px solid var(--wiml-detail-border);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.sideHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px 6px;
+}
+
+.sideList {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  padding: 6px 10px calc(12px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+
+/* Portrait phones: a collapsible strip along the bottom edge. */
+.bottom {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1px solid var(--wiml-detail-border);
+  touch-action: pan-x;
+}
+
+.bottomHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px 2px;
+}
+
+.bottomControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bottomToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--wiml-detail-text);
+  background: transparent;
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.collapsible {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.35s var(--ease), opacity 0.25s ease;
+}
+
+.collapsibleOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.collapsibleInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.strip {
+  display: flex;
+  gap: 10px;
+  padding: 8px 14px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.chevron {
+  transition: transform 0.35s var(--ease);
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--wiml-text);
+}
+
+.titleSuffix {
+  font-weight: 500;
+  color: var(--wiml-text-soft);
+}
+
+.empty {
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--wiml-text-soft);
+}
+
+.card {
+  flex: 0 0 auto;
+  width: 150px;
+  min-height: 56px;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--wiml-detail-text);
+  background: var(--wiml-panel-soft);
+  border: 1px solid var(--wiml-detail-border);
+  border-radius: 14px;
+  cursor: pointer;
+  scroll-snap-align: center;
+}
+
+.cardFullWidth {
+  width: 100%;
+}
+
+.cardNow {
+  background: linear-gradient(135deg, var(--wiml-panel-now), var(--wiml-panel-soft));
+}
+
+/* After .cardNow so a selected card wins over the "now" tint. */
+.cardActive {
+  background: linear-gradient(135deg, var(--wiml-panel-selected), var(--wiml-panel-soft));
+  border-color: var(--wiml-detail-text);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.flag {
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.city {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.nowBadge {
+  padding: 1px 5px;
+  font-size: 9px;
+  font-weight: 800;
+  color: #fff;
+  background: #4ca64c;
+  border-radius: 5px;
+}
+
+.dates {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--wiml-detail-sub);
+}
