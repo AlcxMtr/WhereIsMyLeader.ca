@@ -1,29 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { formatTripDateRange, cityLabel, getCountryInfo } from './tripUtils';
+import { cityLabel, getCountryInfo } from './places';
+import { formatTripDateRange } from './tripUtils';
 import { haptic } from './globe/browser';
 import styles from './MobileTripStrip.module.css';
 import type { ThemeMode, TravelPoint } from './types';
+import { cx } from './ui/cx';
+import Chevron from './ui/Chevron';
 import Flag from './ui/Flag';
 import ThemeToggle from './ui/ThemeToggle';
 
-const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
-
-function Chevron({ rotation }: { rotation: number }) {
-  return (
-    <svg
-      className={styles.chevron}
-      width="14"
-      height="14"
-      viewBox="0 0 12 12"
-      fill="none"
-      aria-hidden="true"
-      style={{ transform: `rotate(${rotation}deg)` }}
-    >
-      <path d="M2.2 4.2L6 8l3.8-3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 function TripCard({
   trip,
@@ -64,7 +50,7 @@ function TripCard({
         <span className={styles.city}>{cityLabel(trip.city)}</span>
         {isNow ? <span className={styles.nowBadge}>NOW</span> : null}
       </div>
-      <div className={styles.dates}>{formatTripDateRange(trip.arrival, trip.departure, ' - ')}</div>
+      <div className={styles.dates}>{formatTripDateRange(trip.arrival, trip.departure)}</div>
     </button>
   );
 }
@@ -72,7 +58,7 @@ function TripCard({
 export default function MobileTripStrip({
   travelData,
   theme,
-  setTheme,
+  onToggleTheme,
   activeId,
   onSelect,
   landscape = false,
@@ -81,7 +67,7 @@ export default function MobileTripStrip({
 }: {
   travelData: TravelPoint[];
   theme: ThemeMode;
-  setTheme: (theme: ThemeMode) => void;
+  onToggleTheme: () => void;
   activeId: number | null;
   onSelect: (trip: TravelPoint) => void;
   landscape?: boolean;
@@ -112,7 +98,6 @@ export default function MobileTripStrip({
     if (flashLatest && latestId != null) scrollToCard(latestId);
   }, [flashLatest, latestId, scrollToCard]);
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
   const cards =
     travelData.length === 0 ? (
@@ -150,11 +135,11 @@ export default function MobileTripStrip({
           aria-expanded={open}
           className={styles.sideHandle}
         >
-          <Chevron rotation={open ? 90 : -90} />
+          <Chevron className={styles.chevron} rotation={open ? 90 : -90} />
         </button>
         <div className={styles.sideHeader}>
           {title}
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         </div>
         <div className={cx('cyber-scrollbar', styles.sideList)} data-theme={theme}>
           {cards}
@@ -168,7 +153,7 @@ export default function MobileTripStrip({
       <div className={styles.bottomHeader}>
         {title}
         <div className={styles.bottomControls}>
-          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
           <button
             type="button"
             onClick={() => setOpen(o => !o)}
@@ -176,7 +161,7 @@ export default function MobileTripStrip({
             aria-expanded={open}
             className={styles.bottomToggle}
           >
-            <Chevron rotation={open ? 0 : 180} />
+            <Chevron className={styles.chevron} rotation={open ? 0 : 180} />
           </button>
         </div>
       </div>

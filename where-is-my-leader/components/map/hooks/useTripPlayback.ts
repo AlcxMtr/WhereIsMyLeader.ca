@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { parseDate } from '@/lib/dates';
 
 import { sleep } from '../globe/browser';
-import { getCountryInfo, tripEnd } from '../tripUtils';
+import { getCountryInfo } from '../places';
+import { tripEnd } from '../tripUtils';
 import type { TimelineState, TravelPoint } from '../types';
 
 export type FlyToTrip = (

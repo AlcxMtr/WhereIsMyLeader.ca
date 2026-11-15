@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# where-is-my-leader
 
-## Getting Started
+The Next.js frontend for [whereismyleader.ca](https://whereismyleader.ca): an interactive 3D globe showing where
+the Prime Minister has travelled, built on [`react-globe.gl`](https://github.com/vasturiano/react-globe.gl).
 
-First, run the development server:
+Trip data is written to SQLite by the `scraper` service (in `../scraper`). This app only reads it.
+
+## Running locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm test        # vitest
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Locally, the API reads `../shared-data/trips.db`, or `../shared-data/trips_fallback.json` if the database doesn't exist.
+In production (`NODE_ENV=production`) both are read from `/app/data`, which docker-compose mounts from `shared-data/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Layout
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Path | What lives there |
+| --- | --- |
+| `app/page.tsx`, `app/andrewdeng/page.tsx` | One page per person, each rendering `TravelMapPage` |
+| `app/api/trips/route.ts` | `GET /api/trips` (the PM) and `GET /api/trips?person=<name>` |
+| `lib/server/` | Server-only data loading: SQLite for the PM, static TS data for other people |
+| `lib/dates.ts`, `lib/types.ts` | Date helpers and the `TravelPoint` type shared by client and server |
+| `components/TravelMap.tsx` | Top-level client component: loads trips and connects the globe, sidebar and timeline |
+| `components/map/` | `GlobeMap`, `Sidebar`, `MobileTripStrip`, `TimelineRange` and the components inside them |
+| `components/map/hooks/` | One hook per behaviour (camera, playback, selection, timeline filter, …) |
+| `components/map/globe/` | Pure helpers that turn trips into globe data (points, arcs, country overlay, camera plans) |
+| `components/map/tripDetail/` | The pin's detail bubble, built as plain DOM because globe.gl needs a real element |
+| `components/map/places.ts` | Resolving `"City, Region, Country"` strings to country names and ISO codes |
+| `components/map/tripUtils.ts` | Trip date logic (date ranges, bounds, current/most recent trip) |
+| `components/map/theme.ts` | Light/dark palettes, exposed to CSS as `--wiml-*` variables |
 
-## Learn More
+## Adding a person
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Add a data file next to `lib/server/people/andrewDengTrips.ts`, register it in `lib/server/people/index.ts`,
+and add a page under `app/` that renders `<TravelMapPage person="Their Name" />`.

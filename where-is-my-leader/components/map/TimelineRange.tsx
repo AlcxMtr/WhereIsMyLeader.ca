@@ -6,9 +6,9 @@ import { useTimelineDrag } from './hooks/useTimelineDrag';
 import { buildTimelineModel } from './timeline';
 import styles from './TimelineRange.module.css';
 import type { ThemeMode, TimelineState } from './types';
+import { cx } from './ui/cx';
 import { EyeIcon, ResetIcon } from './ui/TimelineIcons';
 
-const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
 
 /** Shifts a label so it stays inside the track when its anchor is near either end. */
 function labelShift(ratio: number, edge: number): CSSProperties['transform'] {

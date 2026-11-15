@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, type RefObject } from 'react';
 
 import { buildFlightPlan, buildPinPlan, playCameraPlan, STARTUP_ALTITUDE } from '../globe/cameraPlan';
-import { getCountryInfo } from '../tripUtils';
+import { getCountryInfo } from '../places';
 import type { GlobeHandle, TravelPoint } from '../types';
 
 interface CameraDeps {

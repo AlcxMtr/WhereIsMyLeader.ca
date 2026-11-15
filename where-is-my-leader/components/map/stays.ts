@@ -1,6 +1,7 @@
 import { inclusiveDayCount, formatDateKey, parseDate } from '@/lib/dates';
 
-import { getCountryInfo, tripEnd, tripStart } from './tripUtils';
+import { getCountryInfo } from './places';
+import { tripEnd, tripStart } from './tripUtils';
 import type { TravelPoint } from './types';
 
 export interface StayGroup {

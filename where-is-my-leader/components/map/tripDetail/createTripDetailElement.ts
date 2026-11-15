@@ -1,4 +1,6 @@
-import { formatTripDateRange, cityLabel, getCountryInfo } from '../tripUtils';
+import { cityLabel, getCountryInfo } from '../places';
+import { formatTripDateRange } from '../tripUtils';
+import { cx } from '../ui/cx';
 import { flagUrl } from '../constants';
 import type { ThemeMode, TravelPoint } from '../types';
 import { button, el } from './dom';
@@ -25,7 +27,6 @@ export interface TripDetailOptions {
   onRecenter: () => void;
 }
 
-const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
 
 function createSeeTripPill(label: string, pulsing: boolean, onClick: () => void) {
   return button(cx(styles.pill, pulsing && styles.pulsing), label, onClick);

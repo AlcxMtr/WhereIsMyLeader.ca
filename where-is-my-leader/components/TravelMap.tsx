@@ -30,6 +30,7 @@ export default function TravelMap({ person }: { person?: string | null }) {
   const name = person?.trim() || DEFAULT_SUBJECT_NAME;
   const subject: Subject = { name, isDefault: name === DEFAULT_SUBJECT_NAME };
   const themeVars = themeCssVars(getThemeColors(theme));
+  const toggleTheme = () => setTheme(current => (current === 'dark' ? 'light' : 'dark'));
 
   if (status !== 'ready' || !allTrips.length) {
     const message =
@@ -54,7 +55,7 @@ export default function TravelMap({ person }: { person?: string | null }) {
           subjectName={name}
           travelData={filteredTrips}
           theme={theme}
-          setTheme={setTheme}
+          onToggleTheme={toggleTheme}
           activeId={selection.listActiveId}
           onSelect={selection.selectFromList}
         />
@@ -65,7 +66,7 @@ export default function TravelMap({ person }: { person?: string | null }) {
           flashLatest={nudge.flashLatest}
           travelData={filteredTrips}
           theme={theme}
-          setTheme={setTheme}
+          onToggleTheme={toggleTheme}
           activeId={selection.listActiveId}
           onToggleCollapsed={() => setSidebarVisible(false)}
           onSelect={selection.selectFromList}

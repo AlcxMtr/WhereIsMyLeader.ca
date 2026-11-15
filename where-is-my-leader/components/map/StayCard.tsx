@@ -1,11 +1,13 @@
-import { formatTripDateRange, cityLabel } from './tripUtils';
+import { cityLabel } from './places';
+import { formatTripDateRange } from './tripUtils';
 import { getStayDurationDays, type StayGroup } from './stays';
 import styles from './Sidebar.module.css';
 import TripRow from './TripRow';
 import type { ThemeMode, TravelPoint } from './types';
+import { cx } from './ui/cx';
+import Chevron from './ui/Chevron';
 import Flag from './ui/Flag';
 
-const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
 
 /** A collapsible card for one stay (a run of consecutive trips within a country). */
 export default function StayCard({
@@ -34,7 +36,7 @@ export default function StayCard({
   const firstTrip = group.trips[0];
   const lastTrip = group.trips[group.trips.length - 1];
   const endpointSummary = `Arrive ${cityLabel(firstTrip.city)} • Depart ${cityLabel(lastTrip.city)}`;
-  const rangeLabel = formatTripDateRange(firstTrip.arrival, lastTrip.departure, ' - ');
+  const rangeLabel = formatTripDateRange(firstTrip.arrival, lastTrip.departure);
   const totalDays = getStayDurationDays(group.trips);
 
   // Collapsing just folds the card; expanding also flies to where the stay began.
@@ -85,9 +87,7 @@ export default function StayCard({
               aria-label={isExpanded ? `Collapse ${group.countryName} stay` : `Expand ${group.countryName} stay`}
               title={isExpanded ? 'Collapse' : 'Expand'}
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                <path d="M2.4 4.2L6 7.8l3.6-3.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <Chevron size={12} />
             </button>
           </div>
         </div>

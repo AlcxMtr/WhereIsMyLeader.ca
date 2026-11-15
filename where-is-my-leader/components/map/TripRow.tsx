@@ -1,10 +1,11 @@
-import { formatTripDateRange, cityLabel } from './tripUtils';
+import { cityLabel } from './places';
+import { formatTripDateRange } from './tripUtils';
 import styles from './Sidebar.module.css';
 import type { TravelPoint } from './types';
+import { cx } from './ui/cx';
 
 const MAX_LABEL_CHARS = 30;
 
-const cx = (...names: Array<string | false>) => names.filter(Boolean).join(' ');
 
 function truncatedCityLabel(city: string) {
   const label = cityLabel(city);
@@ -35,7 +36,7 @@ export default function TripRow({
           {truncatedCityLabel(trip.city)}
           {isLatest ? <span className={styles.nowBadge}>NOW</span> : null}
         </div>
-        <div className={styles.rowDates}>{formatTripDateRange(trip.arrival, trip.departure, ' - ')}</div>
+        <div className={styles.rowDates}>{formatTripDateRange(trip.arrival, trip.departure)}</div>
       </div>
     </div>
   );

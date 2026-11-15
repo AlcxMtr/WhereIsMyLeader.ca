@@ -1,62 +1,9 @@
 import { endOfDay, formatDateKey, formatDateLabel, parseDate, startOfDay, toDateKey } from '@/lib/dates';
 
-import { cityNameToCode, countryNameToCode } from './locationData';
+import { getCountryInfo } from './places';
 import type { TravelPoint } from './types';
 
-export function normalizePlaceName(value: string) {
-  return value
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[().,'’]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function buildNormalizedLookup(source: Record<string, string>): Map<string, string> {
-  const lookup = new Map<string, string>();
-  for (const [name, code] of Object.entries(source)) {
-    const key = normalizePlaceName(name);
-    if (!lookup.has(key)) lookup.set(key, code);
-  }
-  return lookup;
-}
-
-let normalizedCountries: Map<string, string> | null = null;
-let normalizedCities: Map<string, string> | null = null;
-
-/** First segment of a "City, Region, Country" string. */
-export function cityLabel(city: string): string {
-  return city.split(',')[0]?.trim() || city;
-}
-
-export function getCountryInfo(city: string): { name: string | null; code: string | null } {
-  const parts = city.split(',').map(part => part.trim()).filter(Boolean);
-  const cityPart = parts[0] ?? '';
-  const rawCountry = parts[parts.length - 1] ?? '';
-
-  const normalizedCountry = normalizePlaceName(rawCountry);
-  const normalizedCity = normalizePlaceName(cityPart);
-
-  let code: string | null = countryNameToCode[rawCountry] ?? cityNameToCode[cityPart] ?? null;
-
-  if (!code && normalizedCountry) {
-    normalizedCountries ??= buildNormalizedLookup(countryNameToCode);
-    code = normalizedCountries.get(normalizedCountry) ?? null;
-  }
-
-  if (!code && normalizedCity) {
-    normalizedCities ??= buildNormalizedLookup(cityNameToCode);
-    code = normalizedCities.get(normalizedCity) ?? null;
-  }
-
-  return {
-    name: rawCountry || cityPart || null,
-    code,
-  };
-}
-
-export function formatTripDateRange(arrival: string, departure: string, separator: string): string {
+export function formatTripDateRange(arrival: string, departure: string, separator = ' - '): string {
   const arrivalLabel = formatDateLabel(arrival);
   const departureLabel = formatDateLabel(departure, true);
 

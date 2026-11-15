@@ -7,7 +7,7 @@ import {
   countryStrokeColor,
   type RawCountryFeature,
 } from '../globe/countryOverlay';
-import { getCountryInfo } from '../tripUtils';
+import { getCountryInfo } from '../places';
 import type { CountryPolygonDatum, TravelPoint } from '../types';
 
 /**

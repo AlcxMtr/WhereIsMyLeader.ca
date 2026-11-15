@@ -6,6 +6,7 @@ import styles from './Sidebar.module.css';
 import StayCard from './StayCard';
 import { groupTripsIntoStays } from './stays';
 import type { ThemeMode, TravelPoint } from './types';
+import Chevron from './ui/Chevron';
 import ThemeToggle from './ui/ThemeToggle';
 
 function getRegionNames(): Intl.DisplayNames | null {
@@ -21,7 +22,7 @@ export default function Sidebar({
   flashLatest = false,
   travelData,
   theme,
-  setTheme,
+  onToggleTheme,
   onSelect,
   activeId,
   onToggleCollapsed,
@@ -30,7 +31,7 @@ export default function Sidebar({
   flashLatest?: boolean;
   travelData: TravelPoint[];
   theme: ThemeMode;
-  setTheme: (theme: ThemeMode) => void;
+  onToggleTheme: () => void;
   onSelect: (trip: TravelPoint) => void;
   activeId: number | null;
   onToggleCollapsed: () => void;
@@ -54,7 +55,6 @@ export default function Sidebar({
   }, [activeId]);
 
   const hasStays = stayGroups.length > 0;
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
   return (
     <div className={styles.sidebar}>
@@ -65,7 +65,7 @@ export default function Sidebar({
             <div className={styles.subtitle}>Travel Log</div>
           </div>
           <div className={styles.controls}>
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            <ThemeToggle theme={theme} onToggle={onToggleTheme} />
             <button
               className={`cyber-icon-btn ${styles.hideButton}`}
               data-theme={theme}
@@ -73,9 +73,7 @@ export default function Sidebar({
               aria-label="Hide sidebar"
               title="Hide sidebar"
             >
-              <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                <path d="M7.8 2.2L4 6l3.8 3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <Chevron rotation={90} />
             </button>
           </div>
         </div>

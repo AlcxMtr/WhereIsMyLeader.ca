@@ -5,7 +5,6 @@ import type { TravelPoint } from '@/lib/types';
 import {
   findMostRecentTripIndex,
   formatTripDateRange,
-  getCountryInfo,
   getTripDateBounds,
   tripOverlapsRange,
 } from './tripUtils';
@@ -19,17 +18,6 @@ const trip = (id: number, city: string, arrival: string, departure = arrival): T
   desc: '',
   summary: '',
   citations: [],
-});
-
-describe('getCountryInfo', () => {
-  it('resolves the country code from the last segment', () => {
-    expect(getCountryInfo('Toronto, Ontario, Canada')).toEqual({ name: 'Canada', code: 'ca' });
-  });
-
-  it('matches names ignoring case and accents', () => {
-    expect(getCountryInfo('Zurich, SWITZERLAND').code).toBe('ch');
-    expect(getCountryInfo('Nowhere, Atlantis').code).toBeNull();
-  });
 });
 
 describe('tripOverlapsRange', () => {
