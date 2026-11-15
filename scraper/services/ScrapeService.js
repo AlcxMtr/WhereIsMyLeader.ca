@@ -53,9 +53,32 @@ export class ScrapeService {
     await this.aggregator.finalizeStaysEndingOn(targetDate);
   }
 
-  /** Full daily job: today's scrape plus the lookback pass. */
+  /**
+   * Daytime poll: scrapes today only if it hasn't been scraped yet.
+   */
+  async pollToday() {
+    const today = now();
+    const date = toDateString(today);
+    if (this.isDateProcessed(today)) {
+      console.log(`[${date}] Already scraped today. Skipping poll.`);
+      return;
+    }
+    await this.processDate(today);
+  }
+
+  /**
+   * Evening wrap-up (8 PM): scrapes today if still missing, or refreshes today's
+   * AI summary if scraped earlier in the day, then runs the two-day lookback.
+   */
   async runDaily() {
-    await this.processDate(now());
+    const today = now();
+    const date = toDateString(today);
+    if (this.isDateProcessed(today)) {
+      console.log(`[${date}] Refreshing evening AI summary for today's stay(s)...`);
+      await this.aggregator.finalizeStaysEndingOn(date);
+    } else {
+      await this.processDate(today);
+    }
     await this.performTwoDayLookback();
   }
 
