@@ -14,11 +14,12 @@ COPY package*.json ./
 RUN apk add --no-cache ca-certificates && \
     update-ca-certificates && \
     apk add --no-cache --virtual .build-deps python3 make g++ \
-    && npm install \
+    && npm ci --omit=dev \
     && apk del .build-deps
 
 # Copy the rest of the scraper code
 COPY . .
 
 # Run the scraper
-CMD ["npm", "start"]
+# Run node directly (not via npm) so it receives SIGTERM from 'docker stop'
+CMD ["node", "scraper.js"]

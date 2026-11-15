@@ -1,64 +1,40 @@
+// Usage: node backfill.js [YYYY-MM-DD]
+// Scrapes every day from the given start date up to today, skipping days already stored.
 import { DateTime } from 'luxon';
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
-import { processDate } from './scrapeService.js';
+import { DELAYS, TIMEZONE } from './config.js';
+import { createScrapeService } from './bootstrap.js';
+import { now, sleep, toDateString } from './utils/dates.js';
 
-// 1. Establish lightweight database connection for record skipping checks
-const isDocker = process.env.NODE_ENV === 'production';
-const dbPath = isDocker ? '/app/data/trips.db' : path.resolve('../shared-data/trips.db');
+const DEFAULT_START_DATE = '2026-07-05';
 
-let db = null;
-if (fs.existsSync(dbPath)) {
-  db = new Database(dbPath, { readonly: true });
+function parseStartDate(arg) {
+  const parsed = DateTime.fromISO(arg ?? DEFAULT_START_DATE).setZone(TIMEZONE);
+  if (!parsed.isValid) {
+    console.error(`❌ Invalid date format provided: "${arg}". Please use YYYY-MM-DD format.`);
+    process.exit(1);
+  }
+  return parsed;
 }
 
 async function runBackfill() {
-  // 2. Parse command line arguments for a dynamic start date
-  // Expected usage: node backfill.js 2026-05-01
-  const argDate = process.argv[2];
-  let currentDay;
+  const service = createScrapeService();
+  const today = now();
+  let day = parseStartDate(process.argv[2]);
 
-  if (argDate) {
-    const parsed = DateTime.fromISO(argDate).setZone('America/Toronto');
-    if (parsed.isValid) {
-      currentDay = parsed;
-    } else {
-      console.error(`❌ Invalid date format provided: "${argDate}". Please use YYYY-MM-DD format.`);
-      process.exit(1);
-    }
-  } else {
-    // Graceful fallback default if no command line parameter is specified
-    currentDay = DateTime.fromISO('2026-07-05').setZone('America/Toronto');
-  }
+  console.log(`Starting backfill from ${day.toISODate()} to ${today.toISODate()}...\n`);
 
-  const today = DateTime.now().setZone('America/Toronto');
-
-  console.log(`Starting backfill from ${currentDay.toISODate()} to ${today.toISODate()}...\n`);
-
-  while (currentDay <= today) {
-    const dateString = currentDay.toFormat('yyyy-MM-dd');
-
-    // 3. Skip check logic execution
-    if (db) {
-      const alreadyProcessed = db.prepare('SELECT 1 FROM trips WHERE date = ? LIMIT 1').get(dateString);
-      if (alreadyProcessed) {
-        console.log(`[Skip] ${dateString} has already been logged. Continuing loop...`);
-        currentDay = currentDay.plus({ days: 1 });
-        continue; // Immediately jump to the next calendar day, skipping scraper/AI payloads
-      }
+  for (; day <= today; day = day.plus({ days: 1 })) {
+    if (service.isDateProcessed(day)) {
+      console.log(`[Skip] ${toDateString(day)} has already been logged. Continuing loop...`);
+      continue;
     }
 
-    // 4. Process missing dates sequentially
-    await processDate(currentDay);
-
+    await service.processDate(day);
     // Mandatory throttling delay to avoid IP blocks from the Government firewall
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    currentDay = currentDay.plus({ days: 1 });
+    await sleep(DELAYS.betweenBackfillDays);
   }
 
-  // Close read connection safely
-  if (db) db.close();
+  service.close();
   console.log("\n✅ Backfill complete! You now have historical data.");
 }
 

@@ -2,10 +2,11 @@
   "name": "scraper",
   "version": "1.0.0",
   "description": "Scraping microservice for PM travel data",
-  "main": "index.js",
+  "main": "scraper.js",
   "type": "module",
   "scripts": {
-    "start": "node scraper.js"
+    "start": "node scraper.js",
+    "backfill": "node backfill.js"
   },
   "keywords": [],
   "author": "",
