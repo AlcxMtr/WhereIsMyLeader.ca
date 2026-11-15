@@ -51,7 +51,7 @@ function dataFile(name: string): string {
     : path.resolve('../shared-data', name);
 }
 
-function readTripsFromDatabase(dbPath: string): TravelPoint[] {
+export function readTripsFromDatabase(dbPath: string): TravelPoint[] {
   const db = new Database(dbPath, { readonly: true });
   try {
     const rows = db
@@ -68,15 +68,20 @@ function readTripsFromDatabase(dbPath: string): TravelPoint[] {
 }
 
 /**
- * The Prime Minister's trips from the SQLite database, falling back to a JSON export when the
- * database is missing. Returns null when neither exists.
+ * Loads trips from a SQLite database in the shared data directory, falling back to a JSON export
+ * when configured and the database file does not exist. Returns null if neither exists.
  */
-export function loadPrimeMinisterTrips(): TravelPoint[] | null {
-  const dbPath = dataFile('trips.db');
+export function loadDatabaseTrips(dbFileName: string, fallbackJsonFileName?: string): TravelPoint[] | null {
+  const dbPath = dataFile(dbFileName);
   if (fs.existsSync(dbPath)) return readTripsFromDatabase(dbPath);
 
-  console.warn('Database not found. Executing JSON fallback.');
-  const jsonPath = dataFile('trips_fallback.json');
-  if (!fs.existsSync(jsonPath)) return null;
-  return JSON.parse(fs.readFileSync(jsonPath, 'utf8')) as TravelPoint[];
+  if (fallbackJsonFileName) {
+    console.warn(`Database ${dbFileName} not found. Executing JSON fallback (${fallbackJsonFileName}).`);
+    const jsonPath = dataFile(fallbackJsonFileName);
+    if (fs.existsSync(jsonPath)) {
+      return JSON.parse(fs.readFileSync(jsonPath, 'utf8')) as TravelPoint[];
+    }
+  }
+
+  return null;
 }

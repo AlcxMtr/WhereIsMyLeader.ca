@@ -1,7 +1,14 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+import Database from 'better-sqlite3';
 import { describe, expect, it } from 'vitest';
 
-import { extendLastTripTo, getPersonTrips } from './people';
-import { rowToTravelPoint, type TripRow } from './primeMinisterTrips';
+import { findSubject, resolveSubject } from '@/lib/subjects';
+
+import { extendLastTripTo, loadLeaderTrips } from './leaderTrips';
+import { readTripsFromDatabase, rowToTravelPoint, type TripRow } from './sqliteTrips';
 
 const row = (overrides: Partial<TripRow> = {}): TripRow => ({
   id: 7,
@@ -35,7 +42,36 @@ describe('rowToTravelPoint', () => {
   });
 });
 
-describe('people', () => {
+describe('readTripsFromDatabase', () => {
+  it('reads aggregated_trips ordered by arrival', () => {
+    const dbPath = path.join(os.tmpdir(), `wiml-test-${Date.now()}.db`);
+    const db = new Database(dbPath);
+    db.exec(`
+      CREATE TABLE aggregated_trips (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        city TEXT, lat REAL, lng REAL, arrival TEXT, departure TEXT,
+        short_summary TEXT, long_summary TEXT, citations JSON, desc TEXT
+      );
+    `);
+    db.prepare(
+      'INSERT INTO aggregated_trips (city, lat, lng, arrival, departure, short_summary, long_summary, citations, desc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).run('Berlin, Germany', 52.52, 13.4, '2025-06-10', '2025-06-11', 'Short B', 'Long B', '[]', 'Desc B');
+    db.prepare(
+      'INSERT INTO aggregated_trips (city, lat, lng, arrival, departure, short_summary, long_summary, citations, desc) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    ).run('Ottawa, Canada', 45.42, -75.69, '2025-05-01', '2025-05-02', 'Short A', 'Long A', '["https://example.com"]', 'Desc A');
+    db.close();
+
+    try {
+      const trips = readTripsFromDatabase(dbPath);
+      expect(trips.map(t => t.city)).toEqual(['Ottawa, Canada', 'Berlin, Germany']);
+      expect(trips[0].citations).toEqual(['https://example.com']);
+    } finally {
+      fs.rmSync(dbPath, { force: true });
+    }
+  });
+});
+
+describe('subjects and leaderTrips', () => {
   it('extends only the final trip to today without mutating the source', () => {
     const trips = [
       { ...rowToTravelPoint(row({ id: 1 })) },
@@ -46,8 +82,20 @@ describe('people', () => {
     expect(trips[1].departure).toBe('2025-06-01');
   });
 
-  it('only knows registered people', () => {
-    expect(getPersonTrips('Andrew Deng')?.length).toBeGreaterThan(0);
-    expect(getPersonTrips('Nobody')).toBeNull();
+  it('resolves subjects by id or display name and defaults omitted input to carney', () => {
+    expect(findSubject('carney')?.name).toBe('Mark Carney');
+    expect(findSubject('Mark Carney')?.id).toBe('carney');
+    expect(findSubject('andrewdeng')?.name).toBe('Andrew Deng');
+    expect(findSubject('Andrew Deng')?.id).toBe('andrewdeng');
+    expect(findSubject('trump')?.name).toBe('Donald Trump');
+    expect(findSubject('Donald Trump')?.id).toBe('trump');
+    expect(findSubject('Nobody')).toBeNull();
+    expect(resolveSubject(undefined).id).toBe('carney');
+  });
+
+  it('loads trips for registered people by id or name and returns null for unknown', () => {
+    expect(loadLeaderTrips('andrewdeng')?.length).toBeGreaterThan(0);
+    expect(loadLeaderTrips('Andrew Deng')?.length).toBeGreaterThan(0);
+    expect(loadLeaderTrips('Nobody')).toBeNull();
   });
 });

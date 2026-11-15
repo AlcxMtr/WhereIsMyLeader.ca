@@ -1,7 +1,7 @@
 import { endOfDay, formatDateKey, formatDateLabel, parseDate, startOfDay, toDateKey } from '@/lib/dates';
 
 import { getCountryInfo } from './places';
-import type { TravelPoint } from './types';
+import type { FirstTripStrategy, TravelPoint } from './types';
 
 export function formatTripDateRange(arrival: string, departure: string, separator = ' - '): string {
   const arrivalLabel = formatDateLabel(arrival);
@@ -81,4 +81,10 @@ export function findFirstUsTripIndex(trips: TravelPoint[]): number {
   if (!trips.length) return -1;
   const usIndex = trips.findIndex(trip => getCountryInfo(trip.city).code === 'us');
   return usIndex >= 0 ? usIndex : 0;
+}
+
+/** Resolves which trip acts as the subject's "first trip" based on their configured strategy. */
+export function findFirstTripIndex(trips: TravelPoint[], strategy: FirstTripStrategy): number {
+  if (!trips.length) return -1;
+  return strategy === 'firstUsTrip' ? findFirstUsTripIndex(trips) : 0;
 }

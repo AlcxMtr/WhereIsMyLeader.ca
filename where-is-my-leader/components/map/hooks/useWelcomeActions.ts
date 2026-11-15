@@ -8,7 +8,7 @@ import type { TimelineState, TravelPoint } from '../types';
 interface WelcomeActionsDeps {
   allTravelData: TravelPoint[];
   mostRecentTripIndex: number;
-  firstUsTripIndex: number;
+  firstTripIndex: number;
   timeline: TimelineState;
   onDismissWelcome: () => void;
   onSeeAllTrips: () => void;
@@ -34,7 +34,7 @@ function clampToday(today: Date, target: TravelPoint, minDate: string, maxDate: 
 export function useWelcomeActions({
   allTravelData,
   mostRecentTripIndex,
-  firstUsTripIndex,
+  firstTripIndex,
   timeline,
   onDismissWelcome,
   onSeeAllTrips,
@@ -59,7 +59,7 @@ export function useWelcomeActions({
 
   const showFirst = useCallback(() => {
     onDismissWelcome();
-    const target = allTravelData[firstUsTripIndex];
+    const target = allTravelData[firstTripIndex];
     if (!target) return;
 
     const arrival = parseDate(target.arrival);
@@ -70,7 +70,7 @@ export function useWelcomeActions({
     onToChange(safeTo);
     onNavigateStart(target);
     focusPin(target);
-  }, [allTravelData, firstUsTripIndex, focusPin, onDismissWelcome, onFromChange, onNavigateStart, onToChange]);
+  }, [allTravelData, firstTripIndex, focusPin, onDismissWelcome, onFromChange, onNavigateStart, onToChange]);
 
   const showAll = useCallback(() => {
     onDismissWelcome();

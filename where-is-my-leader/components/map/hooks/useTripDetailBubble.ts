@@ -12,7 +12,7 @@ interface TripDetailBubbleDeps {
   theme: ThemeMode;
   isMobile: boolean;
   mostRecentTripIndex: number;
-  firstUsTripIndex: number;
+  firstTripIndex: number;
   timeline: TimelineState;
   globeRef: RefObject<GlobeHandle | null>;
   flyToTrip: FlyToTrip;
@@ -27,7 +27,7 @@ export function useTripDetailBubble({
   theme,
   isMobile,
   mostRecentTripIndex,
-  firstUsTripIndex,
+  firstTripIndex,
   timeline,
   globeRef,
   flyToTrip,
@@ -57,7 +57,7 @@ export function useTripDetailBubble({
         previousTrip,
         nextTrip,
         pulsePast: index === mostRecentTripIndex,
-        pulseFuture: index === firstUsTripIndex,
+        pulseFuture: index === firstTripIndex,
         onToggleExpanded: nextExpanded => {
           setExpandedTripId(trip.id);
           setIsExpanded(nextExpanded);
@@ -103,7 +103,7 @@ export function useTripDetailBubble({
       closeDetail,
       currentStayTripId,
       expandedTripId,
-      firstUsTripIndex,
+      firstTripIndex,
       flyToTrip,
       globeRef,
       isExpanded,

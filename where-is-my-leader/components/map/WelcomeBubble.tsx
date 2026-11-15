@@ -1,5 +1,6 @@
 'use client';
 
+import type { Subject } from './types';
 import styles from './WelcomeBubble.module.css';
 
 function WelcomeOption({ label, description, onClick }: { label: string; description: string; onClick: () => void }) {
@@ -16,53 +17,36 @@ export default function WelcomeBubble({
   onSelectToday,
   onSelectFirst,
   onSelectAll,
-  subjectName,
-  isDefaultSubject,
+  subject,
 }: {
   visible: boolean;
   onSelectToday: () => void;
   onSelectFirst: () => void;
   onSelectAll: () => void;
-  subjectName: string;
-  isDefaultSubject: boolean;
+  subject: Subject;
 }) {
   if (!visible) return null;
-
-  const firstName = subjectName.split(' ')[0];
-  const shortName = isDefaultSubject ? subjectName : firstName;
 
   return (
     <div className={styles.positioner}>
       <div className={styles.card}>
-        <div className={styles.title}>{subjectName}&apos;s Travels</div>
-        <div className={styles.intro}>
-          {isDefaultSubject
-            ? 'Pick a starting point to see the PM\u2019s travels.'
-            : `Pick a starting point to explore ${firstName}\u2019s travels.`}
-        </div>
+        <div className={styles.title}>{subject.name}&apos;s Travels</div>
+        <div className={styles.intro}>{subject.welcome.intro}</div>
 
         <div className={styles.options}>
           <WelcomeOption
-            label={`Where is ${shortName} today?`}
-            description={isDefaultSubject ? "Jump to the PM's current stop" : 'Jump to their current stop'}
+            label={`Where is ${subject.shortName} today?`}
+            description={subject.welcome.todayDescription}
             onClick={onSelectToday}
           />
           <WelcomeOption
-            label={`${shortName}'s first trip`}
-            description={
-              isDefaultSubject
-                ? "Start from the PM's first foreign visit following the 2025 Canadian federal election"
-                : 'Start from their earliest logged trip'
-            }
+            label={`${subject.shortName}'s first trip`}
+            description={subject.welcome.firstTripDescription}
             onClick={onSelectFirst}
           />
           <WelcomeOption
             label="See all trips"
-            description={
-              isDefaultSubject
-                ? "Show the PM's full travel history simultaneously"
-                : 'Show their full travel history simultaneously'
-            }
+            description={subject.welcome.allTripsDescription}
             onClick={onSelectAll}
           />
         </div>

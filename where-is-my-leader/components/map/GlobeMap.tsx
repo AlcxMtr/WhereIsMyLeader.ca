@@ -14,7 +14,7 @@ import { useAutoPlay, useDemoTour } from './hooks/useTripPlayback';
 import { useWelcomeActions } from './hooks/useWelcomeActions';
 import { getThemeColors } from './theme';
 import TimelineRange from './TimelineRange';
-import { findCurrentTripIndex, findFirstUsTripIndex, findMostRecentTripIndex } from './tripUtils';
+import { findCurrentTripIndex, findFirstTripIndex, findMostRecentTripIndex } from './tripUtils';
 import type { GlobeHandle, HtmlDetailDatum, PointDatum, SelectionState, Subject, ThemeMode, TimelineState, TravelPoint } from './types';
 import WelcomeBubble from './WelcomeBubble';
 
@@ -102,9 +102,9 @@ export default function GlobeMap({
   const size = useGlobeSize(!isMobile && sidebarVisible && welcomeDismissed);
 
   const mostRecentTripIndex = useMemo(() => findMostRecentTripIndex(allTravelData), [allTravelData]);
-  const firstUsTripIndex = useMemo(
-    () => (subject.isDefault ? findFirstUsTripIndex(allTravelData) : allTravelData.length ? 0 : -1),
-    [allTravelData, subject.isDefault]
+  const firstTripIndex = useMemo(
+    () => findFirstTripIndex(allTravelData, subject.firstTripStrategy),
+    [allTravelData, subject.firstTripStrategy]
   );
 
   const { startAutoPlay } = useAutoPlay({ allTravelData, flyToTrip, cancelCamera, onNavigateStart, timeline });
@@ -120,7 +120,7 @@ export default function GlobeMap({
     theme,
     isMobile,
     mostRecentTripIndex,
-    firstUsTripIndex,
+    firstTripIndex,
     timeline,
     globeRef,
     flyToTrip,
@@ -132,7 +132,7 @@ export default function GlobeMap({
   const welcome = useWelcomeActions({
     allTravelData,
     mostRecentTripIndex,
-    firstUsTripIndex,
+    firstTripIndex,
     timeline,
     onDismissWelcome,
     onSeeAllTrips,
@@ -185,8 +185,7 @@ export default function GlobeMap({
         onSelectToday={welcome.showToday}
         onSelectFirst={welcome.showFirst}
         onSelectAll={welcome.showAll}
-        subjectName={subject.name}
-        isDefaultSubject={subject.isDefault}
+        subject={subject}
       />
 
       <Globe

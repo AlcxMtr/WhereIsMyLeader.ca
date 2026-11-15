@@ -1,28 +1,28 @@
 import { NextResponse } from 'next/server';
 
-import { getPersonTrips } from '@/lib/server/people';
-import { loadPrimeMinisterTrips } from '@/lib/server/primeMinisterTrips';
+import { loadLeaderTrips } from '@/lib/server/leaderTrips';
+import { DEFAULT_SUBJECT_ID, findSubject } from '@/lib/subjects';
 
 export const dynamic = 'force-dynamic';
 
-/** GET /api/trips            -> the Prime Minister's trips
- *  GET /api/trips?person=... -> that person's trips (404 if unknown) */
+/** GET /api/trips?person=<id|name> -> that person's trips (defaults to carney; 404 if unknown or unavailable) */
 export async function GET(request: Request) {
   try {
-    const person = new URL(request.url).searchParams.get('person');
+    const personParam = new URL(request.url).searchParams.get('person')?.trim();
+    const subject = findSubject(personParam || DEFAULT_SUBJECT_ID);
 
-    if (person) {
-      const trips = getPersonTrips(person);
-      return trips ? NextResponse.json(trips) : NextResponse.json({ error: 'Person not found.' }, { status: 404 });
+    if (!subject) {
+      return NextResponse.json({ error: 'Person not found.' }, { status: 404 });
     }
 
-    const trips = loadPrimeMinisterTrips();
+    const trips = loadLeaderTrips(subject.id);
     if (!trips) {
       return NextResponse.json(
-        { error: 'Fatal: Database and fallback JSON are both missing.' },
+        { error: `Fatal: Database and fallback data are missing for "${subject.id}".` },
         { status: 404 }
       );
     }
+
     return NextResponse.json(trips);
   } catch (error: unknown) {
     console.error('Database Error:', error);

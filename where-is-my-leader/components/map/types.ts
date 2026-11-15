@@ -42,11 +42,7 @@ export type SelectionState = {
   key: number;
 } | null;
 
-/** Who the map is about. */
-export interface Subject {
-  name: string;
-  isDefault: boolean;
-}
+export type { FirstTripStrategy, Subject, SubjectPageMetadata, SubjectWelcomeCopy } from '@/lib/subjects';
 
 /** The visible date window plus the full extent it can be moved within (all `YYYY-MM-DD`). */
 export interface TimelineState {

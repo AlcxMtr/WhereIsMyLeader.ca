@@ -1,5 +1,3 @@
-export const DEFAULT_SUBJECT_NAME = 'Mark Carney';
-
 /** Width of the desktop trip sidebar; also used to size the globe canvas. */
 export const SIDEBAR_WIDTH = 300;
 

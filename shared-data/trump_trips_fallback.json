@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "city": "Washington, D.C., United States",
+        "coords": [
+            38.8977,
+            -77.0365
+        ],
+        "arrival": "2026-11-15",
+        "departure": "2026-11-15",
+        "desc": "On November 15th, President Trump began the morning with Executive Time at the White House before departing at 10:14 a.m. for Trump National Golf Club Washington DC. He arrived at the club at 10:45 a.m. and stayed until 1:26 p.m. The President returned to the White House at 2:02 p.m., shortly before the White House Press Office called a travel/photo lid at 2:09 p.m.",
+        "summary": "President Trump spent November 15th in Washington, D.C., visiting Trump National Golf Club Washington DC before returning to the White House in the afternoon.",
+        "citations": []
+    }
+]

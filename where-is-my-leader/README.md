@@ -21,9 +21,10 @@ In production (`NODE_ENV=production`) both are read from `/app/data`, which dock
 
 | Path | What lives there |
 | --- | --- |
-| `app/page.tsx`, `app/andrewdeng/page.tsx` | One page per person, each rendering `TravelMapPage` |
-| `app/api/trips/route.ts` | `GET /api/trips` (the PM) and `GET /api/trips?person=<name>` |
-| `lib/server/` | Server-only data loading: SQLite for the PM, static TS data for other people |
+| `app/page.tsx`, `app/[person]/page.tsx` | Default landing page (`carney`) and dynamic per-person route (`/carney`, `/andrewdeng`, …) |
+| `app/api/trips/route.ts` | `GET /api/trips?person=<id>` (defaults to `carney`) |
+| `lib/subjects.ts` | Shared subject registry (IDs, names, welcome copy, navigation strategy) |
+| `lib/server/` | Server-only data loading (`sqliteTrips.ts`, `leaderTrips.ts`, and static person files) |
 | `lib/dates.ts`, `lib/types.ts` | Date helpers and the `TravelPoint` type shared by client and server |
 | `components/TravelMap.tsx` | Top-level client component: loads trips and connects the globe, sidebar and timeline |
 | `components/map/` | `GlobeMap`, `Sidebar`, `MobileTripStrip`, `TimelineRange` and the components inside them |
@@ -49,5 +50,7 @@ country is missing a shape, a colour or a resolvable name.
 
 ## Adding a person
 
-Add a data file next to `lib/server/people/andrewDengTrips.ts`, register it in `lib/server/people/index.ts`,
-and add a page under `app/` that renders `<TravelMapPage person="Their Name" />`.
+1. Register the subject in `lib/subjects.ts` (ID, display name, welcome copy, page metadata, first-trip strategy).
+2. Add their loader in `lib/server/leaderTrips.ts` (a SQLite DB filename via `loadDatabaseTrips(...)` or a static data file under `lib/server/people/`).
+
+Once registered, `/<id>` and `/api/trips?person=<id>` work automatically via `app/[person]/page.tsx`.

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { TravelPoint } from '@/lib/types';
 
 import {
+  findFirstTripIndex,
   findMostRecentTripIndex,
   formatTripDateRange,
   getTripDateBounds,
@@ -54,6 +55,13 @@ describe('trip lookups', () => {
   it('computes date bounds across all trips', () => {
     expect(getTripDateBounds(trips)).toEqual({ minDate: '2025-05-01', maxDate: '2025-05-21' });
     expect(getTripDateBounds([])).toBeNull();
+  });
+
+  it('selects the first trip according to the subject strategy', () => {
+    const withUs = [...trips, trip(4, 'Washington, D.C., USA', '2025-06-01')];
+    expect(findFirstTripIndex(withUs, 'firstUsTrip')).toBe(3);
+    expect(findFirstTripIndex(withUs, 'earliest')).toBe(0);
+    expect(findFirstTripIndex([], 'firstUsTrip')).toBe(-1);
   });
 });
 
