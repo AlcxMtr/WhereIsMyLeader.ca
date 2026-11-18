@@ -36,7 +36,10 @@ const ADM0_A3_FALLBACK = {
 const PRIMARY_NAME_FIELDS = ['NAME_EN', 'NAME', 'NAME_LONG', 'FORMAL_EN', 'NAME_CIAWF'];
 const SECONDARY_NAME_FIELDS = ['ADMIN', 'GEOUNIT', 'SUBUNIT', 'BRK_NAME', 'NAME_SORT', 'NAME_ALT', 'NAME_DE', 'NAME_FR', 'FORMAL_FR'];
 
-const TOLERANCES = [0.05, 0.01, 0.002, 0.0004, 0];
+const TOLERANCES = [0.2, 0.05, 0.01, 0.002, 0];
+// Drop tiny secondary islands/holes (< ~1000 km^2 at the equator) inside MultiPolygons;
+// every feature's largest polygon is always kept so no country or micro-state disappears.
+const MIN_SUB_POLYGON_AREA = 0.1;
 
 function featureCode(props) {
   for (const raw of [props.ISO_A2_EH, props.ISO_A2]) {
@@ -77,11 +80,26 @@ function roundPoint([x, y], tolerance) {
   return [Math.round(x * f) / f, Math.round(y * f) / f];
 }
 
+function ringArea(ring) {
+  let area = 0;
+  for (let i = 0; i < ring.length - 1; i++) {
+    area += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+  }
+  return Math.abs(area) / 2;
+}
+
 function simplifyRing(ring) {
   for (const tolerance of TOLERANCES) {
     const simplified = douglasPeucker(ring, tolerance)
       .map(p => (tolerance === 0 ? p : roundPoint(p, tolerance)))
       .filter((p, i, all) => i === 0 || p[0] !== all[i - 1][0] || p[1] !== all[i - 1][1]);
+    if (
+      simplified.length >= 3 &&
+      (simplified[0][0] !== simplified[simplified.length - 1][0] ||
+        simplified[0][1] !== simplified[simplified.length - 1][1])
+    ) {
+      simplified.push([...simplified[0]]);
+    }
     // A valid closed ring needs at least 4 positions (3 distinct + closing point).
     if (simplified.length >= 4) return simplified;
   }
@@ -90,13 +108,20 @@ function simplifyRing(ring) {
 
 function simplifyPolygon(rings) {
   const [outer, ...holes] = rings;
-  return [simplifyRing(outer), ...holes.map(simplifyRing).filter(h => h.length >= 4)];
+  return [
+    simplifyRing(outer),
+    ...holes.filter(h => ringArea(h) >= MIN_SUB_POLYGON_AREA).map(simplifyRing).filter(h => h.length >= 4),
+  ];
 }
 
 function simplifyGeometry(geometry) {
   if (geometry.type === 'Polygon') return { type: 'Polygon', coordinates: simplifyPolygon(geometry.coordinates) };
   if (geometry.type === 'MultiPolygon') {
-    return { type: 'MultiPolygon', coordinates: geometry.coordinates.map(simplifyPolygon) };
+    const sorted = geometry.coordinates
+      .map(coords => ({ coords, area: ringArea(coords[0]) }))
+      .sort((a, b) => b.area - a.area);
+    const kept = sorted.filter((entry, index) => index === 0 || entry.area >= MIN_SUB_POLYGON_AREA);
+    return { type: 'MultiPolygon', coordinates: kept.map(entry => simplifyPolygon(entry.coords)) };
   }
   throw new Error(`Unexpected geometry type ${geometry.type}`);
 }

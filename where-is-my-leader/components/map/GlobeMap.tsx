@@ -38,9 +38,12 @@ const GLOBE_STATIC_PROPS = {
   pointLat: 'lat',
   pointLng: 'lng',
   pointColor: 'color',
+  pointAltitude: (d: object) => ((d as PointDatum).isLatest ? 0.2 : 0.15),
   pointResolution: 24,
   pointsMerge: false,
   pointsTransitionDuration: 300,
+  htmlLat: (d: object) => (d as HtmlDetailDatum).lat,
+  htmlLng: (d: object) => (d as HtmlDetailDatum).lng,
   polygonSideColor: SIDE_TRANSPARENT,
   polygonsTransitionDuration: 300,
 } as const;
@@ -168,6 +171,23 @@ export default function GlobeMap({
   );
   const detailHtmlData = useMemo(() => buildDetailHtmlData(activeDetail), [activeDetail]);
 
+  const pointRadius = useCallback(
+    (d: object) => ((d as PointDatum).isLatest ? 0.38 : 0.3) * (isMobile ? 1.5 : 1),
+    [isMobile]
+  );
+
+  const handlePointClick = useCallback(
+    (datum: object) => {
+      if (!welcomeDismissed) return;
+      const trip = tripsById.get((datum as PointDatum).id);
+      if (trip) {
+        haptic();
+        focusPin(trip);
+      }
+    },
+    [welcomeDismissed, tripsById, focusPin]
+  );
+
   if (!travelData.length) {
     return <div className={styles.empty}>No trips found for this date range.</div>;
   }
@@ -200,19 +220,9 @@ export default function GlobeMap({
         atmosphereColor={colors.atmosphere}
         arcsData={arcsData}
         pointsData={pointsData}
-        pointAltitude={(d: object) => ((d as PointDatum).isLatest ? 0.2 : 0.15)}
-        pointRadius={(d: object) => ((d as PointDatum).isLatest ? 0.38 : 0.3) * (isMobile ? 1.5 : 1)}
-        onPointClick={(datum: object) => {
-          if (!welcomeDismissed) return;
-          const trip = tripsById.get((datum as PointDatum).id);
-          if (trip) {
-            haptic();
-            focusPin(trip);
-          }
-        }}
+        pointRadius={pointRadius}
+        onPointClick={handlePointClick}
         htmlElementsData={detailHtmlData}
-        htmlLat={(d: object) => (d as HtmlDetailDatum).lat}
-        htmlLng={(d: object) => (d as HtmlDetailDatum).lng}
         htmlElement={renderDetailHtml}
         polygonsData={overlay.polygons}
         polygonAltitude={overlay.altitude}
